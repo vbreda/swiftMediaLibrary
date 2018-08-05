@@ -29,6 +29,8 @@
 		D3161D2320D748F800EC97E8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		D3161D2C20D749BD00EC97E8 /* protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = protocols.swift; sourceTree = "<group>"; };
 		D3CB3A9C20DB264200AF519E /* cli.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cli.swift; sourceTree = "<group>"; };
+		E87AD8642116B11C008BD6BF /* exampleJsonFile.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exampleJsonFile.json; sourceTree = "<group>"; };
+		E87AD8652116B11C008BD6BF /* exampleMetaData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exampleMetaData.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,8 @@
 		E87AD8632116AF84008BD6BF /* TestFiles */ = {
 			isa = PBXGroup;
 			children = (
+				E87AD8642116B11C008BD6BF /* exampleJsonFile.json */,
+				E87AD8652116B11C008BD6BF /* exampleMetaData.json */,
 			);
 			path = TestFiles;
 			sourceTree = "<group>";
