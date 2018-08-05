@@ -61,11 +61,19 @@
 		D3161D2220D748F800EC97E8 /* MediaLibraryManager */ = {
 			isa = PBXGroup;
 			children = (
+				E87AD8632116AF84008BD6BF /* TestFiles */,
 				D3161D2C20D749BD00EC97E8 /* protocols.swift */,
 				D3161D2320D748F800EC97E8 /* main.swift */,
 				D3CB3A9C20DB264200AF519E /* cli.swift */,
 			);
 			path = MediaLibraryManager;
+			sourceTree = "<group>";
+		};
+		E87AD8632116AF84008BD6BF /* TestFiles */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = TestFiles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
