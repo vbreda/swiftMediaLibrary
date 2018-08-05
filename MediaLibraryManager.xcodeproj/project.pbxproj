@@ -31,6 +31,10 @@
 		D3CB3A9C20DB264200AF519E /* cli.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cli.swift; sourceTree = "<group>"; };
 		E87AD8642116B11C008BD6BF /* exampleJsonFile.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exampleJsonFile.json; sourceTree = "<group>"; };
 		E87AD8652116B11C008BD6BF /* exampleMetaData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exampleMetaData.json; sourceTree = "<group>"; };
+		E87AD8662116BAB1008BD6BF /* basicImage.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = basicImage.json; sourceTree = "<group>"; };
+		E87AD8672116BCA6008BD6BF /* basicVideo.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = basicVideo.json; sourceTree = "<group>"; };
+		E87AD8682116BD1F008BD6BF /* basicDocument.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = basicDocument.json; sourceTree = "<group>"; };
+		E87AD8692116BD2A008BD6BF /* basicAudio.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = basicAudio.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +80,10 @@
 			children = (
 				E87AD8642116B11C008BD6BF /* exampleJsonFile.json */,
 				E87AD8652116B11C008BD6BF /* exampleMetaData.json */,
+				E87AD8662116BAB1008BD6BF /* basicImage.json */,
+				E87AD8682116BD1F008BD6BF /* basicDocument.json */,
+				E87AD8692116BD2A008BD6BF /* basicAudio.json */,
+				E87AD8672116BCA6008BD6BF /* basicVideo.json */,
 			);
 			path = TestFiles;
 			sourceTree = "<group>";

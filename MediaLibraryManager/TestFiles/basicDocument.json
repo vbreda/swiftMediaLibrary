@@ -1,0 +1,18 @@
+[
+    {
+        "fullpath": "/path/to/foobar.txt",
+        "type": "document",
+        "metadata": {
+            "creator": "Nikolah Pearce",
+        }
+    },
+    {
+        "fullpath": "/path/to/foobar.docx",
+        "type": "document",
+        "metadata": {
+            "creator": "Vivian LotsOfLastnames",
+        }
+    }
+]
+
+
