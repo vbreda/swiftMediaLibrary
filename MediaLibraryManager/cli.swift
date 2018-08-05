@@ -35,7 +35,7 @@ enum MMCliError: Error {
 /// - parameter prompt: The prompt to use
 /// - parameter strippingNewline: Strip the newline from the end of the line of
 ///   input (true by default)
-/// - return: The result of `readLine`.
+/// - return: The result of 'readLine'.
 /// - seealso: readLine
 func prompt(_ prompt: String, strippingNewline: Bool = true) -> String? {
     // the following terminator specifies *not* to put a newline at the
@@ -45,7 +45,7 @@ func prompt(_ prompt: String, strippingNewline: Bool = true) -> String? {
 }
 
 /// This class representes a set of results.
-class MMResultSet{
+class MMResultSet {
     
     /// The list of files produced by the command
     private var results: [MMFile]
@@ -53,18 +53,18 @@ class MMResultSet{
     /// Constructs a new result set.
     /// - parameter results: the list of files produced by the executed
     /// command, could be empty.
-    init(_ results:[MMFile]){
+    init(_ results:[MMFile]) {
         self.results = results
     }
     /// Constructs a new result set with an empty list.
-    convenience init(){
+    convenience init() {
         self.init([MMFile]())
     }
     
     /// If there are some results to show, enumerate them and print them out.
     /// - note: this enumeration is used to identify the files in subsequent
     /// commands.
-    func showResults(){
+    func showResults() {
         guard self.results.count > 0 else{
             return
         }
@@ -92,9 +92,9 @@ protocol MMCommandHandler{
     /// - parameter last: The previous result set, used to give context to some
     /// of the commands that add/set/del the metadata associated with a file.
     ///
-    /// - Throws: one of the `MMCliError` exceptions
+    /// - Throws: one of the 'MMCliError' exceptions
     ///
-    /// - returns: an instance of `MMResultSet`
+    /// - returns: an instance of 'MMResultSet'
     static func handle(_ params: [String], last: MMResultSet) throws -> MMResultSet;
     
 }
@@ -102,8 +102,8 @@ protocol MMCommandHandler{
 /// Handles the 'help' command -- prints usage information
 /// - Attention: There are some examples of the commands in the source code
 /// comments
-class HelpCommandHandler: MMCommandHandler{
-    static func handle(_ params: [String], last: MMResultSet) throws -> MMResultSet{
+class HelpCommandHandler: MMCommandHandler {
+    static func handle(_ params: [String], last: MMResultSet) throws -> MMResultSet {
         print("""
 \thelp                              - this text
 \tload <filename> ...               - load file into the collection
@@ -121,7 +121,7 @@ class HelpCommandHandler: MMCommandHandler{
 }
 
 /// Handle the 'quit' command
-class QuitCommandHandler : MMCommandHandler{
+class QuitCommandHandler : MMCommandHandler {
     static func handle(_ params: [String], last: MMResultSet) throws -> MMResultSet {
         // you may want to prompt if the previous result set hasn't been saved...
         exit(0)
@@ -129,7 +129,7 @@ class QuitCommandHandler : MMCommandHandler{
 }
 
 // All the other commands are unimplemented
-class UnimplementedCommandHandler: MMCommandHandler{
+class UnimplementedCommandHandler: MMCommandHandler {
     static func handle(_ params: [String], last: MMResultSet) throws -> MMResultSet {
         throw MMCliError.unimplementedCommand
     }

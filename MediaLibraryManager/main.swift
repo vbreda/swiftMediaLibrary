@@ -31,16 +31,16 @@ var last = MMResultSet()
 //  to the file at index 3 in the list
 //
 // Feel free to extend these commands/errors as you need to.
-while let line = prompt("> "){
+while let line = prompt("> ") {
     var command : String = ""
     var parts = line.split(separator: " ").map({String($0)})
     
-    do{
+    do {
         guard parts.count > 0 else {
             throw MMCliError.noCommand
         }
         command = parts.removeFirst();
-        switch(command){
+        switch(command) {
         case "load", "list", "add", "set", "del", "save-search", "save":
             last = try UnimplementedCommandHandler.handle(parts, last:last)
             break

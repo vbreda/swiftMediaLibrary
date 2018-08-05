@@ -24,10 +24,10 @@ import Foundation
 ///
 /// Represents a file with metadata (a key/value store)
 ///
-/// In this protocol we define three properties and that it must confrom to the
+/// In this protocol we define three properties and that it must conform to the
 /// CustomStringConvertable protocol (i.e. it also needs to have a description
 /// property).
-protocol MMFile: CustomStringConvertible{
+protocol MMFile: CustomStringConvertible {
     var metadata: [MMMetadata] {get set}
     var filename: String {get set}
     var path: String {get set}
@@ -36,7 +36,7 @@ protocol MMFile: CustomStringConvertible{
 ///
 /// Protocol to represent metadata for a media file
 ///
-/// In this protocol we define three properties and that it must confrm to the
+/// In this protocol we define three properties and that it must conform to the
 /// CustomStringConvertable protocol (i.e. it also needs to have a description
 /// property).
 ///
@@ -50,7 +50,7 @@ protocol MMFile: CustomStringConvertible{
 /// When we search for the metadata, we ultimately want to display the files
 /// that have that metadata, we're keeping track of the associated file here.
 ///
-protocol MMMetadata: CustomStringConvertible{
+protocol MMMetadata: CustomStringConvertible {
     var keyword: String {get set}
     var value: String {get set}
 }
