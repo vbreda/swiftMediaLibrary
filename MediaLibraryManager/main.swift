@@ -9,7 +9,9 @@
 import Foundation
 
 // TODO create your instance of your library here
-var library:MMCollection? = nil
+//var library:MMCollection? = nil
+var library : MediaLibrary
+
 var last = MMResultSet()
 
 // The while-loop below implements a basic command line interface. Some
@@ -47,6 +49,15 @@ while let line = prompt("> ") {
 			let fileName = parts.removeFirst()
 			print ("Provided filename is: \(fileName)")
 			//woohoo!
+			
+			/**
+			Potential method here:
+			- path to file provided as second paramater
+			- pull the path and load JSON file
+			- Pull out the metadata 
+			- create a File of type X (as recorded in Metadata)
+			- Add the File to the library using libary.add(file: newFile)
+			*/
 			
 		case "list", "add", "set", "del", "save-search", "save":
             last = try UnimplementedCommandHandler.handle(parts, last:last)

@@ -9,43 +9,11 @@
 import Foundation
 
 /**
-Creates the metadata for a media file.
-
-*/
-class MetaData: MMMetadata {
-	
-	var keyword: String    //metadata property
-	var value: String      //value of the metadata property
-	
-	
-	/**
-	Designated initialiser
-	
-	Metadata property/value pair is passed in the arguments of the initialiser.
-	
-	- parameter keyword: MetaData's keyword
-	- parameter value: MetaData's value
-	*/
-	init(keyword: String, value: String) {
-		self.keyword = keyword
-		self.value = value
-	}
-	
-	/**
-	String representation of the metadata
-	
-	- returns: String String representation of the metadata.
-	*/
-	var description: String {
-		return "\(self.keyword): "+"\(self.value)"
-	}
-}
-
-/**
 Creates a media file with metadata.
 
 */
 class File: MMFile {
+	
 	var metadata: [MMMetadata]    //the collection of the file's metadata
 	var filename: String          //the name of the file
 	var path: String              //the path to the file

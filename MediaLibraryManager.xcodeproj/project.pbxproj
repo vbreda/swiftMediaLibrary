@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2B55D9F52121749C00C0C393 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B55D9F42121749C00C0C393 /* File.swift */; };
+		2B55D9F721217C6E00C0C393 /* Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B55D9F621217C6E00C0C393 /* Metadata.swift */; };
 		CCE6076B21214E2000CB43D8 /* MediaLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE6076A21214E2000CB43D8 /* MediaLibrary.swift */; };
 		D3161D2420D748F800EC97E8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3161D2320D748F800EC97E8 /* main.swift */; };
 		D3161D2D20D749BD00EC97E8 /* protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3161D2C20D749BD00EC97E8 /* protocols.swift */; };
@@ -29,6 +30,7 @@
 /* Begin PBXFileReference section */
 		2B55D9F32121723400C0C393 /* complexImage.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = complexImage.json; sourceTree = "<group>"; };
 		2B55D9F42121749C00C0C393 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		2B55D9F621217C6E00C0C393 /* Metadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metadata.swift; sourceTree = "<group>"; };
 		CCE6076A21214E2000CB43D8 /* MediaLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLibrary.swift; sourceTree = "<group>"; };
 		D3161D2020D748F800EC97E8 /* MediaLibraryManager */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MediaLibraryManager; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3161D2320D748F800EC97E8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 				D3CB3A9C20DB264200AF519E /* cli.swift */,
 				CCE6076A21214E2000CB43D8 /* MediaLibrary.swift */,
 				2B55D9F42121749C00C0C393 /* File.swift */,
+				2B55D9F621217C6E00C0C393 /* Metadata.swift */,
 			);
 			path = MediaLibraryManager;
 			sourceTree = "<group>";
@@ -165,6 +168,7 @@
 				D3161D2420D748F800EC97E8 /* main.swift in Sources */,
 				CCE6076B21214E2000CB43D8 /* MediaLibrary.swift in Sources */,
 				D3161D2D20D749BD00EC97E8 /* protocols.swift in Sources */,
+				2B55D9F721217C6E00C0C393 /* Metadata.swift in Sources */,
 				2B55D9F52121749C00C0C393 /* File.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

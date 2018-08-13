@@ -10,6 +10,9 @@ import Foundation
 
 class MediaLibrary : MMCollection {
 	
+	var library: [File]
+	var libraryName : String
+	
 	/**
 	String representation of the Media Library collection
 
@@ -20,12 +23,33 @@ class MediaLibrary : MMCollection {
 		return "Library!"
 	}
 	
+	/**
+	Default initialiser
+	
+	Sets the library to be empty and the name to New Library
+	*/
+	init() {
+		self.library = []
+		self.libraryName = "New Library"
+	}
+	
+	/**
+	Designanted initialiser
+	
+	Sets the library to be empty and the name as specified by the user
+	*/
+	init(name : String) {
+		self.library = []
+		self.libraryName = name
+	}
+	
 	///
 	/// Adds a file's metadata to the media metadata collection.
 	///
 	/// - Parameters:
 	/// - file: The file and associated metadata to add to the collection
 	func add(file: MMFile) {
+		
 		
 	}
 	
