@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B55D9F52121749C00C0C393 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B55D9F42121749C00C0C393 /* Media.swift */; };
 		CCE6076B21214E2000CB43D8 /* MediaLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE6076A21214E2000CB43D8 /* MediaLibrary.swift */; };
 		D3161D2420D748F800EC97E8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3161D2320D748F800EC97E8 /* main.swift */; };
 		D3161D2D20D749BD00EC97E8 /* protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3161D2C20D749BD00EC97E8 /* protocols.swift */; };
@@ -26,6 +27,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2B55D9F32121723400C0C393 /* complexImage.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = complexImage.json; sourceTree = "<group>"; };
+		2B55D9F42121749C00C0C393 /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		CCE6076A21214E2000CB43D8 /* MediaLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLibrary.swift; sourceTree = "<group>"; };
 		D3161D2020D748F800EC97E8 /* MediaLibraryManager */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MediaLibraryManager; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3161D2320D748F800EC97E8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -50,6 +53,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B55D9F221216FC800C0C393 /* ExampleFiles */ = {
+			isa = PBXGroup;
+			children = (
+				E87AD8642116B11C008BD6BF /* exampleJsonFile.json */,
+				E87AD8652116B11C008BD6BF /* exampleMetaData.json */,
+			);
+			path = ExampleFiles;
+			sourceTree = "<group>";
+		};
 		D3161D1720D748F800EC97E8 = {
 			isa = PBXGroup;
 			children = (
@@ -69,11 +81,13 @@
 		D3161D2220D748F800EC97E8 /* MediaLibraryManager */ = {
 			isa = PBXGroup;
 			children = (
+				2B55D9F221216FC800C0C393 /* ExampleFiles */,
 				E87AD8632116AF84008BD6BF /* TestFiles */,
 				D3161D2C20D749BD00EC97E8 /* protocols.swift */,
 				D3161D2320D748F800EC97E8 /* main.swift */,
 				D3CB3A9C20DB264200AF519E /* cli.swift */,
 				CCE6076A21214E2000CB43D8 /* MediaLibrary.swift */,
+				2B55D9F42121749C00C0C393 /* Media.swift */,
 			);
 			path = MediaLibraryManager;
 			sourceTree = "<group>";
@@ -81,12 +95,11 @@
 		E87AD8632116AF84008BD6BF /* TestFiles */ = {
 			isa = PBXGroup;
 			children = (
-				E87AD8642116B11C008BD6BF /* exampleJsonFile.json */,
-				E87AD8652116B11C008BD6BF /* exampleMetaData.json */,
 				E87AD8662116BAB1008BD6BF /* basicImage.json */,
 				E87AD8682116BD1F008BD6BF /* basicDocument.json */,
 				E87AD8692116BD2A008BD6BF /* basicAudio.json */,
 				E87AD8672116BCA6008BD6BF /* basicVideo.json */,
+				2B55D9F32121723400C0C393 /* complexImage.json */,
 			);
 			path = TestFiles;
 			sourceTree = "<group>";
@@ -152,6 +165,7 @@
 				D3161D2420D748F800EC97E8 /* main.swift in Sources */,
 				CCE6076B21214E2000CB43D8 /* MediaLibrary.swift in Sources */,
 				D3161D2D20D749BD00EC97E8 /* protocols.swift in Sources */,
+				2B55D9F52121749C00C0C393 /* Media.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
