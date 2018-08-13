@@ -41,7 +41,14 @@ while let line = prompt("> ") {
         }
         command = parts.removeFirst();
         switch(command) {
-        case "load", "list", "add", "set", "del", "save-search", "save":
+		case "load":
+			// Testing if this is how we get things to work?
+			print ("Yup it is!")
+			let fileName = parts.removeFirst()
+			print ("Provided filename is: \(fileName)")
+			//woohoo!
+			
+		case "list", "add", "set", "del", "save-search", "save":
             last = try UnimplementedCommandHandler.handle(parts, last:last)
             break
         case "help":
