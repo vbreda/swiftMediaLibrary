@@ -54,11 +54,15 @@ while let line = prompt("> ") {
 			/**
 			Potential method here:
 			- path to file provided as second paramater
-			- pull the path and load JSON file
-			- Pull out the metadata 
+			- load JSON file and pull out the metadata
 			- create a File of type X (as recorded in Metadata)
+			- Add the metadata to the file
 			- Add the File to the library using libary.add(file: newFile)
 			*/
+			
+			// Can load multiple files at once
+			// Probably want to LOOP while there are >0 left in PARTS
+			
 			
 		case "list", "add", "set", "del", "save-search", "save":
             last = try UnimplementedCommandHandler.handle(parts, last:last)
@@ -75,15 +79,15 @@ while let line = prompt("> ") {
             throw MMCliError.unknownCommand
         }
         last.showResults();
-    }catch MMCliError.noCommand {
+    } catch MMCliError.noCommand {
         print("No command given -- see \"help\" for details.")
-    }catch MMCliError.unknownCommand {
+    } catch MMCliError.unknownCommand {
         print("Command \"\(command)\" not found -- see \"help\" for details.")
-    }catch MMCliError.invalidParameters {
+    } catch MMCliError.invalidParameters {
         print("Invalid parameters for \"\(command)\" -- see \"help\" for details.")
-    }catch MMCliError.unimplementedCommand {
+    } catch MMCliError.unimplementedCommand {
         print("The \"\(command)\" command is not implemented.")
-    }catch MMCliError.missingResultSet {
+    } catch MMCliError.missingResultSet {
         print("No previous results to work from.")
     }
 }

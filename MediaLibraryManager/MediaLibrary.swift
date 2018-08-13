@@ -2,7 +2,7 @@
 //  MediaLibrary.swift
 //  MediaLibraryManager
 //
-//  Created by Vivian Breda on 13/08/18.
+//  Created by Vivian Breda and Nikolah Pearce on 13/08/18.
 //  Copyright © 2018 Paul Crane. All rights reserved.
 //
 
