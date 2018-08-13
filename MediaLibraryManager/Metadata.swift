@@ -12,19 +12,18 @@ import Foundation
 Creates the metadata for a media file.
 
 */
-class MetaData: MMMetadata {
+class Metadata: MMMetadata {
 	
-	var keyword: String    //metadata property
-	var value: String      //value of the metadata property
-	
+	var keyword: String    // metadata property
+	var value: String      // value of the metadata property
 	
 	/**
 	Designated initialiser
 	
 	Metadata property/value pair is passed in the arguments of the initialiser.
 	
-	- parameter keyword: MetaData's keyword
-	- parameter value: MetaData's value
+	- parameter keyword: Metadata's keyword
+	- parameter value: Metadata's value
 	*/
 	init(keyword: String, value: String) {
 		self.keyword = keyword
@@ -37,6 +36,6 @@ class MetaData: MMMetadata {
 	- returns: String String representation of the metadata.
 	*/
 	var description: String {
-		return "\(self.keyword): "+"\(self.value)"
+		return "One Metadata keypair. \(self.keyword): \(self.value)"
 	}
 }
