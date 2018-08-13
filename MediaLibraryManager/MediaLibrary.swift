@@ -19,8 +19,7 @@ class MediaLibrary : MMCollection {
 	- returns: String String representation of the library.
 	*/
 	var description: String {
-		// Possibly something about the size of library e.g. num files?
-		return "Library!"
+		return "Library: \(libraryName). Contains \(library.count) files."
 	}
 	
 	/**
@@ -50,6 +49,7 @@ class MediaLibrary : MMCollection {
 	/// - file: The file and associated metadata to add to the collection
 	func add(file: MMFile) {
 		
+		// Some file that already has metadata mapped?
 		
 	}
 	
@@ -59,6 +59,11 @@ class MediaLibrary : MMCollection {
 	/// - Parameters:
 	/// - metadata: The item to add to the collection
 	func add(metadata: MMMetadata, file: MMFile)  {
+		
+		// Some metadata and the file to add it to?
+		
+		// Or some file, and some metadata for that file
+		// and both need to be added to collection?
 		
 	}
 	

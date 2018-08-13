@@ -14,9 +14,9 @@ Creates a media file with metadata.
 */
 class File: MMFile {
 	
-	var metadata: [MMMetadata]    //the collection of the file's metadata
-	var filename: String          //the name of the file
-	var path: String              //the path to the file
+	var metadata: [MMMetadata]    // the collection of the file's metadata
+	var filename: String          // the name of the file
+	var path: String              // the path to the file
 	
 	/**
 	Designated initialiser

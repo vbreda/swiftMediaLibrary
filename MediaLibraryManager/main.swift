@@ -10,7 +10,7 @@ import Foundation
 
 // TODO create your instance of your library here
 //var library:MMCollection? = nil
-var library : MediaLibrary
+var library : MediaLibrary = MediaLibrary(name: "Nikolah's Test Library.")
 
 var last = MMResultSet()
 
@@ -48,7 +48,8 @@ while let line = prompt("> ") {
 			print ("Yup it is!")
 			let fileName = parts.removeFirst()
 			print ("Provided filename is: \(fileName)")
-			//woohoo!
+			
+			print ("Printing library.... \(library)")
 			
 			/**
 			Potential method here:
