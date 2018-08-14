@@ -1,5 +1,5 @@
 //
-//  Video.swift
+//  Audio.swift
 //  MediaLibraryManager
 //
 //  Created by Vivian Breda and Nikolah Pearce on 8/14/18.
@@ -8,18 +8,16 @@
 
 import Foundation
 
-class Video : File {
+class Audio : File {
     
-    var resolution : String
     var runtime: String
     
-    init(metadata: [MMMetadata], filename: String, path: String, creator: String, resolution: String, runtime: String) {
-        self.resolution = resolution
+    init(metadata: [MMMetadata], filename: String, path: String, creator: String, runtime: String) {
         self.runtime = runtime
         super.init(metadata: metadata, filename: filename, path: path, creator: creator)
     }
     
     override var description: String {
-        return super.description + ", resolution: \(resolution), runtime: \(runtime)"
+        return super.description + ", runtime: \(runtime)"
     }
 }
