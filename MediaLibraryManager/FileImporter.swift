@@ -1,5 +1,5 @@
 //
-//  MediaManager.swift
+//  FileImporter.swift
 //  MediaLibraryManager
 //
 //  Created by Nikolah Pearce and Vivian Breda on 14/08/18.
@@ -8,26 +8,15 @@
 
 import Foundation
 
-class MediaManager : MMFileImport, MMFileExport {
-	
-	
-	var library = MediaLibrary();
+class FileImporter : MMFileImport {
 	
 	///
 	/// Support importing the media collection from a file (by name)
 	func read(filename: String) throws -> [MMFile] {
 		
 		// read the JSON file and call MediaManager.files.add()
-		// library.files.add()
-		
-		return []
+		return Library.files
 	}
 	
-	
-	///
-	/// Support exporting the media collection to a file (by name)
-	func write(filename: String, items: [MMFile]) throws {
-		
-	}
 	
 }

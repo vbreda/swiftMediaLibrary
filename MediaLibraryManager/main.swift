@@ -10,7 +10,7 @@ import Foundation
 
 // TO DO create your instance of your library here
 //var library: MMCollection? = nil
-var library : MediaLibrary = MediaLibrary()
+var library : Library = Library()
 
 var last = MMResultSet()
 
@@ -57,7 +57,7 @@ while let line = prompt("> ") {
 			- load JSON file and pull out the metadata
 			- create a File of type X (as recorded in Metadata)
 			- Add the metadata to the file
-			- Add the File to the library using libary.add(file: newFile)
+			- Add the File to the library using MediaLibary.add(file: newFile)
 			*/
 			
 			// Can load multiple files at once

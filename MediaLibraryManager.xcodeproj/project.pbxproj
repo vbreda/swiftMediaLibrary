@@ -9,8 +9,9 @@
 /* Begin PBXBuildFile section */
 		2B55D9F52121749C00C0C393 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B55D9F42121749C00C0C393 /* File.swift */; };
 		2B55D9F721217C6E00C0C393 /* Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B55D9F621217C6E00C0C393 /* Metadata.swift */; };
-		2BAD6DFC212256E200680426 /* MediaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD6DFB212256E200680426 /* MediaManager.swift */; };
-		CCE6076B21214E2000CB43D8 /* MediaLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE6076A21214E2000CB43D8 /* MediaLibrary.swift */; };
+		2BAD6DFE2122B0C900680426 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD6DFD2122B0C900680426 /* Library.swift */; };
+		2BAD6E002122B13300680426 /* FileImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD6DFF2122B13300680426 /* FileImporter.swift */; };
+		2BAD6E022122B14A00680426 /* FileExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD6E012122B14A00680426 /* FileExporter.swift */; };
 		D3161D2420D748F800EC97E8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3161D2320D748F800EC97E8 /* main.swift */; };
 		D3161D2D20D749BD00EC97E8 /* protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3161D2C20D749BD00EC97E8 /* protocols.swift */; };
 		D3CB3A9D20DB264200AF519E /* cli.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CB3A9C20DB264200AF519E /* cli.swift */; };
@@ -32,8 +33,9 @@
 		2B55D9F32121723400C0C393 /* complexImage.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = complexImage.json; sourceTree = "<group>"; };
 		2B55D9F42121749C00C0C393 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		2B55D9F621217C6E00C0C393 /* Metadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metadata.swift; sourceTree = "<group>"; };
-		2BAD6DFB212256E200680426 /* MediaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaManager.swift; sourceTree = "<group>"; };
-		CCE6076A21214E2000CB43D8 /* MediaLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLibrary.swift; sourceTree = "<group>"; };
+		2BAD6DFD2122B0C900680426 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
+		2BAD6DFF2122B13300680426 /* FileImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImporter.swift; sourceTree = "<group>"; };
+		2BAD6E012122B14A00680426 /* FileExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileExporter.swift; sourceTree = "<group>"; };
 		D3161D2020D748F800EC97E8 /* MediaLibraryManager */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MediaLibraryManager; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3161D2320D748F800EC97E8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		D3161D2C20D749BD00EC97E8 /* protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = protocols.swift; sourceTree = "<group>"; };
@@ -90,9 +92,10 @@
 				D3161D2C20D749BD00EC97E8 /* protocols.swift */,
 				D3161D2320D748F800EC97E8 /* main.swift */,
 				D3CB3A9C20DB264200AF519E /* cli.swift */,
-				CCE6076A21214E2000CB43D8 /* MediaLibrary.swift */,
 				2B55D9F42121749C00C0C393 /* File.swift */,
-				2BAD6DFB212256E200680426 /* MediaManager.swift */,
+				2BAD6E012122B14A00680426 /* FileExporter.swift */,
+				2BAD6DFF2122B13300680426 /* FileImporter.swift */,
+				2BAD6DFD2122B0C900680426 /* Library.swift */,
 				2B55D9F621217C6E00C0C393 /* Metadata.swift */,
 			);
 			path = MediaLibraryManager;
@@ -168,12 +171,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3CB3A9D20DB264200AF519E /* cli.swift in Sources */,
+				2BAD6E022122B14A00680426 /* FileExporter.swift in Sources */,
 				D3161D2420D748F800EC97E8 /* main.swift in Sources */,
-				CCE6076B21214E2000CB43D8 /* MediaLibrary.swift in Sources */,
 				D3161D2D20D749BD00EC97E8 /* protocols.swift in Sources */,
 				2B55D9F721217C6E00C0C393 /* Metadata.swift in Sources */,
-				2BAD6DFC212256E200680426 /* MediaManager.swift in Sources */,
+				2BAD6DFE2122B0C900680426 /* Library.swift in Sources */,
 				2B55D9F52121749C00C0C393 /* File.swift in Sources */,
+				2BAD6E002122B13300680426 /* FileImporter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
