@@ -45,25 +45,22 @@ while let line = prompt("> ") {
         switch(command) {
 		case "load":
 			// Testing if this is how we get things to work?
-			print ("Yup it is!")
-			let fileName = parts.removeFirst()
-			print ("Provided filename is: \(fileName)")
-			
-			print ("Printing library.... \(library)")
-			
-			/**
-			Potential method here:
-			- path to file provided as second paramater
-			- load JSON file and pull out the metadata
-			- create a File of type X (as recorded in Metadata)
-			- Add the metadata to the file
-			- Add the File to the library using MediaLibary.add(file: newFile)
-			*/
-			
-			// Can load multiple files at once
-			// Probably want to LOOP while there are >0 left in PARTS
-			
-			
+			print ("Inside Load case.")
+            let fileName: String
+            if parts.count > 1 {
+                fileName = parts.removeFirst()
+            } else {
+                print ("You must provide a filename to load.")
+                break;
+            }
+            
+            print ("Provided filename is: \(fileName)")
+            
+            let importer : FileImporter = FileImporter()
+            let newFiles : [MMFile] = try importer.read(filename: fileName)
+
+
+            break;
 		case "list", "add", "set", "del", "save-search", "save":
             last = try UnimplementedCommandHandler.handle(parts, last:last)
             break
