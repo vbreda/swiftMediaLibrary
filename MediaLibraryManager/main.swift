@@ -8,9 +8,9 @@
 
 import Foundation
 
-// TODO create your instance of your library here
-//var library:MMCollection? = nil
-var library : MediaLibrary = MediaLibrary(name: "Nikolah's Test Library.")
+// TO DO create your instance of your library here
+//var library: MMCollection? = nil
+var library : MediaLibrary = MediaLibrary()
 
 var last = MMResultSet()
 

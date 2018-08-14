@@ -10,8 +10,8 @@ import Foundation
 
 class MediaLibrary : MMCollection {
 	
-	var library: [File]
-	var libraryName : String
+	// Static array of files, only want one instance ever
+	static var files: [MMFile] = []
 	
 	/**
 	String representation of the Media Library collection
@@ -19,28 +19,16 @@ class MediaLibrary : MMCollection {
 	- returns: String String representation of the library.
 	*/
 	var description: String {
-		return "Library: \(libraryName). Contains \(library.count) files."
+		return "Your media library contains \(MediaLibrary.files.count) files."
 	}
 	
 	/**
 	Default initialiser
 	
-	Sets the library to be empty and the name to New Library
 	*/
 	init() {
-		self.library = []
-		self.libraryName = "New Library"
 	}
-	
-	/**
-	Designanted initialiser
-	
-	Sets the library to be empty and the name as specified by the user
-	*/
-	init(name : String) {
-		self.library = []
-		self.libraryName = name
-	}
+
 	
 	///
 	/// Adds a file's metadata to the media metadata collection.
