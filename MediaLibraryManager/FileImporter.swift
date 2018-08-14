@@ -13,7 +13,7 @@ struct MData : Codable {
     let value: String
 }
 
-struct Data : Codable {
+struct MyData : Codable {
     let path: String
     let type: String
     let mdata: [MData]
@@ -21,7 +21,7 @@ struct Data : Codable {
 
 class FileImporter : MMFileImport {
 	
-	///
+	/// 
 	/// Support importing the media collection from a file (by name)
 	func read(filename: String) throws -> [MMFile] {
 		
@@ -42,31 +42,24 @@ class FileImporter : MMFileImport {
         do {
             print ("made it inside imorter")
             
-//            let decoder = JSONDecoder()
-//
-//            let parsedData = try JSONSerialization.jsonObject(with: filename) as! [String: Any]
-//
-//            var i: Int = 0
-//            for (key, value) in parsedData {
-//
-//                print (" ")
-//                print (" ")
-//                print ("count: \(i)")
-//                print ("\(key) ---> \(value)")
-//                i += 1
-//            }
-//            
+            let path = URL(fileURLWithPath: filename)
+            let data = try Data(contentsOf: path)
+            
+            print("Raw Data \(data)")
+
+            let parsedData = try JSONSerialization.jsonObject(with: data)
+            
+            print("parsed Data: ")
+            
+            print(parsedData)
+            
+            // Do the commands to get it into the struct here
             
         } catch let error as NSError {
             print(error)
         }
-        
-        //let jsonData = data.json(encoding: .utf8)!
-        //let decoder = JSONDecoder()
-        //let file1 = try! decoder.decode(Beer.self, for: jsonData)
-        
-        
-		return Library.files
+
+		return []
 	}
 	
 	

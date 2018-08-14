@@ -47,18 +47,22 @@ while let line = prompt("> ") {
 			// Testing if this is how we get things to work?
 			print ("Inside Load case.")
             let fileName: String
-            if parts.count > 1 {
+            if parts.count >= 1 {
                 fileName = parts.removeFirst()
             } else {
                 print ("You must provide a filename to load.")
                 break;
             }
             
+            // file:///home/cshome/n/npearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/basicImage.json
+            //load /home/cshome/n/npearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/basicImage.json
+            
             print ("Provided filename is: \(fileName)")
             
             let importer : FileImporter = FileImporter()
             let newFiles : [MMFile] = try importer.read(filename: fileName)
-
+            
+            Library.files = newFiles
 
             break;
 		case "list", "add", "set", "del", "save-search", "save":
