@@ -18,7 +18,6 @@ class File: MMFile {
 	var filename: String          // the name of the file
 	var path: String              // the path to the file
     var creator: String           // the creator of the file
-    var type: String              // the type of the file
 	
 	/**
 	Designated initialiser
@@ -29,12 +28,11 @@ class File: MMFile {
 	- parameter filename: the name of the file.
 	- parameter path: File's path.
 	*/
-    init(metadata: [MMMetadata], filename: String, path: String, creator: String, type: String) {
+    init(metadata: [MMMetadata], filename: String, path: String, creator: String) {
         self.metadata = metadata
 		self.filename = filename
 		self.path = path
         self.creator = creator
-        self.type = type
 	}
 	
 	/**
@@ -43,6 +41,6 @@ class File: MMFile {
 	- returns: String String representation of the file.
 	*/
 	var description: String {
-        return "File: \(filename), path: \(path), type: \(type), creator: \(creator)"
+        return "File: \(filename), path: \(path), creator: \(creator)"
 	}
 }
