@@ -1,22 +1,3 @@
-[
-    {
-        "fullpath": "/path/to/foobar.mkv",
-        "type": "video",
-        "metadata": {
-            "creator": "Nikolah Pearce",
-            "resolution": "1920x1080"
-            "runtime": "90"
-            }
-    },
-    {
-        "fullpath": "/path/to/foobar.mp4",
-        "type": "image",
-        "metadata": {
-            "creator": "Vivian LotsOfLastnames",
-            "resolution": "1920x1080"
-            "runtime": "120"
-            }
-    }
-]
+[{"fullpath": "/path/to/foobar.mkv","type": "video","metadata": {"creator": "Nikolah Pearce","resolution": "1920x1080","runtime": "90"}},{"fullpath": "/path/to/foobar.mp4","type": "video","metadata": {"creator": "Vivian LotsOfLastnames","resolution": "1920x1080","runtime": "120"}}]
 
 

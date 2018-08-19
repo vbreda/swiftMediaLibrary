@@ -1,0 +1,19 @@
+Valid:
+
+Basic:
+load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/basicImage.json
+load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/basicDocument.json
+load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/basicAudio.json
+load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/basicVideo.json
+
+Complex:
+load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/complexImage.json
+load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/complexMixed.json
+
+
+Invalid:
+
+load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/invalidImage.json
+load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/invalidDocument.json
+load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/invalidAudio.json
+load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/invalidVideo.json

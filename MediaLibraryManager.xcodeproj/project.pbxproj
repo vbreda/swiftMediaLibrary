@@ -33,6 +33,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2B26BA212129017C005C5DCB /* Filepaths.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Filepaths.txt; sourceTree = "<group>"; };
+		2B26BA2221290282005C5DCB /* complexMixed.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = complexMixed.json; sourceTree = "<group>"; };
+		2B26BA2421290359005C5DCB /* invalidImage.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = invalidImage.json; sourceTree = "<group>"; };
+		2B26BA25212903C2005C5DCB /* invalidDocument.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = invalidDocument.json; sourceTree = "<group>"; };
+		2B26BA26212903CD005C5DCB /* invalidAudio.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = invalidAudio.json; sourceTree = "<group>"; };
+		2B26BA27212903EA005C5DCB /* invalidVideo.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = invalidVideo.json; sourceTree = "<group>"; };
 		2B55D9F32121723400C0C393 /* complexImage.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = complexImage.json; sourceTree = "<group>"; };
 		2B55D9F42121749C00C0C393 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		2B55D9F621217C6E00C0C393 /* Metadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metadata.swift; sourceTree = "<group>"; };
@@ -113,11 +119,17 @@
 		E87AD8632116AF84008BD6BF /* TestFiles */ = {
 			isa = PBXGroup;
 			children = (
+				2B26BA2421290359005C5DCB /* invalidImage.json */,
+				2B26BA25212903C2005C5DCB /* invalidDocument.json */,
+				2B26BA26212903CD005C5DCB /* invalidAudio.json */,
+				2B26BA27212903EA005C5DCB /* invalidVideo.json */,
 				E87AD8662116BAB1008BD6BF /* basicImage.json */,
 				E87AD8682116BD1F008BD6BF /* basicDocument.json */,
 				E87AD8692116BD2A008BD6BF /* basicAudio.json */,
 				E87AD8672116BCA6008BD6BF /* basicVideo.json */,
 				2B55D9F32121723400C0C393 /* complexImage.json */,
+				2B26BA2221290282005C5DCB /* complexMixed.json */,
+				2B26BA212129017C005C5DCB /* Filepaths.txt */,
 			);
 			path = TestFiles;
 			sourceTree = "<group>";

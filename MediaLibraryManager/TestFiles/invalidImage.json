@@ -1,0 +1,1 @@
+ [{"fullpath": "/path/to/NoCreator.png","type": "image","metadata": {"resolution": "1920x1080"}},{"fullpath": "/path/to/NoResolution.jpg","type": "image","metadata": {"creator": "Vivian LotsOfLastnames"}},{"fullpath": "/path/to/NeitherCretorNoResuolition.jpg","type": "image","metadata": {"photographer":"me"}}]

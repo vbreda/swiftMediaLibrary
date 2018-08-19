@@ -1,20 +1,3 @@
-[
-    {
-        "fullpath": "/path/to/foobar.mp3",
-        "type": "audio",
-        "metadata": {
-            "creator": "Nikolah Pearce",
-            "runtime": "03:45"
-        }
-    },
-    {
-        "fullpath": "/path/to/foobar.wav",
-        "type": "audio",
-        "metadata": {
-            "creator": "Vivian LotsOfLastnames",
-            "runtime": "04:11"
-        }
-    }
-]
+[{"fullpath": "/path/to/foobar.mp3","type": "audio","metadata": {"creator": "Nikolah Pearce","runtime": "03:45"}},{"fullpath": "/path/to/foobar.wav","type": "audio","metadata": {"creator": "Vivian LotsOfLastnames","runtime": "04:11"}}]
 
 

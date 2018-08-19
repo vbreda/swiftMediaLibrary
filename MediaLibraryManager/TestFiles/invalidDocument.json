@@ -1,0 +1,1 @@
+[{"fullpath": "/path/to/InvalidType.txt","type": "doc","metadata": {"creator": "Nikolah Pearce"}},{"fullpath": "/path/to/MissingMetaData.docx","type": "document","metadata": {"test":"else"}},{"fullpath": "/path/to/NoCreator.docx","type": "document","metadata": {"resolution":"200px"}}]

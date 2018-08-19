@@ -1,0 +1,4 @@
+[{"fullpath": "/path/to/NoCreator.mkv","type": "video","metadata": {"resolution": "1920x1080","runtime": "90"}},{"fullpath": "/path/to/test/NoRuntime.mp4","type": "video","metadata": {"creator": "Vivian LotsOfLastnames","resolution": "1920x1080"}},{"fullpath": "/path/somewhere/test/NoResolutionAllowed.mp4","type": "video","metadata": {"creator": "Vivian LotsOfLastnames","runtime": "120"}},{"fullpath": "/path/to/test/None.mp4","type": "video","metadata": {"anotherProprty":"something"}}]
+
+
+
