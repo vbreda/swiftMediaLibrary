@@ -8,148 +8,131 @@
 
 import Foundation
 
+/**
+Support struct for reading JSON data in.
+*/
+struct Media : Codable {
+	let fullpath: String
+	let type: String
+	let metadata: [String: String]
+}
+
 class FileImporter : MMFileImport {
 	
-	/// 
-	/// Support importing the media collection from a file (by name)
+	/**
+	Support importing the media collection from a file (by name)
+	
+	- parameter filename: the full path to the file including file name.
+	- returns: [MMFile]: the array of files read successfully
+	*/
 	func read(filename: String) throws -> [MMFile] {
 		
         // Can load multiple files at once
 		// read the JSON file and call Library.files.add(file) method
         // Probably want to LOOP while there are >0 left in PARTS
 		
-		/**
-		Further code emailed out from Paul 17/08/18
-			let filename = “/path/to/people.json"
-			let url = URL(fileURLWithPath: filename)
-			let data = try Data(contentsOf: url)
-
-			// the struct mirrors the JSON data
-			struct Person: Codable {
-				var name: String
-				var office: String
-				var languages: [String]
-			}
 		
-			let decoder = JSONDecoder()
-			let people = try! decoder.decode([Person].self, from: data)
+		/**
+		Loop through each 'Media' struct in the mediaArray
+		pull out the type
+		validate the item for that type
+		create a new File
+		load the Metadata
+		Add to the list of Files
+		return list
 		*/
 		
+		var filesValidated : [File] = []
+		
         do {
-            //print ("Reading file...")
-            
+			
             let path = URL(fileURLWithPath: filename)
             let data = try Data(contentsOf: path)
-            
+			
             //print("Raw Data \(data)")
-
             //let parsedData = try JSONSerialization.jsonObject(with: data)
-            
             //print("parsed Data: ")
             //print(parsedData)
-            
-            // Do the commands to get it into the struct here
-			
-			struct Media : Codable {
-				let fullpath: String
-				let type: String
-				let metadata: [String: String]
-			}
 			
 			let decoder = JSONDecoder()
 			var mediaArray : [Media] = []
 			mediaArray = try! decoder.decode([Media].self, from: data)
-//
-//			var i = 0
-//			for m in mediaArray {
-//				var j = 0
-//				print("#\(i) : \(m)")
-//				for d in m.metadata {
-//					print("keypair #\(j) : \(d)")
-//					j += 1
-//				}
-//				i += 1
-//			}
-			var filesValidated : [File] = []
 			
 			for m in mediaArray {
 				
-				var type: String = m.type
-				var filename: String = getFilename(fullpath: m.fullpath)
-				var path: String = getPath(fullpath: m.fullpath)
-				var creator: String
+				let type: String = m.type
+				let filename: String = getFilename(fullpath: m.fullpath)
+				let path: String = getPath(fullpath: m.fullpath)
+				var creator: String = ""
 				
-				//var mdata: [Metadata]
-				
-				
-				print("Type of file: \(type)")
+				var mdata: [Metadata] = []
 				
 				for (key, value) in m.metadata {
-					print("Key: '\(key)' and value: '\(value)'.")
 					if key.lowercased()=="creator" {
 						creator = value
 					}
+					let tempMetadata : Metadata = Metadata(keyword: key, value: value)
+					mdata.append(tempMetadata)
+					
 				}
 				
-				//init(metadata: [MMMetadata], filename: String, path: String, creator: String)
-				//var f : File = File(, filename, path, creator)
-				//filesValidated.append(f: File)
-
+				// Validate it here, only creating if pass tests
+				
+				// Create a new file or type IMAGE DOCUMENT VIDEO AUDIO
+				let f : File = File(metadata: mdata, filename: filename, path: path, creator: creator)
+				filesValidated.append(f)
+				
 			}
-			
-			/**
-				Loop through each 'Media' struct in the mediaArray
-				pull out the type
-				validate the item for that type
-				create a new File
-				load the Metadata
-				Add to the list of Files
-				return list
-			*/
-			
         } catch let error as NSError {
             print("Whoops, an error! \(error)")
+			// Will need to fill these in
+			// e.g. provided json file path is invalid reaches here
         }
-
-		return []
+		
+		return filesValidated
 	}
 	
-	// Takes one string of fullpath
-	// Returns [string] of name at 0 and path at 1
+	/**
+	Calculates a filename of a file from the fullpath string.
+	
+	- parameter fullpath: the full path to the file including file name.
+	- returns: String: the name of the file.
+	*/
 	func getFilename(fullpath: String) -> String {
 		
-		// This is finding the first index, need the last!
-		let index = fullpath.index(of: "/") ?? fullpath.endIndex
-		let nameSubstring = fullpath[index...]
-		let name = String(nameSubstring)
-		print ("Name found: \(name)")
+		var parts = fullpath.split(separator: "/")
+		let name = String(parts[parts.count-1])
+		//print ("Name found: \(name)")
 		return name
 	}
 	
-	// Takes one string of fullpath
+	/**
+	Calculates a path to a file from the fullpath string.
+	
+	- parameter fullpath: the full path to the file including file name.
+	- returns: String: the path to the file.
+	*/
 	func getPath(fullpath: String) -> String {
 		
-		// This is finding the first index, need the last!
-		let index = fullpath.index(of: "/") ?? fullpath.endIndex
-		let nameSubstring = fullpath[..<index]
-		let name = String(nameSubstring)
-		print ("fullpath found: \(name)")
-		return name
-	}
-	
-	// Returns not the first, but last index of '/'
-	// WIP - not finished
-	func findLastIndexOf(fullpath: String) -> Int {
-		
-		var slashCount = 0
-		for character in fullpath {
-			if character == "/" {
-				slashCount += 1
+		var parts = fullpath.split(separator: "/")
+		var path: String = ""
+		let lastIndex = parts.count-2
+		for i in 0...lastIndex {
+			if parts[i] != "~" {
+				path += "/"
 			}
+			path += parts[i]
 		}
-		return 0
+		//print ("PATH found: \(path)")
+		return path
 	}
 	
+	/**
+	Designed to validate Files depending upon their type.
+	Needs assert statements added.
+	
+	- returns: Bool: true if the file is valid
+	*/
 	func validateMedia() -> Bool {
 		
 		return false;
