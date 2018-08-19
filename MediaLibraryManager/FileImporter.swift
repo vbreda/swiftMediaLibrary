@@ -22,7 +22,7 @@ class FileImporter : MMFileImport {
 	/**
 	Support importing the media collection from a file (by name)
 	
-	- parameter filename: the full path to the file including file name.
+	- parameters: filename: the full path to the file including file name.
 	- returns: [MMFile]: the array of files read successfully
 	*/
 	func read(filename: String) throws -> [MMFile] {
@@ -36,9 +36,10 @@ class FileImporter : MMFileImport {
 		Loop through each 'Media' struct in the mediaArray
 		pull out the type
 		validate the item for that type
-		create a new File
-		load the Metadata
-		Add to the list of Files
+			create a new File
+			load the Metadata
+			return that file???
+		Add it to the list of Files
 		return list
 		*/
 		
@@ -79,6 +80,7 @@ class FileImporter : MMFileImport {
 				// Validate it here, only creating if pass tests
 				
 				// Create a new file or type IMAGE DOCUMENT VIDEO AUDIO
+				// Here the validation isn't set up yet, so creating of type generic File instead
 				let f : File = File(metadata: mdata, filename: filename, path: path, creator: creator)
 				filesValidated.append(f)
 				
@@ -86,7 +88,7 @@ class FileImporter : MMFileImport {
         } catch let error as NSError {
             print("Whoops, an error! \(error)")
 			// Will need to fill these in
-			// e.g. provided json file path is invalid reaches here
+			// e.g. invalid json file path reaches here
         }
 		
 		return filesValidated
@@ -95,7 +97,7 @@ class FileImporter : MMFileImport {
 	/**
 	Calculates a filename of a file from the fullpath string.
 	
-	- parameter fullpath: the full path to the file including file name.
+	- parameters: fullpath: the full path to the file including file name.
 	- returns: String: the name of the file.
 	*/
 	func getFilename(fullpath: String) -> String {
@@ -109,7 +111,7 @@ class FileImporter : MMFileImport {
 	/**
 	Calculates a path to a file from the fullpath string.
 	
-	- parameter fullpath: the full path to the file including file name.
+	- parameters: fullpath: the full path to the file including file name.
 	- returns: String: the path to the file.
 	*/
 	func getPath(fullpath: String) -> String {

@@ -11,15 +11,23 @@ import Foundation
 class Library : MMCollection {
 	
 	// Static array of files, only want one instance ever
-	static var files: [MMFile] = []
+	//static var files: [MMFile] = []
+	var files: [MMFile] = []
 	
 	/**
 	String representation of the Media Library collection
-	
-	- returns: String String representation of the library.
+	- Returns: String: String representation of the library.
 	*/
 	var description: String {
-		return "Your media library contains \(Library.files.count) files."
+		return "Your media library contains \(files.count) files."
+	}
+	
+	/**
+	The size of the library.
+	- Returns: Count: number of files in the library.
+	*/
+	var count: Int {
+		return files.count
 	}
 	
 	/**
@@ -27,25 +35,28 @@ class Library : MMCollection {
 	
 	*/
 	init() {
+		
 	}
 	
 	
-	///
-	/// Adds a file's metadata to the media metadata collection.
-	///
-	/// - Parameters:
-	/// - file: The file and associated metadata to add to the collection
+	/**
+	Adds a file's metadata to the media metadata collection.
+	
+	- Parameters: file: The file and associated metadata to add to the collection.
+	- Returns: none.
+	*/
 	func add(file: MMFile) {
 		
 		// Some file that already has metadata mapped?
-		
+		files.append(file)
 	}
 	
-	///
-	/// Adds a specific instance of a metadata to the collection
-	///
-	/// - Parameters:
-	/// - metadata: The item to add to the collection
+	/**
+	Adds a specific instance of a metadata to the collection.
+	
+	- Parameters: metadata: The item to add to the collection.
+	- Returns: none.
+	*/
 	func add(metadata: MMMetadata, file: MMFile)  {
 		
 		// Some metadata and the file to add it to?
@@ -55,45 +66,45 @@ class Library : MMCollection {
 		
 	}
 	
-	///
-	/// Removes a specific instance of a metadata from the collection
-	///
-	/// - Parameters:
-	/// - metadata: The item to remove from the collection
+	/**
+	Removes a specific instance of a metadata from the collection.
+	
+	- Parameters: metadata: The item to remove from the collection.
+	- Returns: none.
+	*/
 	func remove(metadata: MMMetadata)  {
 		
 	}
 	
-	///
-	/// Finds all the files associated with the keyword
-	///
-	/// - Parameters:
-	/// - keyword: The keyword to search for
-	/// - Returns:
-	/// A list of all the metadata associated with the keyword, possibly an
-	/// empty list.
+	/**
+	Finds all the files associated with the keyword.
+	
+	- Parameters:
+	- keyword: The keyword to search for.
+	- Returns: [MMFile]: A list of all the metadata associated with the
+	keyword, possibly an empty list.
+	*/
 	func search(term: String) -> [MMFile]  {
 		return []
 	}
 	
-	///
-	/// Returns a list of all the files in the index
-	///
-	/// - Parameters:
-	/// - Returns:
-	/// A list of all the files in the index, possibly an empty list.
+	/**
+	Returns a list of all the files in the index
+
+	- Parameters: none
+	- Returns: [MMFile]: A list of all the files in the index, possibly an empty list.
+	*/
 	func all() -> [MMFile]  {
-		return []
+		return files
 	}
 	
-	///
-	/// Finds all the metadata associated with the keyword of the item
-	///
-	/// - Parameters:
-	/// - item: The item's keyword to search for.
-	/// - Returns:
-	/// A list of all the metadata associated with the item's keyword, possibly
-	/// an empty list.
+	/**
+	/ Finds all the metadata associated with the keyword of the item
+	/
+	- Parameters: item: The item's keyword to search for.
+	- Returns: [MMFiles]: A list of all the metadata associated with the item's
+	keyword, possibly an empty list.
+	*/
 	func search(item: MMMetadata) -> [MMFile]  {
 		return []
 	}

@@ -36,20 +36,22 @@ while let line = prompt("> ") {
 		
 		commandString = parts.removeFirst();
 		
-		switch(commandString){
+		switch(commandString) {
 		case "load" :
 			
-			let oldCount = Library.files.count
-			let fileName: String
+			let oldCount = library.count
 
 			// Ensure the user passed at least one parameter
 			guard parts.count > 0 else {
 				throw MMCliError.invalidParameters
 			}
 			
-			fileName = parts.removeFirst()
-
-			//print ("Provided file: \(fileName)")
+			// This needs to be a while loop
+			// e.g. while parts still had next() keep reading
+			
+			
+			// Get the filename from the parameters
+			let fileName: String = parts.removeFirst()
 			
 			// Pass the file to an importer instance
 			let importer : FileImporter = FileImporter()
@@ -62,12 +64,20 @@ while let line = prompt("> ") {
 			//Library.files = newFiles
 
 			// Confirm to the user that the Library grew in size
-			let newCount = Library.files.count
+			let newCount = library.count
 			if newCount >= oldCount {
-				print ("\(newCount-oldCount) files loaded successfully.")
+				let diff = newCount-oldCount
+				print ("\(diff) files loaded successfully.")
+				var allFiles = library.all()
+				for i in library.count-diff...library.count-1 {
+				
+					print("\(allFiles[i].filename)")
+				}
 			}
 			
+			// Temporary cover for the bug in main.swift 19/08/18
 			command = UnneededCommand()
+			
 			break;
 		case "list", "add", "set", "del", "save-search", "save":
 			command = UnimplementedCommand()
