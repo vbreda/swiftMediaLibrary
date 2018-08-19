@@ -10,6 +10,8 @@ Complex:
 load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/complexImage.json
 load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/complexMixed.json
 
+More than one:
+load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/basicImage.json /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/basicDocument.json /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/complexImage.json
 
 Invalid:
 
@@ -17,3 +19,6 @@ load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/Medi
 load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/invalidDocument.json
 load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/invalidAudio.json
 load /Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/invalidVideo.json
+
+
+
