@@ -12,7 +12,7 @@ import Foundation
 /// - parameter prompt: The prompt to use
 /// - parameter strippingNewline: Strip the newline from the end of the line of
 ///   input (true by default)
-/// - return: The result of `readLine`.
+/// - returns: The result of `readLine`.
 /// - seealso: readLine
 func prompt(_ prompt: String, strippingNewline: Bool = true) -> String? {
 	print(prompt, terminator:"")
@@ -40,28 +40,30 @@ while let line = prompt("> ") {
 		case "load" :
 			
 			let oldCount = library.count
-
+			let importer : FileImporter = FileImporter()
+			var newFiles : [MMFile] = []
+			
 			// Ensure the user passed at least one parameter
 			guard parts.count > 0 else {
 				throw MMCliError.invalidParameters
 			}
 			
-			// This needs to be a while loop
-			// e.g. while parts still had next() keep reading
-			
-			
-			// Get the filename from the parameters
-			let fileName: String = parts.removeFirst()
-			
-			// Pass the file to an importer instance
-			let importer : FileImporter = FileImporter()
-			let newFiles : [MMFile] = try importer.read(filename: fileName)
-			
-			for f in newFiles {
-				library.add(file: f)
+			// While there are filenames to read from
+			var i = parts.count
+			while i > 0 {
+				
+				// Get the filename from the parameters
+				let fileName: String = parts.removeFirst()
+				
+				// Pass the file to the importer
+				newFiles = try importer.read(filename: fileName)
+				
+				// Add the files to the library
+				for f in newFiles {
+					library.add(file: f)
+				}
+				i = i-1
 			}
-			
-			//Library.files = newFiles
 
 			// Confirm to the user that the Library grew in size
 			let newCount = library.count
@@ -71,7 +73,7 @@ while let line = prompt("> ") {
 				var allFiles = library.all()
 				for i in library.count-diff...library.count-1 {
 				
-					print("\(allFiles[i].filename)")
+					print("\(i): \(allFiles[i].filename)")
 				}
 			}
 			
@@ -81,7 +83,7 @@ while let line = prompt("> ") {
 			break;
 		case "list":
 			print(library)
-			var allFiles = library.all()
+			let allFiles = library.all()
 			var i = 0
 			for f in allFiles {
 				print("\(i): \(f)")
