@@ -79,7 +79,17 @@ while let line = prompt("> ") {
 			command = UnneededCommand()
 			
 			break;
-		case "list", "add", "set", "del", "save-search", "save":
+		case "list":
+			print(library)
+			var allFiles = library.all()
+			var i = 0
+			for f in allFiles {
+				print("\(i): \(f)")
+				i += 1
+			}
+			command = UnneededCommand()
+			break;
+		case "add", "set", "del", "save-search", "save":
 			command = UnimplementedCommand()
 			break
 		case "help":

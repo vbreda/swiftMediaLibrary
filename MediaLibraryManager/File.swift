@@ -41,6 +41,6 @@ class File: MMFile {
 	- returns: String String representation of the file.
 	*/
 	var description: String {
-        return "File: \(filename), path: \(path), creator: \(creator)"
+        return "\(filename), path: \(path), creator: \(creator)"
 	}
 }
