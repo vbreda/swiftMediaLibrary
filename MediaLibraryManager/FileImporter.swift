@@ -14,25 +14,12 @@ class FileImporter : MMFileImport {
 	/// Support importing the media collection from a file (by name)
 	func read(filename: String) throws -> [MMFile] {
 		
-		// read the JSON file and call Library.files.add(file) method
- 
-        /**
-         Potential method here:
-         - path to file provided as second paramater
-         - load JSON file and pull out the metadata
-         - create a File of type X (as recorded in Metadata)
-         - Add the metadata to the file
-         - Add the File to the library using MediaLibary.add(file: newFile)
-         */
-        
         // Can load multiple files at once
+		// read the JSON file and call Library.files.add(file) method
         // Probably want to LOOP while there are >0 left in PARTS
 		
 		/**
-
 		Further code emailed out from Paul 17/08/18
-
-
 			let filename = “/path/to/people.json"
 			let url = URL(fileURLWithPath: filename)
 			let data = try Data(contentsOf: url)
@@ -69,27 +56,57 @@ class FileImporter : MMFileImport {
 				let metadata: [String: String]
 			}
 			
-			
-			print("Decoder creating...")
 			let decoder = JSONDecoder()
-			print("Decoding.... ")
-			
 			var mediaArray : [Media] = []
 			mediaArray = try! decoder.decode([Media].self, from: data)
+//
+//			var i = 0
+//			for m in mediaArray {
+//				var j = 0
+//				print("#\(i) : \(m)")
+//				for d in m.metadata {
+//					print("keypair #\(j) : \(d)")
+//					j += 1
+//				}
+//				i += 1
+//			}
+			var filesValidated : [File] = []
 			
-			print("Printing..")
-			var i = 0
 			for m in mediaArray {
-				var j = 0
-				print("#\(i) : \(m)")
-				for d in m.metadata {
-					print("keypair #\(j) : \(d)")
-					j += 1
+				
+				var type: String = m.type
+				var filename: String = getFilename(fullpath: m.fullpath)
+				var path: String = getPath(fullpath: m.fullpath)
+				var creator: String
+				
+				//var mdata: [Metadata]
+				
+				
+				print("Type of file: \(type)")
+				
+				for (key, value) in m.metadata {
+					print("Key: '\(key)' and value: '\(value)'.")
+					if key.lowercased()=="creator" {
+						creator = value
+					}
 				}
-				i += 1
+				
+				//init(metadata: [MMMetadata], filename: String, path: String, creator: String)
+				//var f : File = File(, filename, path, creator)
+				//filesValidated.append(f: File)
+
 			}
-			//print(mediaArray)
-            
+			
+			/**
+				Loop through each 'Media' struct in the mediaArray
+				pull out the type
+				validate the item for that type
+				create a new File
+				load the Metadata
+				Add to the list of Files
+				return list
+			*/
+			
         } catch let error as NSError {
             print("Whoops, an error! \(error)")
         }
@@ -97,5 +114,44 @@ class FileImporter : MMFileImport {
 		return []
 	}
 	
+	// Takes one string of fullpath
+	// Returns [string] of name at 0 and path at 1
+	func getFilename(fullpath: String) -> String {
+		
+		// This is finding the first index, need the last!
+		let index = fullpath.index(of: "/") ?? fullpath.endIndex
+		let nameSubstring = fullpath[index...]
+		let name = String(nameSubstring)
+		print ("Name found: \(name)")
+		return name
+	}
 	
+	// Takes one string of fullpath
+	func getPath(fullpath: String) -> String {
+		
+		// This is finding the first index, need the last!
+		let index = fullpath.index(of: "/") ?? fullpath.endIndex
+		let nameSubstring = fullpath[..<index]
+		let name = String(nameSubstring)
+		print ("fullpath found: \(name)")
+		return name
+	}
+	
+	// Returns not the first, but last index of '/'
+	// WIP - not finished
+	func findLastIndexOf(fullpath: String) -> Int {
+		
+		var slashCount = 0
+		for character in fullpath {
+			if character == "/" {
+				slashCount += 1
+			}
+		}
+		return 0
+	}
+	
+	func validateMedia() -> Bool {
+		
+		return false;
+	}
 }
