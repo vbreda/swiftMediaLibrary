@@ -29,14 +29,14 @@ enum MMCliError: Error {
     /// Thrown if the command has yet to be implemented
     /// - Note: You'll need to implement these to get the CLI working properly
     case unimplementedCommand
-	
-	// feel free to add more errors as you need them
-
-	// Temporary work around for command bug in main.swift file 19/08/18
-	case unneededCommand
+    
+    // feel free to add more errors as you need them
+    
+    // Temporary work around for command bug in main.swift file 19/08/18
+    case unneededCommand
 }
 
-/// This class representes a set of results. It could be extended to include
+/// This class represents a set of results. It could be extended to include
 /// the command and a history of commands and the results.
 
 class MMResultSet{
@@ -100,13 +100,6 @@ protocol MMCommand{
 // command needed to have previous result sets, then they *all* needed to know
 // about it.
 
-class UnneededCommand: MMCommand{
-	var results: MMResultSet? = nil
-	func execute() throws{
-		throw MMCliError.unneededCommand
-	}
-}
-
 /// Handle unimplemented commands by throwing an exception when trying to
 /// execute this command.
 class UnimplementedCommand: MMCommand{
@@ -157,5 +150,55 @@ class QuitCommand : MMCommand{
     var results: MMResultSet? = nil
     func execute() throws{
         exit(0)
+    }
+}
+
+class LoadCommand: MMCommand{
+    var results: MMResultSet? = nil
+    var library : Library
+    var files : [String]
+    init(files: [String], library: Library) {
+        self.library = library
+        self.files = files
+    }
+    
+    func execute() throws {
+        let oldCount = library.count
+        let importer : FileImporter = FileImporter()
+        var newFiles : [MMFile] = []
+        
+        // Ensure the user passed at least one parameter
+        guard files.count > 0 else {
+            throw MMCliError.invalidParameters
+        }
+        
+        // While there are filenames to read from
+        var i = files.count
+        while i > 0 {
+            
+            // Get the filename from the parameters
+            let fileName: String = files.removeFirst()
+            
+            // Pass the file to the importer
+            newFiles = try importer.read(filename: fileName)
+            
+            // Add the files to the library
+            for f in newFiles {
+                library.add(file: f)
+            }
+            i = i-1
+        }
+        
+        // Confirm to the user that the Library grew in size
+        let newCount = library.count
+        if newCount >= oldCount {
+            let diff = newCount-oldCount
+            print ("\(diff) files loaded successfully.")
+            var allFiles = library.all()
+            for i in library.count-diff...library.count-1 {
+                
+                print("\(i): \(allFiles[i].filename)")
+            }
+        }
     }
 }

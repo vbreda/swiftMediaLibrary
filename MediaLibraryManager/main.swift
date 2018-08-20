@@ -15,8 +15,8 @@ import Foundation
 /// - returns: The result of `readLine`.
 /// - seealso: readLine
 func prompt(_ prompt: String, strippingNewline: Bool = true) -> String? {
-	print(prompt, terminator:"")
-	return readLine(strippingNewline: strippingNewline)
+    print(prompt, terminator:"")
+    return readLine(strippingNewline: strippingNewline)
 }
 
 var library : Library = Library()
@@ -24,123 +24,63 @@ var library : Library = Library()
 var last = MMResultSet()
 
 while let line = prompt("> ") {
-	var commandString : String = ""
-	var parts = line.split(separator: " ").map({String($0)})
-	var command: MMCommand
-	
-	do {
-		
-		guard parts.count > 0 else {
-			throw MMCliError.unknownCommand
-		}
-		
-		commandString = parts.removeFirst();
-		
-		switch(commandString) {
-		case "load" :
-			
-			let oldCount = library.count
-			let importer : FileImporter = FileImporter()
-			var newFiles : [MMFile] = []
-			
-			// Ensure the user passed at least one parameter
-			guard parts.count > 0 else {
-				throw MMCliError.invalidParameters
-			}
-			
-			// While there are filenames to read from
-			var i = parts.count
-			while i > 0 {
-				
-				// Get the filename from the parameters
-				let fileName: String = parts.removeFirst()
-				
-				// Pass the file to the importer
-				newFiles = try importer.read(filename: fileName)
-				
-				// Add the files to the library
-				for f in newFiles {
-					library.add(file: f)
-				}
-				i = i-1
-			}
-
-			// Confirm to the user that the Library grew in size
-			let newCount = library.count
-			if newCount >= oldCount {
-				let diff = newCount-oldCount
-				print ("\(diff) files loaded successfully.")
-				var allFiles = library.all()
-				for i in library.count-diff...library.count-1 {
-				
-					print("\(i): \(allFiles[i].filename)")
-				}
-			}
-			
-			// Temporary cover for the bug in main.swift 19/08/18
-			command = UnneededCommand()
-			
-			break;
-		case "list":
-			print(library)
-			let allFiles = library.all()
-			var i = 0
-			for f in allFiles {
-				print("\(i): \(f)")
-				i += 1
-			}
-			command = UnneededCommand()
-			break;
-		case "add", "set", "del", "save-search", "save":
-			command = UnimplementedCommand()
-			break
-		case "help":
-			command = HelpCommand()
-			break
-		case "quit":
-			command = QuitCommand()
-			break
-		default:
-			command = UnneededCommand()
-			throw MMCliError.unknownCommand
-		}
-		
-		// try execute the command and catch any thrown errors below
-		try command.execute()
-		
-		// if there are any results from the command, print them out here
-		if let results = command.results {
-			results.show()
-			last = results
-		}
-		
-	} catch MMCliError.unknownCommand {
-		print("command \"\(commandString)\" not found -- see \"help\" for list")
-	} catch MMCliError.invalidParameters {
-		print("invalid parameters for \"\(commandString)\" -- see \"help\" for list")
-	} catch MMCliError.unimplementedCommand {
-		print("\"\(commandString)\" is unimplemented")
-	} catch MMCliError.missingResultSet {
-		print("no previous results to work from... ")
-	} catch MMCliError.unneededCommand {
-		print("")
-	}
+    var commandString : String = ""
+    var parts = line.split(separator: " ").map({String($0)})
+    var command: MMCommand
+    
+    do {
+        guard parts.count > 0 else {
+            throw MMCliError.unknownCommand
+        }
+        
+        commandString = parts.removeFirst();
+        
+        switch(commandString) {
+        case "load" :
+            command = LoadCommand(files: parts, library: library)
+            break
+        case "list":
+            print(library)
+            let allFiles = library.all()
+            var i = 0
+            for f in allFiles {
+                print("\(i): \(f)")
+                i += 1
+            }
+            command = UnneededCommand()
+            break
+        case "add", "set", "del", "save-search", "save":
+            command = UnimplementedCommand()
+            break
+        case "help":
+            command = HelpCommand()
+            break
+        case "quit":
+            command = QuitCommand()
+            break
+        default:
+            command = UnneededCommand()
+            throw MMCliError.unknownCommand
+        }
+        
+        // try execute the command and catch any thrown errors below
+        try command.execute()
+        
+        // if there are any results from the command, print them out here
+        if let results = command.results {
+            results.show()
+            last = results
+        }
+        
+    } catch MMCliError.unknownCommand {
+        print("command \"\(commandString)\" not found -- see \"help\" for list")
+    } catch MMCliError.invalidParameters {
+        print("invalid parameters for \"\(commandString)\" -- see \"help\" for list")
+    } catch MMCliError.unimplementedCommand {
+        print("\"\(commandString)\" is unimplemented")
+    } catch MMCliError.missingResultSet {
+        print("no previous results to work from... ")
+    } catch MMCliError.unneededCommand {
+        print("")
+    }
 }
-
-// The while-loop below implements a basic command line interface. Some
-// examples of the (intended) commands are as follows:
-//
-// load foo.json bar.json
-//  from the current directory load both foo.json and bar.json and
-//  merge the results
-//
-// list foo bar baz
-//  results in a set of files with metadata containing foo OR bar OR baz
-//
-// add 3 foo bar
-//  using the results of the previous list, add foo=bar to the file
-//  at index 3 in the list
-//
-// add 3 foo bar baz qux
-//  using the results of the previous list, add foo=bar and baz=qux
-//  to the file at index 3 in the list
