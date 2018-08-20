@@ -40,7 +40,7 @@ while let line = prompt("> ") {
             command = LoadCommand(files: parts, library: library)
             break
         case "list":
-            command = ListCommand(library: library)
+            command = ListCommand(keyword: parts, library: library)
             break
         case "add", "set", "del", "save-search", "save":
             command = UnimplementedCommand()

@@ -214,20 +214,34 @@ class LoadCommand: MMCommand{
 // Handle the list command. It lists all the files contained in the collection.
 class ListCommand : MMCommand{
     var results: MMResultSet? = nil
-    var library : Library
+    var library: Library
+    var keyword: [String]
     
     /**
      Constructs a new list handler.
      
+     - parameter keyword: filter the files according to the given keyword.
      - parameter library: the collection from which the files will be listed.
      */
-    init(library: Library) {
+    
+    init(keyword: [String], library: Library) {
+        self.keyword = keyword;
         self.library = library
     }
     
     func execute() throws {
-        print(library)
-        let allFiles = library.all()
-        self.results = MMResultSet(allFiles)
+        
+        // lists all the files in the library ("list")
+        if (keyword.count == 0) {
+            print(library)
+            let allFiles = library.all()
+            self.results = MMResultSet(allFiles)
+            // lists all the files that have the given term ("list <term>")
+        } else {
+            let word: String = keyword.removeFirst()
+            let files = library.search(term: word)
+            print("Using search")
+            self.results = MMResultSet(files)
         }
     }
+}
