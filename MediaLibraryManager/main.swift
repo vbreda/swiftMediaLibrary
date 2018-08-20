@@ -40,14 +40,7 @@ while let line = prompt("> ") {
             command = LoadCommand(files: parts, library: library)
             break
         case "list":
-            print(library)
-            let allFiles = library.all()
-            var i = 0
-            for f in allFiles {
-                print("\(i): \(f)")
-                i += 1
-            }
-            command = UnneededCommand()
+            command = ListCommand(library: library)
             break
         case "add", "set", "del", "save-search", "save":
             command = UnimplementedCommand()
@@ -59,7 +52,6 @@ while let line = prompt("> ") {
             command = QuitCommand()
             break
         default:
-            command = UnneededCommand()
             throw MMCliError.unknownCommand
         }
         

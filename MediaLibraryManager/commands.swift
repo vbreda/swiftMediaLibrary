@@ -153,10 +153,18 @@ class QuitCommand : MMCommand{
     }
 }
 
+// Handle the load command. It loads files into the collection.
 class LoadCommand: MMCommand{
     var results: MMResultSet? = nil
     var library : Library
     var files : [String]
+    
+    /**
+     Constructs a new load file handler.
+     
+     - parameter files: the file to be loaded.
+     - parameter library: the target collection.
+     */
     init(files: [String], library: Library) {
         self.library = library
         self.files = files
@@ -202,3 +210,24 @@ class LoadCommand: MMCommand{
         }
     }
 }
+
+// Handle the list command. It lists all the files contained in the collection.
+class ListCommand : MMCommand{
+    var results: MMResultSet? = nil
+    var library : Library
+    
+    /**
+     Constructs a new list handler.
+     
+     - parameter library: the collection from which the files will be listed.
+     */
+    init(library: Library) {
+        self.library = library
+    }
+    
+    func execute() throws {
+        print(library)
+        let allFiles = library.all()
+        self.results = MMResultSet(allFiles)
+        }
+    }
