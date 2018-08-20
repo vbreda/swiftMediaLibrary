@@ -202,11 +202,11 @@ class LoadCommand: MMCommand{
         if newCount >= oldCount {
             let diff = newCount-oldCount
             print ("\(diff) files loaded successfully.")
-            var allFiles = library.all()
-            for i in library.count-diff...library.count-1 {
-                
-                print("\(i): \(allFiles[i].filename)")
-            }
+//            var allFiles = library.all()
+//            for i in library.count-diff...library.count-1 {
+//
+//                print("\(i): \(allFiles[i].filename)")
+//            }
         }
     }
 }
@@ -239,9 +239,47 @@ class ListCommand : MMCommand{
             // lists all the files that have the given term ("list <term>")
         } else {
             let word: String = keyword.removeFirst()
+            //TODO implement search in Library.swift
             let files = library.search(term: word)
             print("Using search")
             self.results = MMResultSet(files)
         }
+    }
+}
+
+// Handle the add command. It add the given metadata to the file at given position.
+class AddCommand : MMCommand{
+    var results: MMResultSet? = nil
+    var library: Library
+    var data: [String]
+    
+    /**
+     Constructs a new add handler.
+     
+     - parameter data: the position of file and metadata to be added.
+     - parameter library: the collection from which the files will be listed.
+     */
+    init(data: [String], library: Library) {
+        self.data = data;
+        self.library = library
+    }
+    
+    func execute() throws {
+         // Ensure the user passed at least one parameter
+        guard data.count > 0 else {
+            throw MMCliError.invalidParameters
+        }
+        
+        let index = data.removeFirst()
+        let key = data.removeFirst()
+        let value = data.removeFirst()
+        let newdata = Metadata(keyword: key, value: value)
+        
+        self.results = MMResultSet(library.files)
+        
+        //TODO implement add in Library.swift
+        library.add(metadata: newdata, file: (try results!.get(index: Int(index)!)))
+        print("Add seems to be working") //test
+        print("Index: \(index), Key: \(key), Value: \(value)") //test
     }
 }

@@ -42,7 +42,10 @@ while let line = prompt("> ") {
         case "list":
             command = ListCommand(keyword: parts, library: library)
             break
-        case "add", "set", "del", "save-search", "save":
+        case "add":
+            command = AddCommand(data: parts, library: library)
+            break
+        case "set", "del", "save-search", "save":
             command = UnimplementedCommand()
             break
         case "help":

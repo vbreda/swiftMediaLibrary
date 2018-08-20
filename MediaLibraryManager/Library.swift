@@ -85,7 +85,7 @@ class Library : MMCollection {
 	keyword, possibly an empty list.
 	*/
 	func search(term: String) -> [MMFile]  {
-		return files
+		return files //TEMPORARY
 	}
 	
 	/**
