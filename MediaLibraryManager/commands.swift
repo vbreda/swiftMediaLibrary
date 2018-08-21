@@ -13,7 +13,6 @@ import Foundation
 // *add* this file to your project, you can leave it as is.
 
 /// The list of exceptions that can be thrown by the CLI command handlers
-
 enum MMCliError: Error {
     
     /// Thrown if there is something wrong with the input parameters for the command
@@ -29,11 +28,6 @@ enum MMCliError: Error {
     /// Thrown if the command has yet to be implemented
     /// - Note: You'll need to implement these to get the CLI working properly
     case unimplementedCommand
-    
-    // feel free to add more errors as you need them
-    
-    // Temporary work around for command bug in main.swift file 19/08/18
-    case unneededCommand
 }
 
 /// This class represents a set of results. It could be extended to include
@@ -145,6 +139,11 @@ class HelpCommand: MMCommand {
         // add 3 foo bar baz qux
         //      using the results of the previous list, add foo=bar and baz=qux
         //      to the file at index 3 in the list
+        
+        // set 0 keyword newValue differentKeyword anotherNewValue
+        
+        // list val1 key1 val2
+        // show any file/metadata with KEYWORD or VALUE val1/key1/val2. 
     }
 }
 

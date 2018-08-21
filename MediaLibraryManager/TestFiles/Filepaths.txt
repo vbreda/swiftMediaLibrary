@@ -1,3 +1,10 @@
+
+load /home/cshome/n/npearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/basicImage.json
+
+
+
+
+
 Valid:
 
 Basic:

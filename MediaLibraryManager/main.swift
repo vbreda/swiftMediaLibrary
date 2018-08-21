@@ -79,7 +79,5 @@ while let line = prompt("> ") {
         print("\"\(commandString)\" is unimplemented")
     } catch MMCliError.missingResultSet {
         print("no previous results to work from... ")
-    } catch MMCliError.unneededCommand {
-        print("")
-    }
+    } 
 }
