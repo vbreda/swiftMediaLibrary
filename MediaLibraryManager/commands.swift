@@ -158,10 +158,11 @@ class QuitCommand : MMCommand {
 }
 
 // Handle the load command. It loads files into the collection.
+// TODO make load work with multiple calls.
 class LoadCommand: MMCommand {
     var results: MMResultSet? = nil
     var library : Library
-	
+    
     var loadfiles : [String]
     
     /**
@@ -207,8 +208,8 @@ class LoadCommand: MMCommand {
         if newCount >= oldCount {
             let diff = newCount-oldCount
             print ("\(diff) files loaded successfully.")
-			
-			// Print out the names of the added files
+            
+            // Print out the names of the added files
             var allFiles = library.all()
             for i in library.count-diff...library.count-1 {
                 print("\(i+1): \(allFiles[i].filename)")
@@ -242,11 +243,11 @@ class ListCommand : MMCommand {
             print(library)
             let allFiles = library.all()
             self.results = MMResultSet(allFiles)
-			
-		// lists all the files that have the given term ("list <term>")
+            
+            // lists all the files that have the given term ("list <term>")
         } else {
             let word: String = keywords.removeFirst()
-			
+            
             //TODO implement search in Library.swift
             let listresults = library.search(term: word)
             print("Using search")
@@ -275,23 +276,69 @@ class AddCommand : MMCommand{
     }
     
     func execute() throws {
-         // Ensure the user passed at least one parameter
+        // Ensure the user passed at least one parameter
         guard data.count > 0 else {
             throw MMCliError.invalidParameters
         }
         
-        let indexString = data.removeFirst()
+        let index = Int(data.removeFirst())!
+        // put in a while loop so adds more than one metadata
         let key = data.removeFirst()
         let value = data.removeFirst()
         let newdata = Metadata(keyword: key, value: value)
-        
-        //TODO implement add in Library.swift
-        let index = Int(indexString)!
         let fileToAddTo = previousListFound[index]
-        print("Adding to file :\(fileToAddTo)")
+        print("Adding to file: \(fileToAddTo)")
         
+        //TODO implement add(metadata)
         library.add(metadata: newdata, file: fileToAddTo)
         print("Add seems to be working") //test
         print("Index: \(index), Key: \(key), Value: \(value)") //test
+    }
+}
+
+class SetCommand : MMCommand{
+    var results: MMResultSet? = nil
+    var library: Library
+    var data: [String]
+    var previousListFound: [MMFile]
+    
+    /**
+     Constructs a new add handler.
+     
+     - parameter data: the position of file and metadata to be added.
+     - parameter library: the collection from which the files will be listed.
+     */
+    init(data: [String], library: Library, previousListFound: [MMFile]) {
+        self.data = data
+        self.library = library
+        self.previousListFound = previousListFound
+    }
+    
+    func execute() throws {
+        // Ensure the user passed at least one parameter
+        guard data.count > 0 else {
+            throw MMCliError.invalidParameters
+        }
+        
+        //if we can set more than one at a time, add a loop.
+        let index = Int(data.removeFirst())!
+        let keyToRemove = data.removeFirst()
+        let valueToRemove = data.removeFirst()
+        let dataToRemove = Metadata(keyword: keyToRemove, value: valueToRemove)
+        
+        let keyToAdd = data.removeFirst()
+        let valueToAdd = data.removeFirst()
+        let dataToAdd = Metadata(keyword: keyToAdd, value: valueToAdd)
+        
+        let fileToModify = previousListFound[index]
+        
+        library.remove(metadata: dataToRemove)//, file: fileToModify ???;
+        print("Removing from file: \(fileToModify)")
+        print("Remove seems to be working\n")
+        
+        library.add(metadata: dataToAdd, file: fileToModify)
+        print("Adding to file: \(fileToModify)")
+        print("Add seems to be working") //test
+        //print("Index: \(index), Key: \(key), Value: \(value)") //test
     }
 }
