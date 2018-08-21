@@ -60,29 +60,21 @@ class FileImporter : MMFileImport {
 			mediaArray = try! decoder.decode([Media].self, from: data)
 			
 			for m in mediaArray {
+			
+				// Validate it here, only creating if pass tests
 				
-				let type: String = m.type
-				let filename: String = getFilename(fullpath: m.fullpath)
-				let path: String = getPath(fullpath: m.fullpath)
-				var creator: String = ""
-				
-				var mdata: [Metadata] = []
-				
-				for (key, value) in m.metadata {
-					if key.lowercased()=="creator" {
-						creator = value
-					}
-					let tempMetadata : Metadata = Metadata(keyword: key, value: value)
-					mdata.append(tempMetadata)
-					
+				if let validatedFile = validateMedia(media: m) {
+					filesValidated.append(validatedFile)
+				} else {
+					// Invalid, not added
+					//TODO
 				}
 				
-				// Validate it here, only creating if pass tests
 				
 				// Create a new file or type IMAGE DOCUMENT VIDEO AUDIO
 				// Here the validation isn't set up yet, so creating of type generic File instead
-				let f : File = File(metadata: mdata, filename: filename, path: path, creator: creator)
-				filesValidated.append(f)
+				//let f : File = File(metadata: mdata, filename: filename, path: path, creator: creator)
+				//filesValidated.append(f)
 				
 			}
         } catch let error as NSError {
@@ -133,10 +125,76 @@ class FileImporter : MMFileImport {
 	Designed to validate Files depending upon their type.
 	Needs assert statements added.
 	
-	- returns: Bool: true if the file is valid
+	- returns: File
 	*/
-	func validateMedia() -> Bool {
+	func validateMedia(media: Media) -> File? {
 		
-		return false;
+		let type: String = media.type
+		let filename: String = getFilename(fullpath: media.fullpath)
+		let path: String = getPath(fullpath: media.fullpath)
+		var creator: String? 	//= ""
+		var res: String? 		//= ""
+		var runtime: String? 	//= ""
+		
+		var mdata: [Metadata] = []
+		
+		// File to hold media once validated
+		var validatedFile: File
+		
+		// Loop through to fill the required values
+		for (key, value) in media.metadata {
+			if key.lowercased()=="creator" {
+				creator = value.lowercased()
+			}
+			if key.lowercased()=="runtime" {
+				runtime = value.lowercased()
+			}
+			if key.lowercased()=="resolution" {
+				res = value.lowercased()
+			}
+			let tempMetadata : Metadata = Metadata(keyword: key, value: value)
+			mdata.append(tempMetadata)
+			
+		}
+		
+		// Validate creator, filename, path for all
+
+		// VALIDATE PATH AND FILENAME
+		
+		if let creatorU = creator {
+			
+			// Validate specific data for each type
+			switch(type) {
+				case "image" :
+					if let imageRes = res {
+						validatedFile = Image(metadata: mdata, filename: filename, path: path, creator: creatorU, resolution: imageRes)
+						return validatedFile
+					}
+					
+					break
+				case "document":
+					//validatedFile = Document(metadata: mdata, filename: filename, path: path, creator: creatorU)
+					//return validatedFile
+					break
+				case "video":
+					if let videoRes = res {
+						if let videoRuntime = runtime {
+							validatedFile = Video(metadata: mdata, filename: filename, path: path, creator: creatorU, resolution: videoRes, runtime: videoRuntime)
+							return validatedFile
+						}
+					}
+					break
+				case "audio":
+					if let audioRuntime = runtime {
+						validatedFile = Audio(metadata: mdata, filename: filename, path: path, creator: creatorU, runtime: audioRuntime)
+						return validatedFile
+					}
+					break
+				default:
+					print("Default - no  type so no file created")
+					// Invalid type error
+				}
+		}
+		return nil
 	}
 }
