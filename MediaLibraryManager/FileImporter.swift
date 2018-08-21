@@ -136,7 +136,8 @@ class FileImporter : MMFileImport {
 		
 		// Validate creator, filename, path for all
 
-		// VALIDATE PATH AND FILENAME
+		// No need to validate the media path or media name
+        // Paul 22/08/18
 		
 		if let creatorU = creator {
 			
@@ -153,11 +154,10 @@ class FileImporter : MMFileImport {
 					validatedFile = Document(metadata: mdata, filename: filename, path: path, creator: creatorU)
 					return validatedFile
 				case "video":
-					if let videoRes = res {
-						if let videoRuntime = runtime {
-							validatedFile = Video(metadata: mdata, filename: filename, path: path, creator: creatorU, resolution: videoRes, runtime: videoRuntime)
-							return validatedFile
-						}
+					if let videoRes = res, let videoRuntime = runtime {
+                        validatedFile = Video(metadata: mdata, filename: filename, path: path, creator: creatorU, resolution: videoRes, runtime: videoRuntime)
+                        return validatedFile
+                    
 					}
 					break
 				case "audio":
@@ -173,4 +173,24 @@ class FileImporter : MMFileImport {
 		}
 		return nil
 	}
+}
+
+/**
+ The list of exceptions that can be thrown by the Validation handler
+ */
+enum MMValidationError : Error {
+        
+    // Thrown if there is something wrong with the JSON file
+    // e.g. grammar or incorrect file path
+    case invalidJSONfilie
+    
+    // Thrown if there is something wrong with the type of media
+    case invalidType
+    
+    // Thrown if there is something wrong with metadata for a specific type
+    // e.g. image does not have resolution
+    case invalidMetadataForType
+    
+    // Thrown if a file to be added is already in the library
+    case duplicatMedia
 }
