@@ -26,23 +26,7 @@ class FileImporter : MMFileImport {
 	- returns: [MMFile]: the array of files read successfully
 	*/
 	func read(filename: String) throws -> [MMFile] {
-		
-        // Can load multiple files at once
-		// read the JSON file and call Library.files.add(file) method
-        // Probably want to LOOP while there are >0 left in PARTS
-		
-		
-		/**
-		Loop through each 'Media' struct in the mediaArray
-		pull out the type
-		validate the item for that type
-			create a new File
-			load the Metadata
-			return that file???
-		Add it to the list of Files
-		return list
-		*/
-		
+	
 		var filesValidated : [File] = []
 		
         do {
@@ -69,13 +53,6 @@ class FileImporter : MMFileImport {
 					// Invalid, not added
 					//TODO
 				}
-				
-				
-				// Create a new file or type IMAGE DOCUMENT VIDEO AUDIO
-				// Here the validation isn't set up yet, so creating of type generic File instead
-				//let f : File = File(metadata: mdata, filename: filename, path: path, creator: creator)
-				//filesValidated.append(f)
-				
 			}
         } catch let error as NSError {
             print("Whoops, an error! \(error)")
@@ -173,9 +150,8 @@ class FileImporter : MMFileImport {
 					
 					break
 				case "document":
-					//validatedFile = Document(metadata: mdata, filename: filename, path: path, creator: creatorU)
-					//return validatedFile
-					break
+					validatedFile = Document(metadata: mdata, filename: filename, path: path, creator: creatorU)
+					return validatedFile
 				case "video":
 					if let videoRes = res {
 						if let videoRuntime = runtime {
