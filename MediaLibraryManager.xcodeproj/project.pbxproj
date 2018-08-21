@@ -13,6 +13,7 @@
 		2BAD6DFE2122B0C900680426 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD6DFD2122B0C900680426 /* Library.swift */; };
 		2BAD6E002122B13300680426 /* FileImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD6DFF2122B13300680426 /* FileImporter.swift */; };
 		2BAD6E022122B14A00680426 /* FileExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD6E012122B14A00680426 /* FileExporter.swift */; };
+		2BD4EAEB212BDD4400730641 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD4EAEA212BDD4400730641 /* Document.swift */; };
 		6B84EADF2122BADC007BBA12 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B84EADE2122BADC007BBA12 /* Image.swift */; };
 		6B84EAE32122C9CB007BBA12 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B84EAE22122C9CB007BBA12 /* Video.swift */; };
 		6B84EAE52122CBF3007BBA12 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B84EAE42122CBF3007BBA12 /* Audio.swift */; };
@@ -46,6 +47,7 @@
 		2BAD6DFD2122B0C900680426 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		2BAD6DFF2122B13300680426 /* FileImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImporter.swift; sourceTree = "<group>"; };
 		2BAD6E012122B14A00680426 /* FileExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileExporter.swift; sourceTree = "<group>"; };
+		2BD4EAEA212BDD4400730641 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		6B84EADE2122BADC007BBA12 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		6B84EAE22122C9CB007BBA12 /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
 		6B84EAE42122CBF3007BBA12 /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				6B84EADE2122BADC007BBA12 /* Image.swift */,
 				6B84EAE22122C9CB007BBA12 /* Video.swift */,
 				6B84EAE42122CBF3007BBA12 /* Audio.swift */,
+				2BD4EAEA212BDD4400730641 /* Document.swift */,
 			);
 			path = MediaLibraryManager;
 			sourceTree = "<group>";
@@ -199,6 +202,7 @@
 				D3161D2D20D749BD00EC97E8 /* protocols.swift in Sources */,
 				2B55D9F721217C6E00C0C393 /* Metadata.swift in Sources */,
 				2BAD6DFE2122B0C900680426 /* Library.swift in Sources */,
+				2BD4EAEB212BDD4400730641 /* Document.swift in Sources */,
 				2B55D9F52121749C00C0C393 /* File.swift in Sources */,
 				2BAD6E002122B13300680426 /* FileImporter.swift in Sources */,
 				6B84EAE32122C9CB007BBA12 /* Video.swift in Sources */,
