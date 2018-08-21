@@ -70,6 +70,10 @@ class MMResultSet {
     func get(index: Int) throws -> MMFile{
         return self.results[index]
     }
+    
+    func getAll() throws -> [MMFile] {
+        return self.results
+    }
 }
 
 
@@ -158,9 +162,7 @@ class LoadCommand: MMCommand {
     var results: MMResultSet? = nil
     var library : Library
 	
-	// i think this could be renamed - it is ambiguous as the
-	// library.swift class has a files: [MMFile]
-    var files : [String]
+    var loadfiles : [String]
     
     /**
      Constructs a new load file handler.
@@ -168,9 +170,9 @@ class LoadCommand: MMCommand {
      - parameter files: the file to be loaded.
      - parameter library: the target collection.
      */
-    init(files: [String], library: Library) {
+    init(loadfiles: [String], library: Library) {
         self.library = library
-        self.files = files
+        self.loadfiles = loadfiles
     }
     
     func execute() throws {
@@ -179,16 +181,16 @@ class LoadCommand: MMCommand {
         var newFiles : [MMFile] = []
         
         // Ensure the user passed at least one parameter
-        guard files.count > 0 else {
+        guard loadfiles.count > 0 else {
             throw MMCliError.invalidParameters
         }
         
         // While there are filenames to read from
-        var i = files.count
+        var i = loadfiles.count
         while i > 0 {
             
             // Get the filename from the parameters
-            let fileName: String = files.removeFirst()
+            let fileName: String = loadfiles.removeFirst()
             
             // Pass the file to the importer
             newFiles = try importer.read(filename: fileName)
@@ -246,10 +248,9 @@ class ListCommand : MMCommand {
             let word: String = keywords.removeFirst()
 			
             //TODO implement search in Library.swift
-			
-            let files = library.search(term: word)
+            let listresults = library.search(term: word)
             print("Using search")
-            self.results = MMResultSet(files)
+            self.results = MMResultSet(listresults)
         }
     }
 }
@@ -259,6 +260,7 @@ class AddCommand : MMCommand{
     var results: MMResultSet? = nil
     var library: Library
     var data: [String]
+    var previousListFound: [MMFile]
     
     /**
      Constructs a new add handler.
@@ -266,9 +268,10 @@ class AddCommand : MMCommand{
      - parameter data: the position of file and metadata to be added.
      - parameter library: the collection from which the files will be listed.
      */
-    init(data: [String], library: Library) {
-        self.data = data;
+    init(data: [String], library: Library, previousListFound: [MMFile]) {
+        self.data = data
         self.library = library
+        self.previousListFound = previousListFound
     }
     
     func execute() throws {
@@ -277,15 +280,17 @@ class AddCommand : MMCommand{
             throw MMCliError.invalidParameters
         }
         
-        let index = data.removeFirst()
+        let indexString = data.removeFirst()
         let key = data.removeFirst()
         let value = data.removeFirst()
         let newdata = Metadata(keyword: key, value: value)
         
-        self.results = MMResultSet(library.files)
-        
         //TODO implement add in Library.swift
-        library.add(metadata: newdata, file: (try results!.get(index: Int(index)!)))
+        let index = Int(indexString)!
+        let fileToAddTo = previousListFound[index]
+        print("Adding to file :\(fileToAddTo)")
+        
+        library.add(metadata: newdata, file: fileToAddTo)
         print("Add seems to be working") //test
         print("Index: \(index), Key: \(key), Value: \(value)") //test
     }
