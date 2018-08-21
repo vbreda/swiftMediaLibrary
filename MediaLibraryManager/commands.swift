@@ -205,10 +205,9 @@ class LoadCommand: MMCommand {
         
         // Confirm to the user that the Library grew in size
         let newCount = library.count
-        if newCount >= oldCount {
-            let diff = newCount-oldCount
-            print ("\(diff) files loaded successfully.")
-            
+		let diff = newCount-oldCount
+		print ("\(diff) files loaded successfully.")
+        if newCount > oldCount {
             // Print out the names of the added files
             var allFiles = library.all()
             for i in library.count-diff...library.count-1 {
@@ -244,7 +243,7 @@ class ListCommand : MMCommand {
             let allFiles = library.all()
             self.results = MMResultSet(allFiles)
             
-            // lists all the files that have the given term ("list <term>")
+		// lists all the files that have the given term ("list <term>")
         } else {
             let word: String = keywords.removeFirst()
             
