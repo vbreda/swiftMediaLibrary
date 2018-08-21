@@ -39,7 +39,7 @@ enum MMCliError: Error {
 /// This class represents a set of results. It could be extended to include
 /// the command and a history of commands and the results.
 
-class MMResultSet{
+class MMResultSet {
     
     /// The list of files produced by the command
     fileprivate var results: [MMFile]
@@ -75,7 +75,7 @@ class MMResultSet{
 
 /// This protocol specifies the new 'Command' pattern, and is more
 /// Object Oriented.
-protocol MMCommand{
+protocol MMCommand {
     var results: MMResultSet? {get}
     func execute() throws
 }
@@ -102,15 +102,15 @@ protocol MMCommand{
 
 /// Handle unimplemented commands by throwing an exception when trying to
 /// execute this command.
-class UnimplementedCommand: MMCommand{
+class UnimplementedCommand: MMCommand {
     var results: MMResultSet? = nil
-    func execute() throws{
+    func execute() throws {
         throw MMCliError.unimplementedCommand
     }
 }
 
 /// Handle the help command.
-class HelpCommand: MMCommand{
+class HelpCommand: MMCommand {
     var results: MMResultSet? = nil
     func execute() throws{
         print("""
@@ -146,7 +146,7 @@ class HelpCommand: MMCommand{
 
 /// Handle the quit command. Exits the program (with exit code 0) without
 /// checking if there is anything to save.
-class QuitCommand : MMCommand{
+class QuitCommand : MMCommand {
     var results: MMResultSet? = nil
     func execute() throws{
         exit(0)
@@ -154,9 +154,12 @@ class QuitCommand : MMCommand{
 }
 
 // Handle the load command. It loads files into the collection.
-class LoadCommand: MMCommand{
+class LoadCommand: MMCommand {
     var results: MMResultSet? = nil
     var library : Library
+	
+	// i think this could be renamed - it is ambiguous as the
+	// library.swift class has a files: [MMFile]
     var files : [String]
     
     /**
@@ -202,20 +205,21 @@ class LoadCommand: MMCommand{
         if newCount >= oldCount {
             let diff = newCount-oldCount
             print ("\(diff) files loaded successfully.")
-//            var allFiles = library.all()
-//            for i in library.count-diff...library.count-1 {
-//
-//                print("\(i): \(allFiles[i].filename)")
-//            }
+			
+			// Print out the names of the added files
+            var allFiles = library.all()
+            for i in library.count-diff...library.count-1 {
+                print("\(i+1): \(allFiles[i].filename)")
+            }
         }
     }
 }
 
 // Handle the list command. It lists all the files contained in the collection.
-class ListCommand : MMCommand{
+class ListCommand : MMCommand {
     var results: MMResultSet? = nil
     var library: Library
-    var keyword: [String]
+    var keywords: [String]
     
     /**
      Constructs a new list handler.
@@ -225,21 +229,24 @@ class ListCommand : MMCommand{
      */
     
     init(keyword: [String], library: Library) {
-        self.keyword = keyword;
+        self.keywords = keyword;
         self.library = library
     }
     
     func execute() throws {
         
         // lists all the files in the library ("list")
-        if (keyword.count == 0) {
+        if (keywords.count == 0) {
             print(library)
             let allFiles = library.all()
             self.results = MMResultSet(allFiles)
-            // lists all the files that have the given term ("list <term>")
+			
+		// lists all the files that have the given term ("list <term>")
         } else {
-            let word: String = keyword.removeFirst()
+            let word: String = keywords.removeFirst()
+			
             //TODO implement search in Library.swift
+			
             let files = library.search(term: word)
             print("Using search")
             self.results = MMResultSet(files)
