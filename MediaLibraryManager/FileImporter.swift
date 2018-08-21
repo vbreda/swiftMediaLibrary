@@ -27,7 +27,7 @@ class FileImporter : MMFileImport {
 	*/
 	func read(filename: String) throws -> [MMFile] {
 	
-		var filesValidated : [File] = []
+		var filesValidated : [MMFile] = []
 		
         do {
 			
@@ -104,7 +104,7 @@ class FileImporter : MMFileImport {
 	
 	- returns: File
 	*/
-	func validateMedia(media: Media) -> File? {
+	func validateMedia(media: Media) -> MMFile? {
 		
 		let type: String = media.type
 		let filename: String = getFilename(fullpath: media.fullpath)
@@ -116,7 +116,7 @@ class FileImporter : MMFileImport {
 		var mdata: [Metadata] = []
 		
 		// File to hold media once validated
-		var validatedFile: File
+		var validatedFile: MMFile
 		
 		// Loop through to fill the required values
 		for (key, value) in media.metadata {
