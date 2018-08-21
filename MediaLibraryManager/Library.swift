@@ -60,9 +60,8 @@ class Library : MMCollection {
 	func add(metadata: MMMetadata, file: MMFile)  {
 		
 		// Some metadata and the file to add it to?
-		
-		// Or some file, and some metadata for that file
-		// and both need to be added to collection?
+		for f in files {
+		}
 		
 	}
 	
@@ -73,7 +72,7 @@ class Library : MMCollection {
 	- Returns: none.
 	*/
 	func remove(metadata: MMMetadata)  {
-		
+		print("Removing .....")
 	}
 	
 	/**
@@ -107,6 +106,7 @@ class Library : MMCollection {
 	keyword, possibly an empty list.
 	*/
 	func search(item: MMMetadata) -> [MMFile]  {
+		
 		return []
 	}
 	
