@@ -52,22 +52,12 @@ class FileImporter : MMFileImport {
         do {
 			
             let path = URL(fileURLWithPath: filename)
+            let decoder = JSONDecoder()
+            var mediaArray : [Media] = []
+            
             do {
                 let data = try Data(contentsOf: path)
-            } catch {
-                print("JSON file NOT EVEN PROVIDED (********")
-            }
-			
-            //print("Raw Data \(data)")
-            //let parsedData = try JSONSerialization.jsonObject(with: data)
-            //print("parsed Data: ")
-            //print(parsedData)
-			
-			let decoder = JSONDecoder()
-			var mediaArray : [Media] = []
-            do {
-                mediaArray = try
-                decoder.decode([Media].self, from: data)
+                mediaArray = try decoder.decode([Media].self, from: data)
             } catch {
                 print("JSON file has an error in it. Check your grammar!")
             }
