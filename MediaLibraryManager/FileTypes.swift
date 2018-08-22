@@ -18,12 +18,15 @@ class Image : File {
     var originalResolution : String
 	
 	// the image's current resolution
-	var resolution : String {
+	var resolution : String? {
+		var res: String?
 		for m in metadata {
 			if m.keyword.lowercased() == "resolution" {
-				return m.keyword
+				//return m.keyword
+				res = m.keyword
 			}
 		}
+		return res
 	}
     
     init(metadata: [MMMetadata], filename: String, path: String, creator: String, resolution: String) {

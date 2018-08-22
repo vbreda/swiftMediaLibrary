@@ -340,12 +340,26 @@ class SetCommand : MMCommand{
     }
 }
 
+// Delete command
 class DeleteCommand : MMCommand{
     var results: MMResultSet? = nil
     var library: Library
     var data: [String]
     var previousListFound: [MMFile]
     
-    
+	init(data: [String], library: Library, previousListFound: [MMFile]) {
+		self.data = data
+		self.library = library
+		self.previousListFound = previousListFound
+	}
+	
+	func execute() throws {
+	}
+	
+	// Need validation checking! Some metadata are required fields.
+	// User cannot delete the creator of any File
+	// User cannot delete the runtime of an audio/video.
+	// User cannot delete the resolution of an image/video.
+	
 }
 
