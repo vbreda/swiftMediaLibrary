@@ -274,13 +274,13 @@ class AddCommand : MMCommand{
     }
     
     func execute() throws {
-        // Ensure the user passed at least one parameter
+        // Ensure the user passed at least two parameters.
         guard data.count > 2 else {
             throw MMCliError.invalidParameters
         }
         
         let index = Int(data.removeFirst())!
-        // put in a while loop so adds more than one metadata
+        //TODO put in a while loop so adds more than one metadata
         let key = data.removeFirst()
         let value = data.removeFirst()
         let newdata = Metadata(keyword: key, value: value)
@@ -301,7 +301,7 @@ class SetCommand : MMCommand{
     var previousListFound: [MMFile]
     
     /**
-     Constructs a new add handler.
+     Constructs a new set handler.
      
      - parameter data: the position of file and metadata to be added.
      - parameter library: the collection from which the files will be listed.
@@ -313,12 +313,12 @@ class SetCommand : MMCommand{
     }
     
     func execute() throws {
-        // Ensure the user passed at least one parameter
+        // Ensure the user passed at least two parameters
         guard data.count > 2 else {
             throw MMCliError.invalidParameters
         }
         
-        //if we can set more than one at a time, add a loop.
+        //TODO add a loop to set more than one at a time.
         let index = Int(data.removeFirst())!
         let key : String = data.removeFirst()
         let valueToModify : String = data.removeFirst()
@@ -338,5 +338,14 @@ class SetCommand : MMCommand{
             print ("Keyword not found.")
         }
     }
+}
+
+class DeleteCommand : MMCommand{
+    var results: MMResultSet? = nil
+    var library: Library
+    var data: [String]
+    var previousListFound: [MMFile]
+    
+    
 }
 
