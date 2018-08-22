@@ -1,8 +1,14 @@
-
+VALID
 load /home/cshome/n/npearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/basicImage.json
+load /home/cshome/n/npearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/basicAudio.json
+load /home/cshome/n/npearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/complexImage.json
 
-
-
+INVALID
+load /home/cshome/n/npearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/invalidImage.json
+load /home/cshome/n/npearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/invalidDocument.json
+load /home/cshome/n/npearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/invalidAudio.json
+load /home/cshome/n/npearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/invalidVideo.json
+load ~/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/TestFiles/basicAudio.json
 
 
 Valid:

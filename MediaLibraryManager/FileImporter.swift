@@ -59,18 +59,13 @@ class FileImporter : MMFileImport {
                 let data = try Data(contentsOf: path)
                 mediaArray = try decoder.decode([Media].self, from: data)
             } catch {
-                print("JSON file has an error in it. Check your grammar!")
+                print("Invalid JSON file... Check your filename, path and/or contents.")
             }
-            
-            // JSON file error
 			
 			for m in mediaArray {
 			
 				if let validatedFile = try validateMedia(media: m) {
 					filesValidated.append(validatedFile)
-				} else {
-					// threw an error?
-                
 				}
 			}
         } catch MMValidationError.invalidType {
@@ -79,10 +74,7 @@ class FileImporter : MMFileImport {
             print("Invalid metadata for provided media type.")
         } catch MMValidationError.duplicateMedia {
             print("File not loaded - identical file already in library.")
-        } //catch Error def {
-          // generic we dunno
-          //  print("Generic error hit ------ ******* OH NO!")
-        //}
+        }
 		
 		return filesValidated
 	}
@@ -105,7 +97,7 @@ class FileImporter : MMFileImport {
 		var mdata: [Metadata] = []
 		
 		// File to hold media once validated
-		var validatedFile: MMFile
+		var validatedFile: MMFile? = nil
 		
 		// Loop through to fill the required values
 		for (key, value) in media.metadata {
@@ -122,46 +114,45 @@ class FileImporter : MMFileImport {
 			mdata.append(tempMetadata)
 			
 		}
-		
-		// Validate creator, filename, path for all
 
-		// No need to validate the media path or media name
-        // Paul 22/08/18
+		// "No need to validate the media path or media name, we won't
+        // be testing with bad data of these" - Paul 22/08/18
      
-        if let creatorU = creator {
+        if let unwrappedCreator = creator {
             
             // Validate specific data for each type
             switch(type) {
                 case "image" :
                     if let imageRes = res {
-                        validatedFile = Image(metadata: mdata, filename: filename, path: path, creator: creatorU, resolution: imageRes)
-                        return validatedFile
+                        validatedFile = Image(metadata: mdata, filename: filename, path: path, creator: unwrappedCreator, resolution: imageRes)
+                    } else {
+                        throw MMValidationError.invalidMetadataForType
                     }
-                    
                     break
-                case "document":
-                    validatedFile = Document(metadata: mdata, filename: filename, path: path, creator: creatorU)
-                    return validatedFile
+            case "document":
+                    validatedFile = Document(metadata: mdata, filename: filename, path: path, creator: unwrappedCreator)
+                    break
                 case "video":
                     if let videoRes = res, let videoRuntime = runtime {
-                        validatedFile = Video(metadata: mdata, filename: filename, path: path, creator: creatorU, resolution: videoRes, runtime: videoRuntime)
-                        return validatedFile
-                    
+                        validatedFile = Video(metadata: mdata, filename: filename, path: path, creator: unwrappedCreator, resolution: videoRes, runtime: videoRuntime)
+                    } else {
+                        throw MMValidationError.invalidMetadataForType
                     }
                     break
                 case "audio":
                     if let audioRuntime = runtime {
-                        validatedFile = Audio(metadata: mdata, filename: filename, path: path, creator: creatorU, runtime: audioRuntime)
-                        return validatedFile
+                        validatedFile = Audio(metadata: mdata, filename: filename, path: path, creator: unwrappedCreator, runtime: audioRuntime)
+                    } else {
+                        throw MMValidationError.invalidMetadataForType
                     }
-                    // Throws
                     break
                 default:
                     throw MMValidationError.invalidType
                 }
+            return validatedFile
+        } else {
+            throw MMValidationError.invalidMetadataForType
         }
-        return nil
-
 	}
     
     /**
