@@ -18,11 +18,10 @@ class Image : File {
     var originalResolution : String
 	
 	// the image's current resolution
-	var resolution : String? {
-		var res: String?
+	var resolution : String {
+		var res: String = ""
 		for m in metadata {
 			if m.keyword.lowercased() == "resolution" {
-				//return m.keyword
 				res = m.keyword
 			}
 		}
@@ -53,20 +52,24 @@ class Video : File {
 	
 	// the video's current resolution
 	var resolution : String {
+		var res: String = ""
 		for m in metadata {
 			if m.keyword.lowercased() == "resolution" {
-				return m.keyword
+				res = m.keyword
 			}
 		}
+		return res
 	}
 	
 	// the video's current runtime
 	var runtime : String {
+		var run: String = ""
 		for m in metadata {
 			if m.keyword.lowercased() == "runtime" {
-				return m.keyword
+				run = m.keyword
 			}
 		}
+		return run
 	}
 	
     init(metadata: [MMMetadata], filename: String, path: String, creator: String, resolution: String, runtime: String) {
@@ -91,11 +94,13 @@ class Audio : File {
 	
 	// the audio's current runtime
 	var runtime : String {
+		var run: String = ""
 		for m in metadata {
 			if m.keyword.lowercased() == "runtime" {
-				return m.keyword
+				run = m.keyword
 			}
 		}
+		return run
 	}
 	
     init(metadata: [MMMetadata], filename: String, path: String, creator: String, runtime: String) {

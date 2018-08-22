@@ -21,11 +21,13 @@ class File: MMFile {
 	
 	// Computed variable creator, returns the File's current creator
 	var creator : String {
+		var cr: String = ""
 		for m in metadata {
 			if m.keyword.lowercased() == "creator" {
-				return m.keyword
+				cr = m.keyword
 			}
 		}
+		return cr
 	}
 	
 	/**
