@@ -52,12 +52,17 @@ class FileImporter : MMFileImport {
         do {
 			
             let path = URL(fileURLWithPath: filename)
+			
+			//let homeDirectory = URL(fileURLWithPath: "/Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/")
+			//let path = URL(fileURLWithPath: filename, relativeTo: homeDirectory)
+			
             let decoder = JSONDecoder()
             var mediaArray : [Media] = []
             
             do {
+				
                 let data = try Data(contentsOf: path)
-                mediaArray = try decoder.decode([Media].self, from: data)
+				mediaArray = try decoder.decode([Media].self, from: data)
             } catch {
                 print("Invalid JSON file... Check your filename, path and/or contents.")
             }
