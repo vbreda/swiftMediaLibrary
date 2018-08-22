@@ -19,6 +19,8 @@ func prompt(_ prompt: String, strippingNewline: Bool = true) -> String? {
     return readLine(strippingNewline: strippingNewline)
 }
 
+// Needs to be MMCollection?????
+//var library : MMCollection = Library()
 var library : Library = Library()
 
 var last = MMResultSet()

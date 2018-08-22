@@ -140,7 +140,7 @@ class HelpCommand: MMCommand {
         //      using the results of the previous list, add foo=bar and baz=qux
         //      to the file at index 3 in the list
         
-        // set 0 keyword newValue differentKeyword anotherNewValue
+        // set 0 keyword newValue differentKeyword anotherNewValu
         
         // list val1 key1 val2
         // show any file/metadata with KEYWORD or VALUE val1/key1/val2. 

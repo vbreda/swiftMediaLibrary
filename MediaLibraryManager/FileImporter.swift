@@ -9,6 +9,26 @@
 import Foundation
 
 /**
+ The list of exceptions that can be thrown by the Validation handler
+ */
+enum MMValidationError : Error {
+    
+    // Thrown if there is something wrong with the JSON file
+    // e.g. grammar or incorrect file path
+    case invalidJSONfile
+    
+    // Thrown if there is something wrong with the type of media
+    case invalidType
+    
+    // Thrown if there is something wrong with metadata for a specific type
+    // e.g. image does not have resolution
+    case invalidMetadataForType
+    
+    // Thrown if a file to be added is already in the library
+    case duplicateMedia
+}
+
+/**
 Support struct for reading JSON data in.
 */
 struct Media : Codable {
@@ -32,7 +52,11 @@ class FileImporter : MMFileImport {
         do {
 			
             let path = URL(fileURLWithPath: filename)
-            let data = try Data(contentsOf: path)
+            do {
+                let data = try Data(contentsOf: path)
+            } catch {
+                print("JSON file NOT EVEN PROVIDED (********")
+            }
 			
             //print("Raw Data \(data)")
             //let parsedData = try JSONSerialization.jsonObject(with: data)
@@ -41,61 +65,36 @@ class FileImporter : MMFileImport {
 			
 			let decoder = JSONDecoder()
 			var mediaArray : [Media] = []
-			mediaArray = try! decoder.decode([Media].self, from: data)
+            do {
+                mediaArray = try
+                decoder.decode([Media].self, from: data)
+            } catch {
+                print("JSON file has an error in it. Check your grammar!")
+            }
+            
+            // JSON file error
 			
 			for m in mediaArray {
 			
-				// Validate it here, only creating if pass tests
-				
-				if let validatedFile = validateMedia(media: m) {
+				if let validatedFile = try validateMedia(media: m) {
 					filesValidated.append(validatedFile)
 				} else {
-					// Invalid, not added
-					//TODO
+					// threw an error?
+                
 				}
 			}
-        } catch let error as NSError {
-            print("Whoops, an error! \(error)")
-			// Will need to fill these in
-			// e.g. invalid json file path reaches here
-        }
+        } catch MMValidationError.invalidType {
+            print("Invalid file type, expecting image document audio or video.")
+        } catch MMValidationError.invalidMetadataForType {
+            print("Invalid metadata for provided media type.")
+        } catch MMValidationError.duplicateMedia {
+            print("File not loaded - identical file already in library.")
+        } //catch Error def {
+          // generic we dunno
+          //  print("Generic error hit ------ ******* OH NO!")
+        //}
 		
 		return filesValidated
-	}
-	
-	/**
-	Calculates a filename of a file from the fullpath string.
-	
-	- parameters: fullpath: the full path to the file including file name.
-	- returns: String: the name of the file.
-	*/
-	func getFilename(fullpath: String) -> String {
-		
-		var parts = fullpath.split(separator: "/")
-		let name = String(parts[parts.count-1])
-		//print ("Name found: \(name)")
-		return name
-	}
-	
-	/**
-	Calculates a path to a file from the fullpath string.
-	
-	- parameters: fullpath: the full path to the file including file name.
-	- returns: String: the path to the file.
-	*/
-	func getPath(fullpath: String) -> String {
-		
-		var parts = fullpath.split(separator: "/")
-		var path: String = ""
-		let lastIndex = parts.count-2
-		for i in 0...lastIndex {
-			if parts[i] != "~" {
-				path += "/"
-			}
-			path += parts[i]
-		}
-		//print ("PATH found: \(path)")
-		return path
 	}
 	
 	/**
@@ -104,7 +103,7 @@ class FileImporter : MMFileImport {
 	
 	- returns: File
 	*/
-	func validateMedia(media: Media) -> MMFile? {
+	func validateMedia(media: Media) throws -> MMFile? {
 		
 		let type: String = media.type
 		let filename: String = getFilename(fullpath: media.fullpath)
@@ -138,59 +137,76 @@ class FileImporter : MMFileImport {
 
 		// No need to validate the media path or media name
         // Paul 22/08/18
-		
-		if let creatorU = creator {
-			
-			// Validate specific data for each type
-			switch(type) {
-				case "image" :
-					if let imageRes = res {
-						validatedFile = Image(metadata: mdata, filename: filename, path: path, creator: creatorU, resolution: imageRes)
-						return validatedFile
-					}
-					
-					break
-				case "document":
-					validatedFile = Document(metadata: mdata, filename: filename, path: path, creator: creatorU)
-					return validatedFile
-				case "video":
-					if let videoRes = res, let videoRuntime = runtime {
+     
+        if let creatorU = creator {
+            
+            // Validate specific data for each type
+            switch(type) {
+                case "image" :
+                    if let imageRes = res {
+                        validatedFile = Image(metadata: mdata, filename: filename, path: path, creator: creatorU, resolution: imageRes)
+                        return validatedFile
+                    }
+                    
+                    break
+                case "document":
+                    validatedFile = Document(metadata: mdata, filename: filename, path: path, creator: creatorU)
+                    return validatedFile
+                case "video":
+                    if let videoRes = res, let videoRuntime = runtime {
                         validatedFile = Video(metadata: mdata, filename: filename, path: path, creator: creatorU, resolution: videoRes, runtime: videoRuntime)
                         return validatedFile
                     
-					}
-					break
-				case "audio":
-					if let audioRuntime = runtime {
-						validatedFile = Audio(metadata: mdata, filename: filename, path: path, creator: creatorU, runtime: audioRuntime)
-						return validatedFile
-					}
-					break
-				default:
-					print("Default - no  type so no file created")
-					// Invalid type error
-				}
-		}
-		return nil
+                    }
+                    break
+                case "audio":
+                    if let audioRuntime = runtime {
+                        validatedFile = Audio(metadata: mdata, filename: filename, path: path, creator: creatorU, runtime: audioRuntime)
+                        return validatedFile
+                    }
+                    // Throws
+                    break
+                default:
+                    throw MMValidationError.invalidType
+                }
+        }
+        return nil
+
 	}
+    
+    /**
+     Calculates a filename of a file from the fullpath string.
+     
+     - parameters: fullpath: the full path to the file including file name.
+     - returns: String: the name of the file.
+     */
+    func getFilename(fullpath: String) -> String {
+        
+        var parts = fullpath.split(separator: "/")
+        let name = String(parts[parts.count-1])
+        //print ("Name found: \(name)")
+        return name
+    }
+    
+    /**
+     Calculates a path to a file from the fullpath string.
+     
+     - parameters: fullpath: the full path to the file including file name.
+     - returns: String: the path to the file.
+     */
+    func getPath(fullpath: String) -> String {
+        
+        var parts = fullpath.split(separator: "/")
+        var path: String = ""
+        let lastIndex = parts.count-2
+        for i in 0...lastIndex {
+            if parts[i] != "~" {
+                path += "/"
+            }
+            path += parts[i]
+        }
+        //print ("PATH found: \(path)")
+        return path
+    }
 }
 
-/**
- The list of exceptions that can be thrown by the Validation handler
- */
-enum MMValidationError : Error {
-        
-    // Thrown if there is something wrong with the JSON file
-    // e.g. grammar or incorrect file path
-    case invalidJSONfilie
-    
-    // Thrown if there is something wrong with the type of media
-    case invalidType
-    
-    // Thrown if there is something wrong with metadata for a specific type
-    // e.g. image does not have resolution
-    case invalidMetadataForType
-    
-    // Thrown if a file to be added is already in the library
-    case duplicatMedia
-}
