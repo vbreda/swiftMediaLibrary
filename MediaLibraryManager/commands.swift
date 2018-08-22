@@ -147,17 +147,23 @@ class HelpCommand: MMCommand {
     }
 }
 
-/// Handle the quit command. Exits the program (with exit code 0) without
-/// checking if there is anything to save.
+/**
+Handle the quit command.
+
+Exits the program (with exit code 0) without
+checking if there is anything to save.
+*/
 class QuitCommand : MMCommand {
     var results: MMResultSet? = nil
     func execute() throws{
         exit(0)
     }
 }
+/**
+Handle the load command.
 
-// Handle the load command. It loads files into the collection.
-// TODO make load work with multiple calls.
+It loads files into the collection.
+*/
 class LoadCommand: MMCommand {
     var results: MMResultSet? = nil
     var library : Library
@@ -216,7 +222,12 @@ class LoadCommand: MMCommand {
     }
 }
 
-// Handle the list command. It lists all the files contained in the collection.
+/**
+Handle the list command.
+
+It lists the files contained in the collection.
+Either listing by a keyword (aka searching) or listing all files.
+*/
 class ListCommand : MMCommand {
     var results: MMResultSet? = nil
     var library: Library
@@ -228,7 +239,6 @@ class ListCommand : MMCommand {
      - parameter keyword: filter the files according to the given keyword.
      - parameter library: the collection from which the files will be listed.
      */
-    
     init(keyword: [String], library: Library) {
         self.keywords = keyword;
         self.library = library
@@ -254,19 +264,25 @@ class ListCommand : MMCommand {
     }
 }
 
-// Handle the add command. It add the given metadata to the file at given position.
-class AddCommand : MMCommand{
+/**
+Handle the add command.
+
+It adds the given metadata keypair to the file at given position.
+Position specified depends on the previous results set of the last command.
+*/
+class AddCommand : MMCommand {
     var results: MMResultSet? = nil
     var library: Library
     var data: [String]
     var previousListFound: [MMFile]
     
-    /**
-     Constructs a new add handler.
-     
-     - parameter data: the position of file and metadata to be added.
-     - parameter library: the collection from which the files will be listed.
-     */
+	/**
+	Constructs a new add handler.
+	
+	- parameter data: the position of file and metadata to be added.
+	- parameter library: the collection from which the files will be listed.
+	- parameter previousListFound: the array of Files of the last result set.
+	*/
     init(data: [String], library: Library, previousListFound: [MMFile]) {
         self.data = data
         self.library = library
@@ -294,18 +310,26 @@ class AddCommand : MMCommand{
     }
 }
 
-class SetCommand : MMCommand{
+/**
+Handles the set command.
+
+It adds the given metadata keypair to the file at given position,
+first removing the original metadata.
+A set is a delete followed by an add.
+*/
+class SetCommand : MMCommand {
     var results: MMResultSet? = nil
     var library: Library
     var data: [String]
     var previousListFound: [MMFile]
-    
-    /**
-     Constructs a new set handler.
-     
-     - parameter data: the position of file and metadata to be added.
-     - parameter library: the collection from which the files will be listed.
-     */
+	
+	/**
+	Constructs a new set handler.
+	
+	- parameter data: the position of file and metadata to be added.
+	- parameter library: the collection from which the files will be listed.
+	- parameter previousListFound: the array of Files of the last result set.
+	*/
     init(data: [String], library: Library, previousListFound: [MMFile]) {
         self.data = data
         self.library = library
@@ -340,13 +364,26 @@ class SetCommand : MMCommand{
     }
 }
 
-// Delete command
-class DeleteCommand : MMCommand{
+/**
+Handles the delete command.
+
+It deletes the given metadata keypair from the file at given position,
+if and only if that metadata is an optional keypair.
+Does not delete required metadata.
+*/
+class DeleteCommand : MMCommand {
     var results: MMResultSet? = nil
     var library: Library
     var data: [String]
     var previousListFound: [MMFile]
-    
+	
+	/**
+	Constructs a new delete handler.
+	
+	- parameter data: the position of file and metadata to be added.
+	- parameter library: the collection from which the files will be listed.
+	- parameter previousListFound: the array of Files of the last result set.
+	*/
 	init(data: [String], library: Library, previousListFound: [MMFile]) {
 		self.data = data
 		self.library = library
@@ -354,6 +391,7 @@ class DeleteCommand : MMCommand{
 	}
 	
 	func execute() throws {
+		
 	}
 	
 	// Need validation checking! Some metadata are required fields.
