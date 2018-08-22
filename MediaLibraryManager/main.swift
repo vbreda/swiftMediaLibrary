@@ -65,7 +65,7 @@ while let line = prompt("> ") {
         
         // try execute the command and catch any thrown errors below
         try command.execute()
-        //loadtry print("\(last.getAll()) ----- printshow")
+        //try print("\(last.getAll()) ----- printshow")
         
         // if there are any results from the command, print them out here
         if let results = command.results {
