@@ -24,7 +24,7 @@ class File: MMFile {
 		var cr: String = ""
 		for m in metadata {
 			if m.keyword.lowercased() == "creator" {
-				cr = m.keyword
+				cr = m.value
 			}
 		}
 		return cr
@@ -53,6 +53,6 @@ class File: MMFile {
 	- returns: String String representation of the File.
 	*/
 	var description: String {
-        return "\(filename), path: \(path), creator: \(creator)"
+        return "\(filename) creator: \(creator)"
 	}
 }

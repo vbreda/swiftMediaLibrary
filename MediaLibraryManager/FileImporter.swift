@@ -42,7 +42,7 @@ class FileImporter : MMFileImport {
 	/**
 	Support importing the media collection from a file (by name)
 	
-	- parameters: filename: the full path to the file including file name.
+	- parameter filename: the full path to the file including file name.
 	- returns: [MMFile]: the array of files read successfully
 	*/
 	func read(filename: String) throws -> [MMFile] {
@@ -65,6 +65,8 @@ class FileImporter : MMFileImport {
 			for m in mediaArray {
 			
 				if let validatedFile = try validateMedia(media: m) {
+					// TODO check our current library for duplicate path&file.
+					// We do not want duplicates.
 					filesValidated.append(validatedFile)
 				}
 			}
@@ -81,18 +83,21 @@ class FileImporter : MMFileImport {
 	
 	/**
 	Designed to validate Files depending upon their type.
-	Needs assert statements added.
 	
-	- returns: File
+	Performs type checking and required metadata checking.
+	Throws MMValidationErrors where media does not conform.
+	
+	- parameter Media: the Media struct to validate as a File
+	- returns: MMFile? the validated File
 	*/
 	func validateMedia(media: Media) throws -> MMFile? {
 		
 		let type: String = media.type
 		let filename: String = getFilename(fullpath: media.fullpath)
 		let path: String = getPath(fullpath: media.fullpath)
-		var creator: String? 	//= ""
-		var res: String? 		//= ""
-		var runtime: String? 	//= ""
+		var creator: String?
+		var res: String?
+		var runtime: String?
 		
 		var mdata: [Metadata] = []
 		
@@ -165,7 +170,6 @@ class FileImporter : MMFileImport {
         
         var parts = fullpath.split(separator: "/")
         let name = String(parts[parts.count-1])
-        //print ("Name found: \(name)")
         return name
     }
     
@@ -186,7 +190,6 @@ class FileImporter : MMFileImport {
             }
             path += parts[i]
         }
-        //print ("PATH found: \(path)")
         return path
     }
 }

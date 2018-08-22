@@ -22,7 +22,7 @@ class Image : File {
 		var res: String = ""
 		for m in metadata {
 			if m.keyword.lowercased() == "resolution" {
-				res = m.keyword
+				res = m.value
 			}
 		}
 		return res
@@ -34,7 +34,7 @@ class Image : File {
     }
 	
     override var description: String {
-        return super.description + ", resolution: \(resolution)"
+		return super.description + ", resolution: \(resolution) original *****:\(originalResolution)"
     }
 }
 
@@ -55,7 +55,7 @@ class Video : File {
 		var res: String = ""
 		for m in metadata {
 			if m.keyword.lowercased() == "resolution" {
-				res = m.keyword
+				res = m.value
 			}
 		}
 		return res
@@ -66,7 +66,7 @@ class Video : File {
 		var run: String = ""
 		for m in metadata {
 			if m.keyword.lowercased() == "runtime" {
-				run = m.keyword
+				run = m.value
 			}
 		}
 		return run
@@ -97,7 +97,7 @@ class Audio : File {
 		var run: String = ""
 		for m in metadata {
 			if m.keyword.lowercased() == "runtime" {
-				run = m.keyword
+				run = m.value
 			}
 		}
 		return run

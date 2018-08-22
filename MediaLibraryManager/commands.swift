@@ -128,10 +128,23 @@ class HelpCommand: MMCommand {
         // load foo.json bar.json
         //      from the current directory load both foo.json and bar.json and
         //      merge the results
-        
+		
+		//		> list
+		//		0: Paul
+		//		1: Hamza
+		//		> add 0 likes coffee
+		//		> search coffee
+		//		0: Paul
+
         // list foo bar baz
         //      results in a set of files with metadata containing foo OR bar OR baz
-        
+		
+		//		> list python
+		//		0: Paul
+		//		> list swift
+		//		0: Paul
+		//		1: Hamza
+		
         // add 3 foo bar
         //      using the results of the previous list, add foo=bar to the file
         //      at index 3 in the list
@@ -215,8 +228,10 @@ class LoadCommand: MMCommand {
         if newCount > oldCount {
             // Print out the names of the added files
             var allFiles = library.all()
+			var index: Int = 1
             for i in library.count-diff...library.count-1 {
-                print("\(i+1): \(allFiles[i].filename)")
+                print("\(index): \(allFiles[i].filename)")
+				index += 1
             }
         }
     }
