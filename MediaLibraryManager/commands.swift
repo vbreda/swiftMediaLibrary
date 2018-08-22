@@ -204,8 +204,8 @@ class LoadCommand: MMCommand {
         
         // Confirm to the user that the Library grew in size
         let newCount = library.count
-		let diff = newCount-oldCount
-		print ("\(diff) files loaded successfully.")
+        let diff = newCount-oldCount
+        print ("\(diff) files loaded successfully.")
         if newCount > oldCount {
             // Print out the names of the added files
             var allFiles = library.all()
@@ -242,7 +242,7 @@ class ListCommand : MMCommand {
             let allFiles = library.all()
             self.results = MMResultSet(allFiles)
             
-		// lists all the files that have the given term ("list <term>")
+            // lists all the files that have the given term ("list <term>")
         } else {
             let word: String = keywords.removeFirst()
             
@@ -275,7 +275,7 @@ class AddCommand : MMCommand{
     
     func execute() throws {
         // Ensure the user passed at least one parameter
-        guard data.count > 0 else {
+        guard data.count > 2 else {
             throw MMCliError.invalidParameters
         }
         
@@ -314,29 +314,29 @@ class SetCommand : MMCommand{
     
     func execute() throws {
         // Ensure the user passed at least one parameter
-        guard data.count > 0 else {
+        guard data.count > 2 else {
             throw MMCliError.invalidParameters
         }
         
         //if we can set more than one at a time, add a loop.
         let index = Int(data.removeFirst())!
-        let keyToRemove = data.removeFirst()
-        let valueToRemove = data.removeFirst()
-        let dataToRemove = Metadata(keyword: keyToRemove, value: valueToRemove)
+        let key : String = data.removeFirst()
+        let valueToModify : String = data.removeFirst()
+        let dataToAdd = Metadata(keyword: key, value: valueToModify)
+        var fileToModify : MMFile = previousListFound[index]
+        let fileMetadata : [MMMetadata] = fileToModify.metadata
         
-        let keyToAdd = data.removeFirst()
-        let valueToAdd = data.removeFirst()
-        let dataToAdd = Metadata(keyword: keyToAdd, value: valueToAdd)
-        
-        let fileToModify = previousListFound[index]
-        
-        library.remove(metadata: dataToRemove)//, file: fileToModify ???;
-        print("Removing from file: \(fileToModify)")
-        print("Remove seems to be working\n")
-        
-        library.add(metadata: dataToAdd, file: fileToModify)
-        print("Adding to file: \(fileToModify)")
-        print("Add seems to be working") //test
-        //print("Index: \(index), Key: \(key), Value: \(value)") //test
+        var i = 0
+        for d in fileMetadata {
+            if (d.keyword == key) {
+                library.remove(metadata: d, file: fileToModify)
+                library.add(metadata: dataToAdd, file: fileToModify)
+                i = 1
+            }
+        }
+        if (i == 0) {
+            print ("Keyword not found.")
+        }
     }
 }
+

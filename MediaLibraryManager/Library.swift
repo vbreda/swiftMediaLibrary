@@ -109,5 +109,16 @@ class Library : MMCollection {
 		
 		return []
 	}
+    
+    /**
+     Removes a specific instance of a metadata from a file in the collection.
+     
+     - Parameters: metadata: The item to remove from the file.
+     - Parameters: file: file to remove metadata from.
+     - Returns: none.
+     */
+    func remove(metadata: MMMetadata, file: MMFile)  {
+        print("Modifying .....")
+    }
 	
 }
