@@ -44,6 +44,7 @@
 		2BAD6DFD2122B0C900680426 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		2BAD6DFF2122B13300680426 /* FileImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImporter.swift; sourceTree = "<group>"; };
 		2BAD6E012122B14A00680426 /* FileExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileExporter.swift; sourceTree = "<group>"; };
+		2BD4EAEC212D537D00730641 /* halfInvalidHalfValid.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = halfInvalidHalfValid.json; sourceTree = "<group>"; };
 		CC492DAD212CF7F500D07BE2 /* FileTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTypes.swift; sourceTree = "<group>"; };
 		D3161D2020D748F800EC97E8 /* MediaLibraryManager */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MediaLibraryManager; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3161D2320D748F800EC97E8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -123,6 +124,7 @@
 				E87AD8672116BCA6008BD6BF /* basicVideo.json */,
 				2B55D9F32121723400C0C393 /* complexImage.json */,
 				2B26BA2221290282005C5DCB /* complexMixed.json */,
+				2BD4EAEC212D537D00730641 /* halfInvalidHalfValid.json */,
 				2B26BA212129017C005C5DCB /* Filepaths.txt */,
 			);
 			path = TestFiles;
