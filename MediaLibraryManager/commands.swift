@@ -323,9 +323,11 @@ class SetCommand : MMCommand{
         let key : String = data.removeFirst()
         let valueToModify : String = data.removeFirst()
         let dataToAdd = Metadata(keyword: key, value: valueToModify)
-        var fileToModify : MMFile = previousListFound[index]
+        let fileToModify : MMFile = previousListFound[index]
         let fileMetadata : [MMMetadata] = fileToModify.metadata
         
+        
+        //TODO throw an exception isntead of using i
         var i = 0
         for d in fileMetadata {
             if (d.keyword == key) {
@@ -346,6 +348,25 @@ class DeleteCommand : MMCommand{
     var data: [String]
     var previousListFound: [MMFile]
     
+    init(data: [String], library: Library, previousListFound: [MMFile]) {
+        self.data = data
+        self.library = library
+        self.previousListFound = previousListFound
+    }
     
+    func execute() throws {
+        // Ensure the user passed at least two parameters
+        guard data.count > 2 else {
+            throw MMCliError.invalidParameters
+        }
+        
+        //TODO add a loop to delete more than one at a time.
+        let index = Int(data.removeFirst())!
+        let key : String = data.removeFirst()
+        let valueToDel : String = data.removeFirst()
+        let dataToDel = Metadata(keyword: key, value: valueToDel)
+        let delFile : MMFile = previousListFound[index]
+        
+        library.remove(metadata: dataToDel, file: delFile)
+    }
 }
-
