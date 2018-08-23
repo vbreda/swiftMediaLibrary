@@ -289,19 +289,19 @@ class AddCommand : MMCommand {
     var results: MMResultSet? = nil
     var library: Library
     var data: [String]
-    var previousListFound: [MMFile]
+    var lastsearch: [MMFile]
     
 	/**
 	Constructs a new add handler.
 	
 	- parameter data: the position of file and metadata to be added.
 	- parameter library: the collection from which the files will be listed.
-	- parameter previousListFound: the array of Files of the last result set.
+	- parameter lastsearch: the array of Files of the last result set.
 	*/
-    init(data: [String], library: Library, previousListFound: [MMFile]) {
+    init(data: [String], library: Library, lastsearch: [MMFile]) {
         self.data = data
         self.library = library
-        self.previousListFound = previousListFound
+        self.lastsearch = lastsearch
     }
     
     func execute() throws {
@@ -315,7 +315,7 @@ class AddCommand : MMCommand {
         let key = data.removeFirst()
         let value = data.removeFirst()
         let newdata = Metadata(keyword: key, value: value)
-        let fileToAddTo = previousListFound[index]
+        let fileToAddTo = lastsearch[index]
         print("Adding to file: \(fileToAddTo)")
         
         //TODO implement add(metadata)
@@ -336,19 +336,19 @@ class SetCommand : MMCommand {
     var results: MMResultSet? = nil
     var library: Library
     var data: [String]
-    var previousListFound: [MMFile]
+    var lastsearch: [MMFile]
 	
 	/**
 	Constructs a new set handler.
 	
 	- parameter data: the position of file and metadata to be added.
 	- parameter library: the collection from which the files will be listed.
-	- parameter previousListFound: the array of Files of the last result set.
+	- parameter lastsearch: the array of Files of the last result set.
 	*/
-    init(data: [String], library: Library, previousListFound: [MMFile]) {
+    init(data: [String], library: Library, lastsearch: [MMFile]) {
         self.data = data
         self.library = library
-        self.previousListFound = previousListFound
+        self.lastsearch = lastsearch
     }
     
     func execute() throws {
@@ -362,7 +362,7 @@ class SetCommand : MMCommand {
         let key : String = data.removeFirst()
         let valueToModify : String = data.removeFirst()
         let dataToAdd = Metadata(keyword: key, value: valueToModify)
-        let fileToModify : MMFile = previousListFound[index]
+        let fileToModify : MMFile = lastsearch[index]
         let fileMetadata : [MMMetadata] = fileToModify.metadata
         
         
@@ -392,16 +392,16 @@ class DeleteCommand : MMCommand {
     var results: MMResultSet? = nil
     var library: Library
     var data: [String]
-    var previousListFound: [MMFile]
+    var lastsearch: [MMFile]
     
-    init(data: [String], library: Library, previousListFound: [MMFile]) {
+    init(data: [String], library: Library, lastsearch: [MMFile]) {
         self.data = data
         self.library = library
-        self.previousListFound = previousListFound
+        self.lastsearch = lastsearch
     }
     
     func execute() throws {
-        // Ensure the user passed at least two parameters
+        // Ensure the user passed at least three parameters
         guard data.count > 2 else {
             throw MMCliError.invalidParameters
         }
@@ -411,8 +411,54 @@ class DeleteCommand : MMCommand {
         let key : String = data.removeFirst()
         let valueToDel : String = data.removeFirst()
         let dataToDel = Metadata(keyword: key, value: valueToDel)
-        let delFile : MMFile = previousListFound[index]
+        let delFile : MMFile = lastsearch[index]
         
         library.remove(metadata: dataToDel, file: delFile)
+    }
+}
+
+class SaveSearchCommand : MMCommand {
+    var results: MMResultSet? = nil
+    var data: [String]
+    var lastsearch: [MMFile]
+    
+    init(data: [String], lastsearch: [MMFile]) {
+        self.data = data
+        self.lastsearch = lastsearch
+    }
+    
+    func execute() throws {
+        // Ensure the user passed at least one parameter
+        guard data.count > 0 else {
+            throw MMCliError.invalidParameters
+        }
+        
+        let fileName: String = data.removeFirst()
+        let exporter : FileExporter = FileExporter()
+        
+        try exporter.write(filename: fileName, items: lastsearch)
+    }
+}
+
+class SaveCommand : MMCommand {
+    var results: MMResultSet? = nil
+    var data: [String]
+    var library: Library
+    
+    init(data: [String], library: Library) {
+        self.data = data
+        self.library = library
+    }
+    
+    func execute() throws {
+        // Ensure the user passed at least one parameter
+        guard data.count > 0 else {
+            throw MMCliError.invalidParameters
+        }
+        
+        let fileName: String = data.removeFirst()
+        let exporter : FileExporter = FileExporter()
+        
+        try exporter.write(filename: fileName, items: library.files)
     }
 }

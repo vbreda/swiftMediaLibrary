@@ -118,7 +118,8 @@ class Library : MMCollection {
      - Returns: none.
      */
     func remove(metadata: MMMetadata, file: MMFile)  {
-        print("Modifying .....")
+        print("Modifying .....") //TEST
+        //TODO make sure it checks if metadata exists
     }
 	
 }
