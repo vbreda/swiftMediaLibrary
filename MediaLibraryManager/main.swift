@@ -50,7 +50,7 @@ while let line = prompt("> ") {
         case "set":
             command = SetCommand(data: parts, library: library, previousListFound: try last.getAll())
             break
-        case "del"
+		case "del":
             command = DeleteCommand(data: parts, library: library, previousListFound: try last.getAll())
             break
         case "save-search", "save":
