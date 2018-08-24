@@ -45,17 +45,19 @@ while let line = prompt("> ") {
             command = ListCommand(keyword: parts, library: library)
             break
         case "add":
-            command = AddCommand(data: parts, library: library, previousListFound: try last.getAll())
+            command = AddCommand(data: parts, library: library, lastsearch: try last.getAll())
             break
         case "set":
-            command = SetCommand(data: parts, library: library, previousListFound: try last.getAll())
+            command = SetCommand(data: parts, library: library, lastsearch: try last.getAll())
             break
 		case "del":
-            command = DeleteCommand(data: parts, library: library, previousListFound: try last.getAll())
+            command = DeleteCommand(data: parts, library: library, lastsearch: try last.getAll())
             break
-        case "save-search", "save":
-            command = UnimplementedCommand()
+        case "save-search":
+            command = SaveSearchCommand(data: parts, lastsearch: try last.getAll())
             break
+        case "save":
+            command = SaveCommand(data: parts, library: library)
         case "help":
             command = HelpCommand()
             break
