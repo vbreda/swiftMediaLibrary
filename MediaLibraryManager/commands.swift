@@ -459,6 +459,6 @@ class SaveCommand : MMCommand {
         let fileName: String = data.removeFirst()
         let exporter : FileExporter = FileExporter()
         
-        try exporter.write(filename: fileName, items: library.files)
+        try exporter.write(filename: fileName, items: library.all())
     }
 }

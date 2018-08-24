@@ -60,7 +60,13 @@ class Library : MMCollection {
 	func add(metadata: MMMetadata, file: MMFile)  {
 		
 		// Some metadata and the file to add it to?
+		var i: Int = 0
 		for f in files {
+			if f as! File == file as! File {
+				//f.metadata.append(metadata)
+				files[i].metadata.append(metadata)
+			}
+			i += 1
 		}
 		
 	}
