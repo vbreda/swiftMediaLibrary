@@ -19,7 +19,7 @@ class Library : MMCollection {
 	- Returns: String: String representation of the library.
 	*/
 	var description: String {
-		return "Your media library contains \(files.count) files."
+		return "> Media library contains \(count) files."
 	}
 	
 	/**

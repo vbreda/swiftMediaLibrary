@@ -57,7 +57,7 @@ class MMResultSet {
             return
         }
         for (i,file) in self.results.enumerated() {
-            print("\(i): \(file)")
+            print("\t\(i): \(file)")
         }
     }
     
@@ -224,13 +224,13 @@ class LoadCommand: MMCommand {
         // Confirm to the user that the Library grew in size
         let newCount = library.count
         let diff = newCount-oldCount
-        print ("\(diff) files loaded successfully.")
+        print ("> \(diff) files loaded successfully.")
         if newCount > oldCount {
             // Print out the names of the added files
             var allFiles = library.all()
 			var index: Int = 1
             for i in library.count-diff...library.count-1 {
-                print("\(index): \(allFiles[i].filename)")
+                print("\t\(index): \(allFiles[i].filename)")
 				index += 1
             }
         }
