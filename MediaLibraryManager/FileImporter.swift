@@ -51,11 +51,45 @@ class FileImporter : MMFileImport {
 		
         do {
 			
-            let path = URL(fileURLWithPath: filename)
+			//let fileManager = FileManager.default
+			//let path1 = fileManager.currentDirectoryPath
+			
+			//let homeDirectory = fileManager.homeDirectoryForCurrentUser
+			
+			
+			//let currentWorkingDirectory = fileManager.currentDirectoryPath
+//			let path1 = fileManager.currentDirectoryPath
+//			let homeDirectory = URL(fileURLWithPath: path1)
+			
+			
+			//let docURL = URL(homeDirectory.absoluteString)
+//			let test = homeDirectory.appendingPathComponent(filename)
+			
+			//print("doc URL \(docURL)")
+//			print("test \(test)")
+			
+			//print(path1)
+
+//			do {
+//				let contents = try fileManager.contentsOfDirectory(atPath: path1)
+//				for i in contents {
+//					print(i)
+//				}
+//			} catch {
+//				//error
+//			}
+			
 			
 			//let homeDirectory = URL(fileURLWithPath: "/Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/")
-			//let path = URL(fileURLWithPath: filename, relativeTo: homeDirectory)
+//			print()
+//			print(homeDirectory)
+//			let path = URL(fileURLWithPath: filename, relativeTo: homeDirectory)
+//			print()
+//			print("PATH AFTER appending relative to")
+//			print(path)
+//			print()
 			
+			let path = URL(fileURLWithPath: filename)
             let decoder = JSONDecoder()
             var mediaArray : [Media] = []
             
