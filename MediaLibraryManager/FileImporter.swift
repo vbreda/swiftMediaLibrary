@@ -161,7 +161,34 @@ class FileImporter : MMFileImport {
 
 		// "No need to validate the media path or media name, we won't
         // be testing with bad data of these" - Paul 22/08/18
-     
+		
+		
+		
+		//	/// Identifying and checking the validity/type of media file
+		//	///
+		//	/// - Parameters:
+		//	/// - check: The Files that we are checking the type for
+		//	func checkType(check: MMFile) throws -> String {
+		//		var keys = [String]()
+		//		for meta in check.metadata {
+		//			keys.append(meta.keyword)
+		//		}
+		//		if !keys.contains("creator") {
+		//			throw MMCliError.invalidMediaMetadata
+		//		} else {
+		//			if keys.contains("runtime") && keys.contains("resolution"){
+		//				return "video"
+		//			} else if keys.contains("runtime") {
+		//				return "audio"
+		//			} else if keys.contains("resolution") {
+		//				return "image"
+		//			} else {
+		//				return "document"
+		//			}
+		//		}
+		//	}
+		//}
+		
         if let unwrappedCreator = creator {
             
             // Validate specific data for each type
