@@ -61,9 +61,13 @@ class FileImporter : MMFileImport {
 			} else {
 				let working = fileManager.currentDirectoryPath
 				let workingDirectory = URL(fileURLWithPath: working)
+				
+				// TODO remove this when you've got it ;)
 				print()
 				print("\tVivian put your files here: ")
 				print("\t\(workingDirectory)")
+				print()
+				
 				filePath = workingDirectory.appendingPathComponent(filename)
 			}
 

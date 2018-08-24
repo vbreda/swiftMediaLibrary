@@ -64,6 +64,6 @@ class File: MMFile {
 	- returns: String String representation of the File.
 	*/
 	var description: String {
-        return "\(filename) creator: \(creator)"
+		return "\(filename) \(metadata)"
 	}
 }

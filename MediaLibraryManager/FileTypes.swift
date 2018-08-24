@@ -33,9 +33,9 @@ class Image : File {
         super.init(metadata: metadata, filename: filename, path: path, creator: creator)
     }
 	
-    override var description: String {
-		return super.description + ", resolution: \(resolution)"
-    }
+//    override var description: String {
+//		return super.description + ", resolution: \(resolution)"
+//    }
 }
 
 /**
@@ -78,9 +78,9 @@ class Video : File {
         super.init(metadata: metadata, filename: filename, path: path, creator: creator)
     }
 	
-    override var description: String {
-        return super.description + ", resolution: \(resolution), runtime: \(runtime)"
-    }
+//    override var description: String {
+//        return super.description + ", resolution: \(resolution), runtime: \(runtime)"
+//    }
 }
 
 /**
@@ -108,9 +108,6 @@ class Audio : File {
         super.init(metadata: metadata, filename: filename, path: path, creator: creator)
     }
 	
-    override var description: String {
-        return super.description + ", runtime: \(runtime)"
-    }
 }
 
 /**

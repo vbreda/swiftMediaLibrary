@@ -47,6 +47,6 @@ class Metadata: MMMetadata {
 	- returns: String String representation of the metadata.
 	*/
 	var description: String {
-		return "One Metadata keypair. \(self.keyword): \(self.value)"
+		return "\(self.keyword): \(self.value)"
 	}
 }
