@@ -51,58 +51,35 @@ class FileImporter : MMFileImport {
 		
         do {
 			
-			//let fileManager = FileManager.default
-			//let path1 = fileManager.currentDirectoryPath
+			let fileManager = FileManager.default
+			var filePath: URL
 			
-			//let homeDirectory = fileManager.homeDirectoryForCurrentUser
-			
-			
-			//let currentWorkingDirectory = fileManager.currentDirectoryPath
-//			let path1 = fileManager.currentDirectoryPath
-//			let homeDirectory = URL(fileURLWithPath: path1)
-			
-			
-			//let docURL = URL(homeDirectory.absoluteString)
-//			let test = homeDirectory.appendingPathComponent(filename)
-			
-			//print("doc URL \(docURL)")
-//			print("test \(test)")
-			
-			//print(path1)
+			// Create full file path depending on user input
+			if filename.hasPrefix("/") || filename.hasPrefix("~") {
+				let directory = NSString(string: filename).expandingTildeInPath
+				filePath = URL(fileURLWithPath: directory)
+			} else {
+				let working = fileManager.currentDirectoryPath
+				let workingDirectory = URL(fileURLWithPath: working)
+				print()
+				print("\tVivian put your files here: ")
+				print("\t\(workingDirectory)")
+				filePath = workingDirectory.appendingPathComponent(filename)
+			}
 
-//			do {
-//				let contents = try fileManager.contentsOfDirectory(atPath: path1)
-//				for i in contents {
-//					print(i)
-//				}
-//			} catch {
-//				//error
-//			}
-			
-			
-			//let homeDirectory = URL(fileURLWithPath: "/Users/nikolahpearce/346/assignment-one-media-manager-library-brevi593/MediaLibraryManager/")
-//			print()
-//			print(homeDirectory)
-//			let path = URL(fileURLWithPath: filename, relativeTo: homeDirectory)
-//			print()
-//			print("PATH AFTER appending relative to")
-//			print(path)
-//			print()
-			
-			let path = URL(fileURLWithPath: filename)
+			// Decode the json data into array of Media structs
             let decoder = JSONDecoder()
             var mediaArray : [Media] = []
             
             do {
-				
-                let data = try Data(contentsOf: path)
+                let data = try Data(contentsOf: filePath)
 				mediaArray = try decoder.decode([Media].self, from: data)
             } catch {
                 print("Invalid JSON file... Check your filename, path and/or contents.")
             }
 			
+			// Convert from Media struct into true File, if valid
 			for m in mediaArray {
-			
 				if let validatedFile = try validateMedia(media: m) {
 					// TODO check our current library for duplicate path&file.
 					// We do not want duplicates.
@@ -161,8 +138,6 @@ class FileImporter : MMFileImport {
 
 		// "No need to validate the media path or media name, we won't
         // be testing with bad data of these" - Paul 22/08/18
-		
-		
 		
 		//	/// Identifying and checking the validity/type of media file
 		//	///
