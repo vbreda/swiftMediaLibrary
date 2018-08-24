@@ -19,7 +19,6 @@ extension MMMetadata {
 	}
 }
 
-
 /**
 Creates the metadata for a media file.
 

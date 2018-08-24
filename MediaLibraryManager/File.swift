@@ -19,6 +19,29 @@ extension MMFile {
 	}
 }
 
+// here we're actually keeping track of the concrete instances
+//private var _metadata: [ConcreteMetadata] = []
+
+// here we're converting the instances so that we can obey the
+// MMFile protocol
+//var metadata: [MMMetadata] {
+//	get{
+//		var result: [MMMetadata] = []
+//		for m in self._metadata{
+//			result.append(m as MMMetadata)
+//		}
+//		return result
+//	}
+//	set(value){
+//		var result: [ConcreteMetadata] = []
+//		for v in value {
+//			if let m = v as? ConcreteMetadata{
+//				result.append(m)
+//			}
+//		}
+//		_metadata = result
+//	}
+//}
 /**
 Creates a media file with metadata.
 
