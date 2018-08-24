@@ -8,6 +8,18 @@
 
 import Foundation
 
+extension MMMetadata {
+	
+	static func == (lhs: Self, rhs: MMMetadata) -> Bool {
+		return lhs.keyword == rhs.keyword && lhs.value == rhs.value
+	}
+	
+	static func != (lhs: Self, rhs: MMMetadata) -> Bool{
+		return !(lhs == rhs)
+	}
+}
+
+
 /**
 Creates the metadata for a media file.
 

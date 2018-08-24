@@ -12,7 +12,7 @@ class Library : MMCollection {
 	
 	// Static array of files, only want one instance ever
 	//static var files: [MMFile] = []
-	var files: [MMFile] = []
+	private var files: [MMFile] = []
 	
 	/**
 	String representation of the Media Library collection

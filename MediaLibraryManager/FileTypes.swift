@@ -34,7 +34,7 @@ class Image : File {
     }
 	
     override var description: String {
-		return super.description + ", resolution: \(resolution) original *****:\(originalResolution)"
+		return super.description + ", resolution: \(resolution)"
     }
 }
 

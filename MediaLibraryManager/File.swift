@@ -8,6 +8,17 @@
 
 import Foundation
 
+extension MMFile {
+	
+	static func == (lhs: Self, rhs: MMFile) -> Bool {
+		return lhs.filename == rhs.filename && lhs.path == rhs.path
+	}
+	
+	static func != (lhs: Self, rhs: MMFile) -> Bool{
+		return !(lhs == rhs)
+	}
+}
+
 /**
 Creates a media file with metadata.
 
