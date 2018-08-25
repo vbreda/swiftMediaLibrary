@@ -224,7 +224,11 @@ class LoadCommand: MMCommand {
         // Confirm to the user that the Library grew in size
         let newCount = library.count
         let diff = newCount-oldCount
-        print ("> \(diff) files loaded successfully.")
+		if diff != 0 {
+			print ("> \(diff) files loaded successfully")
+		} else {
+			print ("> \(diff) file loaded successfully")
+		}
         if newCount > oldCount {
             // Print out the names of the added files
             var allFiles = library.all()
