@@ -40,6 +40,13 @@ struct Media : Codable {
 class FileImporter : MMFileImport {
 	
 	/**
+	Constructs a new File Validator
+	*/
+	init() {
+		
+	}
+	
+	/**
 	Support importing the media collection from a file (by name)
 	
 	- parameter filename: the full path to the file including file name.
@@ -79,50 +86,78 @@ class FileImporter : MMFileImport {
                 let data = try Data(contentsOf: filePath)
 				mediaArray = try decoder.decode([Media].self, from: data)
             } catch {
-                print("Invalid JSON file... Check your filename, path and/or contents.")
+                print("> Invalid JSON file...")
+				print("\tCheck your filename, path and/or contents and try again.")
             }
 			
+			
 			// Convert from Media struct into true File, if valid
+			let validator: FileValidator = FileValidator()
+			
 			for m in mediaArray {
-				if let validatedFile = try validateMedia(media: m) {
 					// TODO check our current library for duplicate path&file.
 					// We do not want duplicates.
+				if let validatedFile = try validator.validate(media: m) {
 					filesValidated.append(validatedFile)
+				} else {
+					print("Made it inside errors")
+					let errors = validator.getErrorMessages()
+					for e in errors {
+						print("\t\(e)")
+					}
 				}
 			}
         } catch MMValidationError.invalidType {
-            print("Invalid file type, expecting image document audio or video.")
+            print("> Invalid file type, expecting image document audio or video.")
         } catch MMValidationError.invalidMetadataForType {
-            print("Invalid metadata for provided media type.")
+            print("> Invalid metadata for provided media type.")
         } catch MMValidationError.duplicateMedia {
-            print("File not loaded - identical file already in library.")
+            print("> File not loaded - identical file already in library.")
         }
 		
 		return filesValidated
 	}
+}
+
+class FileValidator {
+	
+	// Dictionaries that store valid metadata needed
+	private let validImage = ["resolution": true, "runtime": false,"creator": true]
+	private let validDocument = ["resolution": false, "runtime": false,"creator": true]
+	private let validVideo = ["resolution": true, "runtime": true,"creator": true]
+	private let validAudio = ["resolution": false, "runtime": false,"creator": true]
+
+	private var errorMessages: [String] = []
+	
+	private var type: String = ""
+	private var filename: String = ""
+	private var path: String = ""
+	private var creator: String?
+	private var res: String?
+	private var runtime: String?
+	
+	private var mdata: [Metadata] = []
+	private var keys: [String] = []
+	private var validatedFile: MMFile? = nil
+
 	
 	/**
-	Designed to validate Files depending upon their type.
-	
-	Performs type checking and required metadata checking.
-	Throws MMValidationErrors where media does not conform.
+	Sets up the Validator for the new File
 	
 	- parameter Media: the Media struct to validate as a File
-	- returns: MMFile? the validated File
 	*/
-	func validateMedia(media: Media) throws -> MMFile? {
+	init() {
+		clearFields()
+	}
+
+	func validate(media: Media) throws -> MMFile? {
 		
-		let type: String = media.type
-		let filename: String = getFilename(fullpath: media.fullpath)
-		let path: String = getPath(fullpath: media.fullpath)
-		var creator: String?
-		var res: String?
-		var runtime: String?
+		clearFields()
+
+		type = media.type
+		filename = getFilename(fullpath: media.fullpath)
+		path = getPath(fullpath: media.fullpath)
 		
-		var mdata: [Metadata] = []
-		
-		// File to hold media once validated
-		var validatedFile: MMFile? = nil
 		
 		// Loop through to fill the required values
 		for (key, value) in media.metadata {
@@ -137,105 +172,187 @@ class FileImporter : MMFileImport {
 			}
 			let tempMetadata : Metadata = Metadata(keyword: key, value: value)
 			mdata.append(tempMetadata)
-			
+			keys.append(key)
 		}
-
-		// "No need to validate the media path or media name, we won't
-        // be testing with bad data of these" - Paul 22/08/18
 		
-		//	/// Identifying and checking the validity/type of media file
-		//	///
-		//	/// - Parameters:
-		//	/// - check: The Files that we are checking the type for
-		//	func checkType(check: MMFile) throws -> String {
-		//		var keys = [String]()
-		//		for meta in check.metadata {
-		//			keys.append(meta.keyword)
-		//		}
-		//		if !keys.contains("creator") {
-		//			throw MMCliError.invalidMediaMetadata
-		//		} else {
-		//			if keys.contains("runtime") && keys.contains("resolution"){
-		//				return "video"
-		//			} else if keys.contains("runtime") {
-		//				return "audio"
-		//			} else if keys.contains("resolution") {
-		//				return "image"
-		//			} else {
-		//				return "document"
-		//			}
-		//		}
-		//	}
-		//}
-		
-        if let unwrappedCreator = creator {
-            
-            // Validate specific data for each type
-            switch(type) {
-                case "image" :
-                    if let imageRes = res {
-                        validatedFile = Image(metadata: mdata, filename: filename, path: path, creator: unwrappedCreator, resolution: imageRes)
-                    } else {
-                        throw MMValidationError.invalidMetadataForType
-                    }
-                    break
-            case "document":
-                    validatedFile = Document(metadata: mdata, filename: filename, path: path, creator: unwrappedCreator)
-                    break
-                case "video":
-                    if let videoRes = res, let videoRuntime = runtime {
-                        validatedFile = Video(metadata: mdata, filename: filename, path: path, creator: unwrappedCreator, resolution: videoRes, runtime: videoRuntime)
-                    } else {
-                        throw MMValidationError.invalidMetadataForType
-                    }
-                    break
-                case "audio":
-                    if let audioRuntime = runtime {
-                        validatedFile = Audio(metadata: mdata, filename: filename, path: path, creator: unwrappedCreator, runtime: audioRuntime)
-                    } else {
-                        throw MMValidationError.invalidMetadataForType
-                    }
-                    break
-                default:
-                    throw MMValidationError.invalidType
-                }
-            return validatedFile
-        } else {
-            throw MMValidationError.invalidMetadataForType
-        }
+		let validType = try validateType()
+		if validType {
+			validatedFile = try createFile()
+		}
+		return validatedFile
 	}
-    
-    /**
-     Calculates a filename of a file from the fullpath string.
-     
-     - parameters: fullpath: the full path to the file including file name.
-     - returns: String: the name of the file.
-     */
-    func getFilename(fullpath: String) -> String {
-        
-        var parts = fullpath.split(separator: "/")
-        let name = String(parts[parts.count-1])
-        return name
-    }
-    
-    /**
-     Calculates a path to a file from the fullpath string.
-     
-     - parameters: fullpath: the full path to the file including file name.
-     - returns: String: the path to the file.
-     */
-    func getPath(fullpath: String) -> String {
-        
-        var parts = fullpath.split(separator: "/")
-        var path: String = ""
-        let lastIndex = parts.count-2
-        for i in 0...lastIndex {
-            if parts[i] != "~" {
-                path += "/"
-            }
-            path += parts[i]
-        }
-        return path
-    }
+	
+	/**
+	Designed to validate Files depending upon their type.
+	
+	Performs type checking and required metadata checking.
+	Throws MMValidationErrors where media does not conform.
+	
+	- parameter Media: the Media struct to validate as a File
+	- returns: MMFile? the validated File
+	*/
+	func validateType() throws -> Bool {
+		
+		var typeValid: Bool = true
+		
+		switch(type) {
+		case "image" :
+			for (keyword, compulsory) in validImage {
+				if compulsory == true && !keys.contains(keyword) {
+					typeValid = false
+				}
+			}
+			break
+		case "document":
+			for (keyword, compulsory) in validDocument {
+				if compulsory == true && !keys.contains(keyword) {
+					typeValid = false
+				}
+			}
+			break
+		case "video":
+			for (keyword, compulsory) in validVideo {
+				if compulsory == true && !keys.contains(keyword) {
+					typeValid = false
+				}
+			}
+			break
+		case "audio":
+			for (keyword, compulsory) in validAudio {
+				if compulsory == true && !keys.contains(keyword) {
+					typeValid = false
+				}
+			}
+			break
+		default:
+			// Missing compulsory metadata keys
+			errorMessages.append("\(filename) not loaded. Missing required metadata.")
+		}
+		return typeValid
+	}
+	
+	/**
+	Creates the MMFile if type is valid.
+	
+	- returns: MMFile? the file created.
+	*/
+	func createFile() throws -> MMFile? {
+		switch(type) {
+			case "image" :
+				validatedFile = Image(metadata: mdata, filename: filename, path: path, creator: creator!, resolution: res!)
+				break
+			case "document":
+				validatedFile = Document(metadata: mdata, filename: filename, path: path, creator: creator!)
+				break
+			case "video":
+				validatedFile = Video(metadata: mdata, filename: filename, path: path, creator: creator!, resolution: res!, runtime: runtime!)
+				break
+			case "audio":
+				validatedFile = Audio(metadata: mdata, filename: filename, path: path, creator: creator!, runtime: runtime!)
+				break
+			default:
+				throw MMValidationError.invalidType
+		}
+		return validatedFile!
+	}
+	
+	/**
+	Clears and resets all data fields.
+	*/
+	func clearFields() {
+		type = ""
+		filename = ""
+		path = ""
+		creator = nil
+		res = nil
+		runtime = nil
+		mdata = []
+		keys = []
+		validatedFile = nil
+	}
+	
+	/**
+	Returns any error message created.
+	- returns: String the error message created
+	*/
+	func getErrorMessages() -> [String] {
+		return errorMessages
+	}
+	
+	/**
+	Calculates a filename of a file from the fullpath string.
+	
+	- parameters: fullpath: the full path to the file including file name.
+	- returns: String: the name of the file.
+	*/
+	func getFilename(fullpath: String) -> String {
+		
+		var parts = fullpath.split(separator: "/")
+		let name = String(parts[parts.count-1])
+		return name
+	}
+	
+	/**
+	Calculates a path to a file from the fullpath string.
+	
+	- parameters: fullpath: the full path to the file including file name.
+	- returns: String: the path to the file.
+	*/
+	func getPath(fullpath: String) -> String {
+		
+		var parts = fullpath.split(separator: "/")
+		var path: String = ""
+		let lastIndex = parts.count-2
+		for i in 0...lastIndex {
+			if parts[i] != "~" {
+				path += "/"
+			}
+			path += parts[i]
+		}
+		return path
+	}
+
 }
+
+
+
+
+// "No need to validate the media path or media name, we won't
+// be testing with bad data of these" - Paul 22/08/18
+
+//        if let unwrappedCreator = creator {
+//
+//            // Validate specific data for each type
+//            switch(type) {
+//                case "image" :
+//                    if let imageRes = res {
+//                        validatedFile = Image(metadata: mdata, filename: filename, path: path, creator: unwrappedCreator, resolution: imageRes)
+//                    } else {
+//                        throw MMValidationError.invalidMetadataForType
+//                    }
+//                    break
+//            case "document":
+//                    validatedFile = Document(metadata: mdata, filename: filename, path: path, creator: unwrappedCreator)
+//                    break
+//                case "video":
+//                    if let videoRes = res, let videoRuntime = runtime {
+//                        validatedFile = Video(metadata: mdata, filename: filename, path: path, creator: unwrappedCreator, resolution: videoRes, runtime: videoRuntime)
+//                    } else {
+//                        throw MMValidationError.invalidMetadataForType
+//                    }
+//                    break
+//                case "audio":
+//                    if let audioRuntime = runtime {
+//                        validatedFile = Audio(metadata: mdata, filename: filename, path: path, creator: unwrappedCreator, runtime: audioRuntime)
+//                    } else {
+//                        throw MMValidationError.invalidMetadataForType
+//                    }
+//                    break
+//                default:
+//                    throw MMValidationError.invalidType
+//                }
+//            return validatedFile
+//        } else {
+//            throw MMValidationError.invalidMetadataForType
+//        }
 
