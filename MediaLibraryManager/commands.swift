@@ -128,23 +128,23 @@ class HelpCommand: MMCommand {
         // load foo.json bar.json
         //      from the current directory load both foo.json and bar.json and
         //      merge the results
-		
-		//		> list
-		//		0: Paul
-		//		1: Hamza
-		//		> add 0 likes coffee
-		//		> search coffee
-		//		0: Paul
-
+        
+        //		> list
+        //		0: Paul
+        //		1: Hamza
+        //		> add 0 likes coffee
+        //		> search coffee
+        //		0: Paul
+        
         // list foo bar baz
         //      results in a set of files with metadata containing foo OR bar OR baz
-		
-		//		> list python
-		//		0: Paul
-		//		> list swift
-		//		0: Paul
-		//		1: Hamza
-		
+        
+        //		> list python
+        //		0: Paul
+        //		> list swift
+        //		0: Paul
+        //		1: Hamza
+        
         // add 3 foo bar
         //      using the results of the previous list, add foo=bar to the file
         //      at index 3 in the list
@@ -161,11 +161,11 @@ class HelpCommand: MMCommand {
 }
 
 /**
-Handle the quit command.
-
-Exits the program (with exit code 0) without
-checking if there is anything to save.
-*/
+ Handle the quit command.
+ 
+ Exits the program (with exit code 0) without
+ checking if there is anything to save.
+ */
 class QuitCommand : MMCommand {
     var results: MMResultSet? = nil
     func execute() throws{
@@ -173,10 +173,10 @@ class QuitCommand : MMCommand {
     }
 }
 /**
-Handle the load command.
-
-It loads files into the collection.
-*/
+ Handle the load command.
+ 
+ It loads files into the collection.
+ */
 class LoadCommand: MMCommand {
     var results: MMResultSet? = nil
     var library : Library
@@ -228,21 +228,21 @@ class LoadCommand: MMCommand {
         if newCount > oldCount {
             // Print out the names of the added files
             var allFiles = library.all()
-			var index: Int = 1
+            var index: Int = 1
             for i in library.count-diff...library.count-1 {
                 print("\t\(index): \(allFiles[i].filename)")
-				index += 1
+                index += 1
             }
         }
     }
 }
 
 /**
-Handle the list command.
-
-It lists the files contained in the collection.
-Either listing by a keyword (aka searching) or listing all files.
-*/
+ Handle the list command.
+ 
+ It lists the files contained in the collection.
+ Either listing by a keyword (aka searching) or listing all files.
+ */
 class ListCommand : MMCommand {
     var results: MMResultSet? = nil
     var library: Library
@@ -280,24 +280,24 @@ class ListCommand : MMCommand {
 }
 
 /**
-Handle the add command.
-
-It adds the given metadata keypair to the file at given position.
-Position specified depends on the previous results set of the last command.
-*/
+ Handle the add command.
+ 
+ It adds the given metadata keypair to the file at given position.
+ Position specified depends on the previous results set of the last command.
+ */
 class AddCommand : MMCommand {
     var results: MMResultSet? = nil
     var library: Library
     var data: [String]
     var lastsearch: [MMFile]
     
-	/**
-	Constructs a new add handler.
-	
-	- parameter data: the position of file and metadata to be added.
-	- parameter library: the collection from which the files will be listed.
-	- parameter lastsearch: the array of Files of the last result set.
-	*/
+    /**
+     Constructs a new add handler.
+     
+     - parameter data: the position of file and metadata to be added.
+     - parameter library: the collection from which the files will be listed.
+     - parameter lastsearch: the array of Files of the last result set.
+     */
     init(data: [String], library: Library, lastsearch: [MMFile]) {
         self.data = data
         self.library = library
@@ -326,25 +326,25 @@ class AddCommand : MMCommand {
 }
 
 /**
-Handles the set command.
-
-It adds the given metadata keypair to the file at given position,
-first removing the original metadata.
-A set is a delete followed by an add.
-*/
+ Handles the set command.
+ 
+ It adds the given metadata keypair to the file at given position,
+ first removing the original metadata.
+ A set is a delete followed by an add.
+ */
 class SetCommand : MMCommand {
     var results: MMResultSet? = nil
     var library: Library
     var data: [String]
     var lastsearch: [MMFile]
-	
-	/**
-	Constructs a new set handler.
-	
-	- parameter data: the position of file and metadata to be added.
-	- parameter library: the collection from which the files will be listed.
-	- parameter lastsearch: the array of Files of the last result set.
-	*/
+    
+    /**
+     Constructs a new set handler.
+     
+     - parameter data: the position of file and metadata to be added.
+     - parameter library: the collection from which the files will be listed.
+     - parameter lastsearch: the array of Files of the last result set.
+     */
     init(data: [String], library: Library, lastsearch: [MMFile]) {
         self.data = data
         self.library = library
@@ -382,12 +382,12 @@ class SetCommand : MMCommand {
 }
 
 /**
-Handles the delete command.
-
-It deletes the given metadata keypair from the file at given position,
-if and only if that metadata is an optional keypair.
-Does not delete required metadata.
-*/
+ Handles the delete command.
+ 
+ It deletes the given metadata keypair from the file at given position,
+ if and only if that metadata is an optional keypair.
+ Does not delete required metadata.
+ */
 class DeleteCommand : MMCommand {
     var results: MMResultSet? = nil
     var library: Library
@@ -401,19 +401,30 @@ class DeleteCommand : MMCommand {
     }
     
     func execute() throws {
-        // Ensure the user passed at least three parameters
-        guard data.count > 2 else {
+        // Ensure the user passed at least two parameters
+        guard data.count > 1 else {
             throw MMCliError.invalidParameters
         }
         
         //TODO add a loop to delete more than one at a time.
         let index = Int(data.removeFirst())!
-        let key : String = data.removeFirst()
-        let valueToDel : String = data.removeFirst()
-        let dataToDel = Metadata(keyword: key, value: valueToDel)
+        let key: String = data.removeFirst()
+        var dataToDel: MMMetadata = Metadata(keyword: "", value: "")
         let delFile : MMFile = lastsearch[index]
         
-        library.remove(metadata: dataToDel, file: delFile)
+        //TODO throw an exception isntead of using i
+        var i = 0
+        for d in delFile.metadata {
+            if d.keyword == key {
+                dataToDel = d
+                i = 1
+                library.remove(metadata: dataToDel, file: delFile)
+                break
+            }
+        }
+        if (i == 0) {
+            print ("Keyword not found.")
+        }
     }
 }
 
