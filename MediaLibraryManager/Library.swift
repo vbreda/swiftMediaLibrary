@@ -124,8 +124,22 @@ class Library : MMCollection {
      - Returns: none.
      */
     func remove(metadata: MMMetadata, file: MMFile)  {
-        print("Modifying .....") //TEST
-        //TODO make sure it checks if metadata exists
+        var i: Int = 0
+        var index: Int = 0
+        var valremoved: MMMetadata
+        
+        for f in files {
+            if f as! File == file as! File {
+                for m in files[i].metadata {
+                    if m as! Metadata == metadata as! Metadata {
+                        valremoved = files[i].metadata.remove(at: index)
+                        print("'\(valremoved)' removed from file \(i)")
+                    }
+                    index += 1
+                }
+            }
+            i += 1
+        }
     }
 	
 }
