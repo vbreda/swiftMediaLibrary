@@ -274,10 +274,7 @@ class ListCommand : MMCommand {
             // lists all the files that have the given term ("list <term>")
         } else {
             let word: String = keywords.removeFirst()
-            
-            //TODO implement search in Library.swift
             let listresults = library.search(term: word)
-            print("Using search")
             self.results = MMResultSet(listresults)
         }
     }
