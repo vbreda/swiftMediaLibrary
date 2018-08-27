@@ -52,15 +52,6 @@ class File: MMFile {
 	}
 	
 	/**
-	String representation of the file's full path
-	
-	- returns: String the fullpath of the file
-	*/
-	var fullpath: String {
-		return path + filename
-	}
-	
-	/**
 	Designated initialiser
 	
 	The properties of the file.
