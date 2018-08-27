@@ -13,19 +13,12 @@ import Foundation
  */
 enum MMValidationError : Error {
     
-    // Thrown if there is something wrong with the JSON file
-    // e.g. grammar or incorrect file path
-    case invalidJSONfile
-    
     // Thrown if there is something wrong with the type of media
     case invalidType
     
     // Thrown if there is something wrong with metadata for a specific type
     // e.g. image does not have resolution
     case invalidMetadataForType
-    
-    // Thrown if a file to be added is already in the library
-    case duplicateMedia
 }
 
 /**
@@ -37,14 +30,13 @@ struct Media : Codable {
 	let metadata: [String: String]
 }
 
+/**
+Reads media in from JSON files.
+
+Performs deserialisation of json data into media struct.
+Validates the found media and prints/catches any errors thrown.
+*/
 class FileImporter : MMFileImport {
-	
-	/**
-	Constructs a new File Validator
-	*/
-	init() {
-		
-	}
 	
 	/**
 	Support importing the media collection from a file (by name)
@@ -89,8 +81,6 @@ class FileImporter : MMFileImport {
 			let validator: FileValidator = FileValidator()
 			
 			for m in mediaArray {
-					// TODO check our current library for duplicate path&file.
-					// We do not want duplicates.
 				if let validatedFile = try validator.validate(media: m) {
 					filesValidated.append(validatedFile)
 				}
@@ -115,8 +105,6 @@ class FileImporter : MMFileImport {
             print("> Invalid file type, expecting image document audio or video.")
         } catch MMValidationError.invalidMetadataForType {
             print("> Invalid metadata for provided media type.")
-        } catch MMValidationError.duplicateMedia {
-            print("> File not loaded - identical file already in library.")
         }
 		
 		return filesValidated

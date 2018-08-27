@@ -10,8 +10,6 @@ import Foundation
 
 class Library : MMCollection {
     
-    // Static array of files, only want one instance ever
-    //static var files: [MMFile] = []
     private var files: [MMFile] = []
     var dictionary : [String:[MMFile]] = [:]
     
@@ -135,7 +133,8 @@ class Library : MMCollection {
     
     /**
      Removes a specific instance of a metadata from a file in the collection.
-     
+     Note not in protocols.swift - added this method ourselves.
+	
      - Parameters: metadata: The item to remove from the file.
      - Parameters: file: file to remove metadata from.
      - Returns: none.
@@ -158,4 +157,25 @@ class Library : MMCollection {
             i += 1
         }
     }
+	
+	/**
+	Checks the current library for this exact file.
+	Note not in protocols.swift - added this method ourselves.
+	
+	- Parameters: file: file to look for in the Library
+	- Returns: true if file already exists in the Library
+	*/
+	func isDuplicate(file: MMFile) -> Bool {
+		var found: Bool = false
+		
+		for f in files {
+			if f as! File == file as! File {
+				found = true
+			}
+		}
+		
+		return found
+	}
+	
+	
 }

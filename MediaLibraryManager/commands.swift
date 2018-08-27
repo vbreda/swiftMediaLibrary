@@ -181,7 +181,7 @@ class LoadCommand: MMCommand {
     var results: MMResultSet? = nil
     var library : Library
     
-    var loadfiles : [String]
+    var jsonFilesToLoad : [String]
     
     /**
      Constructs a new load file handler.
@@ -191,32 +191,39 @@ class LoadCommand: MMCommand {
      */
     init(loadfiles: [String], library: Library) {
         self.library = library
-        self.loadfiles = loadfiles
+        self.jsonFilesToLoad = loadfiles
     }
     
     func execute() throws {
         let oldCount = library.count
         let importer : FileImporter = FileImporter()
         var newFiles : [MMFile] = []
+		var duplicatedNotAdded: [MMFile] = []
         
         // Ensure the user passed at least one parameter
-        guard loadfiles.count > 0 else {
+        guard jsonFilesToLoad.count > 0 else {
             throw MMCliError.invalidParameters
         }
         
         // While there are filenames to read from
-        var i = loadfiles.count
+        var i = jsonFilesToLoad.count
         while i > 0 {
             
             // Get the filename from the parameters
-            let fileName: String = loadfiles.removeFirst()
+            let fileName: String = jsonFilesToLoad.removeFirst()
             
             // Pass the file to the importer
             newFiles = try importer.read(filename: fileName)
-            
             // Add the files to the library
             for f in newFiles {
-                library.add(file: f)
+				
+				// Only add the file if it isn't a duplicate
+				let found = library.isDuplicate(file: f)
+				if !found {
+					library.add(file: f)
+				} else {
+					duplicatedNotAdded.append(f)
+				}
             }
             i = i-1
         }
@@ -224,13 +231,15 @@ class LoadCommand: MMCommand {
         // Confirm to the user that the Library grew in size
         let newCount = library.count
         let diff = newCount-oldCount
-		if diff != 0 {
-			print ("> \(diff) files loaded successfully")
+		
+		if diff == 1 {
+			print ("> \(diff) file added to library")
 		} else {
-			print ("> \(diff) file loaded successfully")
+			print ("> \(diff) files added to library")
 		}
+		
+		// Print out the names of the added files
         if newCount > oldCount {
-            // Print out the names of the added files
             var allFiles = library.all()
             var index: Int = 1
             for i in library.count-diff...library.count-1 {
@@ -238,6 +247,16 @@ class LoadCommand: MMCommand {
                 index += 1
             }
         }
+		
+		// Print out the names of any duplicate files not added
+		if duplicatedNotAdded.count > 0 {
+			print ("> Duplicates found:")
+			var index: Int = 1
+			for d in duplicatedNotAdded {
+				print("\t\(index): \(d.filename) not added")
+				index += 1
+			}
+		}
     }
 }
 
