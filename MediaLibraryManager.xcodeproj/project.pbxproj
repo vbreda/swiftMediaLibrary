@@ -47,13 +47,10 @@
 		2BAD6DFF2122B13300680426 /* FileImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImporter.swift; sourceTree = "<group>"; };
 		2BAD6E012122B14A00680426 /* FileExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileExporter.swift; sourceTree = "<group>"; };
 		2BD4EAEC212D537D00730641 /* halfInvalidHalfValid.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = halfInvalidHalfValid.json; sourceTree = "<group>"; };
-		2BD4EAEF212D5E1700730641 /* test.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
 		CC492DAD212CF7F500D07BE2 /* FileTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTypes.swift; sourceTree = "<group>"; };
 		D3161D2020D748F800EC97E8 /* MediaLibraryManager */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MediaLibraryManager; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3161D2320D748F800EC97E8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		D3161D2C20D749BD00EC97E8 /* protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = protocols.swift; sourceTree = "<group>"; };
-		E87AD8642116B11C008BD6BF /* exampleJsonFile.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exampleJsonFile.json; sourceTree = "<group>"; };
-		E87AD8652116B11C008BD6BF /* exampleMetaData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exampleMetaData.json; sourceTree = "<group>"; };
 		E87AD8662116BAB1008BD6BF /* basicImage.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = basicImage.json; sourceTree = "<group>"; };
 		E87AD8672116BCA6008BD6BF /* basicVideo.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = basicVideo.json; sourceTree = "<group>"; };
 		E87AD8682116BD1F008BD6BF /* basicDocument.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = basicDocument.json; sourceTree = "<group>"; };
@@ -71,15 +68,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2B55D9F221216FC800C0C393 /* ExampleFiles */ = {
-			isa = PBXGroup;
-			children = (
-				E87AD8642116B11C008BD6BF /* exampleJsonFile.json */,
-				E87AD8652116B11C008BD6BF /* exampleMetaData.json */,
-			);
-			path = ExampleFiles;
-			sourceTree = "<group>";
-		};
 		D3161D1720D748F800EC97E8 = {
 			isa = PBXGroup;
 			children = (
@@ -99,7 +87,6 @@
 		D3161D2220D748F800EC97E8 /* MediaLibraryManager */ = {
 			isa = PBXGroup;
 			children = (
-				2B55D9F221216FC800C0C393 /* ExampleFiles */,
 				E87AD8632116AF84008BD6BF /* TestFiles */,
 				D3161D2C20D749BD00EC97E8 /* protocols.swift */,
 				D3161D2320D748F800EC97E8 /* main.swift */,
@@ -111,7 +98,6 @@
 				2BAD6DFD2122B0C900680426 /* Library.swift */,
 				2B55D9F621217C6E00C0C393 /* Metadata.swift */,
 				CC492DAD212CF7F500D07BE2 /* FileTypes.swift */,
-				2BD4EAEF212D5E1700730641 /* test.json */,
 			);
 			path = MediaLibraryManager;
 			sourceTree = "<group>";
