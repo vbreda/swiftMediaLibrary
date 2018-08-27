@@ -127,6 +127,7 @@ class HelpCommand: MMCommand {
 \tsave-search <filename>            - saves the last list results to a file
 \tsave <filename>                   - saves the whole collection to a file
 \tquit                              - exit the program (without prompts)
+\ttest                              - runs the test framework created by Vivian and Nikolah
 """)
         // for example:
         
@@ -554,4 +555,17 @@ class SaveCommand : MMCommand {
 		print("> Collection saved to \(fileName)")
 
     }
+}
+
+class TestCommand : MMCommand {
+	var results: MMResultSet? = nil
+	
+	init() {
+
+	}
+	
+	func execute() throws {
+		print("inside test")
+		
+	}
 }

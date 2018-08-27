@@ -10,6 +10,7 @@
 		2B55D9F52121749C00C0C393 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B55D9F42121749C00C0C393 /* File.swift */; };
 		2B55D9F721217C6E00C0C393 /* Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B55D9F621217C6E00C0C393 /* Metadata.swift */; };
 		2B8751BB212927DF000E687B /* commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8751BA212927DF000E687B /* commands.swift */; };
+		2B8B0D1C2134B6DC00C8A669 /* MediaLibraryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8B0D1B2134B6DC00C8A669 /* MediaLibraryTests.swift */; };
 		2B9B76E02131084E009B69BB /* FileValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9B76DF2131084E009B69BB /* FileValidator.swift */; };
 		2BAD6DFE2122B0C900680426 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD6DFD2122B0C900680426 /* Library.swift */; };
 		2BAD6E002122B13300680426 /* FileImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD6DFF2122B13300680426 /* FileImporter.swift */; };
@@ -42,6 +43,7 @@
 		2B55D9F42121749C00C0C393 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		2B55D9F621217C6E00C0C393 /* Metadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metadata.swift; sourceTree = "<group>"; };
 		2B8751BA212927DF000E687B /* commands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = commands.swift; sourceTree = "<group>"; };
+		2B8B0D1B2134B6DC00C8A669 /* MediaLibraryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLibraryTests.swift; sourceTree = "<group>"; };
 		2B9B76DF2131084E009B69BB /* FileValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileValidator.swift; sourceTree = "<group>"; };
 		2BAD6DFD2122B0C900680426 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		2BAD6DFF2122B13300680426 /* FileImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImporter.swift; sourceTree = "<group>"; };
@@ -90,14 +92,15 @@
 				E87AD8632116AF84008BD6BF /* TestFiles */,
 				D3161D2C20D749BD00EC97E8 /* protocols.swift */,
 				D3161D2320D748F800EC97E8 /* main.swift */,
-				2B55D9F42121749C00C0C393 /* File.swift */,
-				2BAD6E012122B14A00680426 /* FileExporter.swift */,
-				2BAD6DFF2122B13300680426 /* FileImporter.swift */,
-				2B9B76DF2131084E009B69BB /* FileValidator.swift */,
 				2B8751BA212927DF000E687B /* commands.swift */,
 				2BAD6DFD2122B0C900680426 /* Library.swift */,
+				2B55D9F42121749C00C0C393 /* File.swift */,
 				2B55D9F621217C6E00C0C393 /* Metadata.swift */,
 				CC492DAD212CF7F500D07BE2 /* FileTypes.swift */,
+				2BAD6DFF2122B13300680426 /* FileImporter.swift */,
+				2B9B76DF2131084E009B69BB /* FileValidator.swift */,
+				2BAD6E012122B14A00680426 /* FileExporter.swift */,
+				2B8B0D1B2134B6DC00C8A669 /* MediaLibraryTests.swift */,
 			);
 			path = MediaLibraryManager;
 			sourceTree = "<group>";
@@ -187,6 +190,7 @@
 				2BAD6DFE2122B0C900680426 /* Library.swift in Sources */,
 				CC492DAE212CF7F500D07BE2 /* FileTypes.swift in Sources */,
 				2B55D9F52121749C00C0C393 /* File.swift in Sources */,
+				2B8B0D1C2134B6DC00C8A669 /* MediaLibraryTests.swift in Sources */,
 				2BAD6E002122B13300680426 /* FileImporter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
