@@ -160,6 +160,56 @@ class FileValidator {
 	}
 	
 	/**
+	Checks whether a metadata key is OK to delete from a file.
+	
+	- parameter key: the key to check if allowed to delete
+	- returns: true if that key is not compulsory
+	*/
+	func safeToDelete(key: String, typeOfFile: String) throws -> Bool {
+		var allowed: Bool = true
+		
+		switch(typeOfFile) {
+		case "image" :
+			for (keyword, compulsory) in validImage {
+				if keyword == key && compulsory == true {
+					allowed = false
+				}
+			}
+			break
+		case "document":
+			for (keyword, compulsory) in validDocument {
+				if keyword == key && compulsory == true {
+					allowed = false
+				}
+			}
+			break
+		case "video":
+			for (keyword, compulsory) in validVideo {
+				if keyword == key && compulsory == true {
+					allowed = false
+				}
+			}
+			break
+		case "audio":
+			for (keyword, compulsory) in validAudio {
+				if keyword == key && compulsory == true {
+					allowed = false
+				}
+			}
+			break
+		default:
+			allowed = false
+			throw MMCliError.removingRequiredKey
+		}
+		
+		if allowed {
+			return allowed
+		} else {
+			throw MMCliError.removingRequiredKey
+		}
+	}
+	
+	/**
 	Clears and resets all data fields.
 	*/
 	func clearFields() {

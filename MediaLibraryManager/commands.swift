@@ -30,6 +30,9 @@ enum MMCliError: Error {
     
     // Thrown if user trys to reference an index that doesnt exist
     case indexOutOfRange
+	
+	// Thrown if user trys to delete a required metadata per that filetype
+	case removingRequiredKey
 }
 
 /// This class represents a set of results. It could be extended to include
@@ -333,12 +336,12 @@ class AddCommand : MMCommand {
     
     func execute() throws {
         
-        // Ensure the user passed at least two parameters.
+        // Ensure the user passed at least two parameters and the first is an Int.
         guard data.count > 2 && (Int(data[0]) != nil) else {
             throw MMCliError.invalidParameters
         }
         
-        // Ensure there is a result set to use
+        // Ensure there is a previous result set to use
         guard lastsearch.count > 0 else {
             throw MMCliError.missingResultSet
         }
@@ -351,15 +354,16 @@ class AddCommand : MMCommand {
         }
     
         var param = data.count
-        
-        while param > 0 {
+		
+		// Continue adding while there are 2+ data items left
+        while param > 1 {
             let key = data.removeFirst()
             let value = data.removeFirst()
             let newdata = Metadata(keyword: key, value: value)
             let fileToAddTo = lastsearch[index]
-            print("Adding to file: \(fileToAddTo.filename) to the library.")
-            
+			
             library.add(metadata: newdata, file: fileToAddTo)
+			print("> \"\(newdata)\" added to \(fileToAddTo.filename)")
             param -= 2
         }
     }
@@ -404,9 +408,16 @@ class SetCommand : MMCommand {
         }
 
         let index = Int(data.removeFirst())!
+		
+		// Check the index is within acceptable range
+		guard index < lastsearch.count else {
+			throw MMCliError.indexOutOfRange
+		}
+		
         var param = data.count
-        
-        while param > 0 {
+		
+		// Continue setting while there are 2+ data items remaining
+        while param > 1 {
             let key : String = data.removeFirst()
             let valueToModify : String = data.removeFirst()
             let dataToAdd = Metadata(keyword: key, value: valueToModify)
@@ -415,8 +426,11 @@ class SetCommand : MMCommand {
             if fileToModify.metadata.contains(where: {$0.keyword == dataToAdd.keyword}){
                 library.remove(key: key, file: fileToModify)
                 library.add(metadata: dataToAdd, file: fileToModify)
+				print("> \"\(dataToAdd)\" set in \(fileToModify.filename)")
+
             } else {
-                print("\(key) not found.")
+                //print("\(key) not found.")
+				throw MMCliError.dataDoesntExist
             }
             param -= 2
         }
@@ -454,24 +468,35 @@ class DeleteCommand : MMCommand {
             throw MMCliError.missingResultSet
         }
         
-        //TODO add a loop to delete more than one at a time.
         let index = Int(data.removeFirst())!
-        
-        guard index < lastsearch.count else {
-            throw MMCliError.indexOutOfRange
-        }
-        
+		
+		// Check the index is within acceptable range
+		guard index < lastsearch.count else {
+			throw MMCliError.indexOutOfRange
+		}
+		
         var param = data.count
-        
+		let validator: FileValidator = FileValidator()
+		
         while param > 0 {
             
             let key: String = data.removeFirst()
             let delFile : MMFile = lastsearch[index]
-            if delFile.metadata.contains(where: {$0.keyword == key}){
-                library.remove(key: key, file: delFile)
-            } else {
-                print("'\(key)' not found.")
-            }
+			
+			// Is this key allowed to be deleted?
+			//TODO fix type bug
+			let allowed = try validator.safeToDelete(key: key, typeOfFile: "image")
+			if allowed {
+				if delFile.metadata.contains(where: {$0.keyword == key}) {
+					library.remove(key: key, file: delFile)
+					print("> \"\(key)\" deleted from \(delFile.filename)")
+				} else {
+					//print("'\(key)' not found.")
+					throw MMCliError.dataDoesntExist
+				}
+			}
+			
+
             param -= 1
         }
     }

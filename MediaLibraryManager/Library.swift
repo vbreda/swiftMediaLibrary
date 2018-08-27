@@ -75,7 +75,7 @@ class Library : MMCollection {
      */
     func remove(metadata: MMMetadata)  {
         for f in files {
-            //remove(metadata: metadata, file: f)
+			//remove(key: metadata.keyword, file: f)
         }
     }
     
@@ -100,19 +100,6 @@ class Library : MMCollection {
         }
         
         return results
-        // Need to account for WHAT IF NO SEARCH TERM exists? I accidentally through a lldb bug lol sorry
-        //		if let found = dictionary[searchterm] {
-        //			return found
-        //		} else {
-        //			// catch the error?
-        //		}
-        //
-        //		do {
-        //			return dictionary[searchterm]!
-        //		} catch {
-        //			throw MMCliError.dataDoesntExist
-        //		}
-        //return dictionary[searchterm]!
     }
     
     /**
@@ -151,9 +138,9 @@ class Library : MMCollection {
         
         let indexF = files.index(where: {$0.filename == file.filename})
         let indexM = files[indexF!].metadata.index(where: {$0.keyword == key})
-        let valremoved = files[indexF!].metadata.remove(at: indexM!)
-        
-        print("'\(valremoved)' removed from file \(file.filename)")
+        //let valremoved = files[indexF!].metadata.remove(at: indexM!)
+        files[indexF!].metadata.remove(at: indexM!)
+        //print("'\(valremoved)' removed from file \(file.filename)")
     }
     
     /**

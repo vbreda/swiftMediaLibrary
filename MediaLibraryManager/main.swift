@@ -78,16 +78,18 @@ while let line = prompt("> ") {
         }
         
     } catch MMCliError.unknownCommand {
-        print("Command \"\(commandString)\" not found -- see \"help\" for list")
+        print("Command \"\(commandString)\" not found -- see \"help\" for list.")
     } catch MMCliError.invalidParameters {
-        print("Invalid parameters for \"\(commandString)\" -- see \"help\" for list")
+        print("Invalid parameters for \"\(commandString)\" -- see \"help\" for list.")
     } catch MMCliError.unimplementedCommand {
-        print("\"\(commandString)\" is unimplemented")
+        print("\"\(commandString)\" is unimplemented.")
     } catch MMCliError.missingResultSet {
-        print("No previous results to work from ")
+        print("No previous results to work from.")
 	} catch MMCliError.dataDoesntExist {
 		print("Provided term could not be found. Try again.")
 	} catch MMCliError.indexOutOfRange {
 		print("Index provided is out of bounds. Try again.")
+	} catch MMCliError.removingRequiredKey {
+		print("Cannot remove required metadata for File. Try again.")
 	}
 }
