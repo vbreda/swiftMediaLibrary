@@ -70,8 +70,7 @@ while let line = prompt("> ") {
         
         // try execute the command and catch any thrown errors below
         try command.execute()
-        //try print("\(last.getAll()) ----- printshow")
-        
+		
         // if there are any results from the command, print them out here
         if let results = command.results {
             results.show()
@@ -79,12 +78,16 @@ while let line = prompt("> ") {
         }
         
     } catch MMCliError.unknownCommand {
-        print("command \"\(commandString)\" not found -- see \"help\" for list")
+        print("Command \"\(commandString)\" not found -- see \"help\" for list")
     } catch MMCliError.invalidParameters {
-        print("invalid parameters for \"\(commandString)\" -- see \"help\" for list")
+        print("Invalid parameters for \"\(commandString)\" -- see \"help\" for list")
     } catch MMCliError.unimplementedCommand {
         print("\"\(commandString)\" is unimplemented")
     } catch MMCliError.missingResultSet {
-        print("no previous results to work from... ")
-    } 
+        print("No previous results to work from ")
+	} catch MMCliError.dataDoesntExist {
+		print("Provided term could not be found. Try again.")
+	} catch MMCliError.indexOutOfRange {
+		print("Index provided is out of bounds. Try again.")
+	}
 }

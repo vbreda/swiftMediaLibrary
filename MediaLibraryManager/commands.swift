@@ -28,6 +28,12 @@ enum MMCliError: Error {
     /// Thrown if the command has yet to be implemented
     /// - Note: You'll need to implement these to get the CLI working properly
     case unimplementedCommand
+	
+	// Thrown if the user trys to remove/search for something that does not exist
+	case dataDoesntExist
+	
+	// Thrown if user trys to reference an index that doesnt exist
+	case indexOutOfRange
 }
 
 /// This class represents a set of results. It could be extended to include
@@ -294,6 +300,11 @@ class ListCommand : MMCommand {
         } else {
             let word: String = keywords.removeFirst()
             let listresults = library.search(term: word)
+			
+			// Check that results were found, else throw
+			guard listresults.count > 0 else {
+				throw MMCliError.dataDoesntExist
+			}
             self.results = MMResultSet(listresults)
         }
     }
@@ -325,22 +336,32 @@ class AddCommand : MMCommand {
     }
     
     func execute() throws {
+		
         // Ensure the user passed at least two parameters.
         guard data.count > 2 else {
             throw MMCliError.invalidParameters
         }
-        
+		
+		// Ensure there is a result set to use
+		guard lastsearch.count > 0 else {
+			throw MMCliError.missingResultSet
+		}
+		
         let index = Int(data.removeFirst())!
+		
+		// Check the index is within acceptable range
+		guard index < lastsearch.count else {
+			throw MMCliError.indexOutOfRange
+		}
+		
         //TODO put in a while loop so adds more than one metadata
         let key = data.removeFirst()
         let value = data.removeFirst()
         let newdata = Metadata(keyword: key, value: value)
         let fileToAddTo = lastsearch[index]
-        print("Adding to file: \(fileToAddTo)")
+        print("Adding to file: \(fileToAddTo.filename)")
         
-        //TODO implement add(metadata)
         library.add(metadata: newdata, file: fileToAddTo)
-        print("Add seems to be working") //test
         print("Index: \(index), Key: \(key), Value: \(value)") //test
     }
 }
@@ -372,11 +393,17 @@ class SetCommand : MMCommand {
     }
     
     func execute() throws {
+		
         // Ensure the user passed at least two parameters
         guard data.count > 2 else {
             throw MMCliError.invalidParameters
         }
-        
+		
+		// Ensure there is a result set to use
+		guard lastsearch.count > 0 else {
+			throw MMCliError.missingResultSet
+		}
+		
         //TODO add a loop to set more than one at a time.
         let index = Int(data.removeFirst())!
         let key : String = data.removeFirst()
@@ -397,6 +424,7 @@ class SetCommand : MMCommand {
         }
         if (i == 0) {
             print ("Keyword not found.")
+			// throw MMCliError.dataDoesntExist
         }
     }
 }
@@ -421,10 +449,16 @@ class DeleteCommand : MMCommand {
     }
     
     func execute() throws {
+		
         // Ensure the user passed at least two parameters
         guard data.count > 1 else {
             throw MMCliError.invalidParameters
         }
+		
+		// Ensure there is a result set to use
+		guard lastsearch.count > 0 else {
+			throw MMCliError.missingResultSet
+		}
         
         //TODO add a loop to delete more than one at a time.
         let index = Int(data.removeFirst())!
@@ -444,6 +478,7 @@ class DeleteCommand : MMCommand {
         }
         if (i == 0) {
             print ("Keyword not found.")
+			//throw MMCliError.dataDoesntExist
         }
     }
 }
@@ -459,11 +494,17 @@ class SaveSearchCommand : MMCommand {
     }
     
     func execute() throws {
+		
         // Ensure the user passed at least one parameter
         guard data.count > 0 else {
             throw MMCliError.invalidParameters
         }
-        
+		
+		// Ensure their is a result set to use
+		guard lastsearch.count > 0 else {
+			throw MMCliError.missingResultSet
+		}
+		
         let fileName: String = data.removeFirst()
         let exporter : FileExporter = FileExporter()
         

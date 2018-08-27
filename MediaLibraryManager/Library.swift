@@ -48,8 +48,7 @@ class Library : MMCollection {
      - Returns: none.
      */
     func add(file: MMFile) {
-        
-        // Some file that already has metadata mapped?
+		
         files.append(file)
 		//loadDictionaries(file: file)
 		
@@ -80,12 +79,9 @@ class Library : MMCollection {
      - Returns: none.
      */
     func add(metadata: MMMetadata, file: MMFile)  {
-        
-        // Some metadata and the file to add it to?
-        var i: Int = 0
+		var i: Int = 0
         for f in files {
             if f as! File == file as! File {
-                //f.metadata.append(metadata)
                 files[i].metadata.append(metadata)
             }
             i += 1
@@ -100,7 +96,9 @@ class Library : MMCollection {
      - Returns: none.
      */
     func remove(metadata: MMMetadata)  {
-        print("Removing .....")
+		for f in files {
+			remove(metadata: metadata, file: f)
+		}
     }
     
     /**
@@ -114,14 +112,45 @@ class Library : MMCollection {
     func search(term: String) -> [MMFile]  {
         let searchterm : String = term.lowercased()
 		
-		// var results1 = keysDictionary[searchterm]!
-		// var results2 = valuesDictionary[searchterm]!
 		// check if either return results and return the one that does? or combine
+		var results: [MMFile] = []
+		if let keyResults = keysDictionary[searchterm] {
+			results.append(contentsOf: keyResults)
+		}
+		if let valueResults = valuesDictionary[searchterm] {
+			results.append(contentsOf: valueResults)
+		}
 		
+		return results
 		// Need to account for WHAT IF NO SEARCH TERM exists? I accidentally through a lldb bug lol sorry
-        return dictionary[searchterm]!
+//		if let found = dictionary[searchterm] {
+//			return found
+//		} else {
+//			// catch the error?
+//		}
+//
+//		do {
+//			return dictionary[searchterm]!
+//		} catch {
+//			throw MMCliError.dataDoesntExist
+//		}
+        //return dictionary[searchterm]!
     }
-    
+	
+	/**
+	/ Finds all the metadata associated with the keyword of the item
+	/
+	- Parameters: item: The item's metadata keypair to search for.
+	- Returns: [MMFiles]: A list of all the metadata associated with the item's
+	keyword, possibly an empty list.
+	*/
+	func search(item: MMMetadata) -> [MMFile]  {
+		let res1 = search(term: item.keyword)
+		let res2 = search(term: item.value)
+		// See which are in both lists?
+		return []
+	}
+	
     /**
      Returns a list of all the files in the index
      
@@ -130,18 +159,6 @@ class Library : MMCollection {
      */
     func all() -> [MMFile]  {
         return files
-    }
-    
-    /**
-     / Finds all the metadata associated with the keyword of the item
-     /
-     - Parameters: item: The item's keyword to search for.
-     - Returns: [MMFiles]: A list of all the metadata associated with the item's
-     keyword, possibly an empty list.
-     */
-    func search(item: MMMetadata) -> [MMFile]  {
-        
-        return []
     }
     
     /**
