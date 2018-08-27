@@ -517,15 +517,17 @@ class SaveSearchCommand : MMCommand {
             throw MMCliError.invalidParameters
         }
         
-        // Ensure their is a result set to use
+        // Ensure there is a result set to use
         guard lastsearch.count > 0 else {
             throw MMCliError.missingResultSet
         }
         
         let fileName: String = data.removeFirst()
-        let exporter : FileExporter = FileExporter()
+        let exporter: FileExporter = FileExporter()
         
         try exporter.write(filename: fileName, items: lastsearch)
+		print("> Search saved to \(fileName)")
+
     }
 }
 
@@ -549,5 +551,7 @@ class SaveCommand : MMCommand {
         let exporter : FileExporter = FileExporter()
         
         try exporter.write(filename: fileName, items: library.all())
+		print("> Collection saved to \(fileName)")
+
     }
 }
