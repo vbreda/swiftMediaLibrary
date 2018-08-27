@@ -11,6 +11,9 @@ import Foundation
 class Library : MMCollection {
     
     private var files: [MMFile] = []
+	private var keysDictionary: [String:[MMFile]] = [:]
+	private var valuesDictionary: [String:[MMFile]] = [:]
+	
     var dictionary : [String:[MMFile]] = [:]
     
     /**
@@ -48,7 +51,12 @@ class Library : MMCollection {
         
         // Some file that already has metadata mapped?
         files.append(file)
-        
+		//loadDictionaries(file: file)
+		
+		// This currently executes EVERY time add is called. loops through entire files as each 1 added.
+		//e.g. I add 2 files, below is executed twice - redundant. Just execute per file added!
+		// e.g. remove the for f in files part  - no need to loop
+		
         //create an inverted dictionary
         var array : [MMFile] = []
         dictionary = [:]
@@ -105,7 +113,12 @@ class Library : MMCollection {
      */
     func search(term: String) -> [MMFile]  {
         let searchterm : String = term.lowercased()
-        
+		
+		// var results1 = keysDictionary[searchterm]!
+		// var results2 = valuesDictionary[searchterm]!
+		// check if either return results and return the one that does? or combine
+		
+		// Need to account for WHAT IF NO SEARCH TERM exists? I accidentally through a lldb bug lol sorry
         return dictionary[searchterm]!
     }
     
@@ -177,5 +190,37 @@ class Library : MMCollection {
 		return found
 	}
 	
+	/**
+	Loads the metadata dictionaries of the new file.
+	Adds both keywords and values to the Library dictionaries.
+	
+	- parameter file: the new file added to the library.
+	*/
+	func loadDictionaries(file: MMFile) {
+		
+		var copy: [MMFile] = []
+		
+		for m in file.metadata {
+			
+			// Add to the keys Dictionary
+			if keysDictionary.keys.contains(m.keyword.lowercased()) {
+				copy = keysDictionary[m.keyword.lowercased()]!
+				copy.append(file)
+				keysDictionary.updateValue(copy, forKey: m.keyword.lowercased())
+			} else {
+				keysDictionary.updateValue([file], forKey: m.keyword.lowercased())
+			}
+			
+			// Add to the values Dictionary
+			if valuesDictionary.keys.contains(m.value.lowercased()) {
+				copy = valuesDictionary[m.value.lowercased()]!
+				copy.append(file)
+				valuesDictionary.updateValue(copy, forKey: m.value.lowercased())
+			} else {
+				valuesDictionary.updateValue([file], forKey: m.value.lowercased())
+			}
+		}
+		
+	}
 	
 }
