@@ -32,7 +32,7 @@ class File: MMFile {
 	var type: String			  // the type of file as at load time
 	
 	// Computed variable creator, returns the File's current creator
-	var creator : String {
+	var creator: String {
 		var cr: String = ""
 		for m in metadata {
 			if m.keyword.lowercased() == "creator" {
@@ -40,6 +40,24 @@ class File: MMFile {
 			}
 		}
 		return cr
+	}
+	
+	/**
+	String representation of the file
+	
+	- returns: String String representation of the File.
+	*/
+	var description: String {
+		return "\(filename) \(metadata)"
+	}
+	
+	/**
+	String representation of the file's full path
+	
+	- returns: String the fullpath of the file
+	*/
+	var fullpath: String {
+		return path + filename
 	}
 	
 	/**
@@ -58,14 +76,5 @@ class File: MMFile {
 		self.path = path
         self.originalCreator = creator
 		self.type = type
-	}
-	
-	/**
-	String representation of the file
-	
-	- returns: String String representation of the File.
-	*/
-	var description: String {
-		return "\(filename) \(metadata)"
 	}
 }
