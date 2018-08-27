@@ -30,7 +30,7 @@ class Image : File {
     
     init(metadata: [MMMetadata], filename: String, path: String, creator: String, resolution: String) {
         self.originalResolution = resolution
-        super.init(metadata: metadata, filename: filename, path: path, creator: creator)
+        super.init(metadata: metadata, filename: filename, path: path, creator: creator, type: "image")
     }
 	
 //    override var description: String {
@@ -75,7 +75,7 @@ class Video : File {
     init(metadata: [MMMetadata], filename: String, path: String, creator: String, resolution: String, runtime: String) {
         self.originalResolution = resolution
         self.originalRuntime = runtime
-        super.init(metadata: metadata, filename: filename, path: path, creator: creator)
+        super.init(metadata: metadata, filename: filename, path: path, creator: creator, type: "video")
     }
 	
 //    override var description: String {
@@ -105,7 +105,7 @@ class Audio : File {
 	
     init(metadata: [MMMetadata], filename: String, path: String, creator: String, runtime: String) {
         self.originalRuntime = runtime
-        super.init(metadata: metadata, filename: filename, path: path, creator: creator)
+        super.init(metadata: metadata, filename: filename, path: path, creator: creator, type: "audio")
     }
 	
 }
@@ -115,6 +115,10 @@ Audio class extends file.
 Required metadata fields: creator
 */
 class Document : File {
-    
+	
+	init(metadata: [MMMetadata], filename: String, path: String, creator: String) {
+		super.init(metadata: metadata, filename: filename, path: path, creator: creator, type: "document")
+	}
+	
     
 }

@@ -29,6 +29,7 @@ class File: MMFile {
 	var filename: String          // the name of the file
 	var path: String              // the path to the file
     var originalCreator: String   // the creator of the file as at load time
+	var type: String			  // the type of file as at load time
 	
 	// Computed variable creator, returns the File's current creator
 	var creator : String {
@@ -51,11 +52,12 @@ class File: MMFile {
 	- parameter path: the File's path.
 	- parameter creator: the File's creator.
 	*/
-    init(metadata: [MMMetadata], filename: String, path: String, creator: String) {
+	init(metadata: [MMMetadata], filename: String, path: String, creator: String, type: String) {
         self.metadata = metadata
 		self.filename = filename
 		self.path = path
         self.originalCreator = creator
+		self.type = type
 	}
 	
 	/**
