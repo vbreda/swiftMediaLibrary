@@ -16,10 +16,10 @@ Converts Media struct to File and performs all validation.
 class FileValidator {
 	
 	// Dictionaries that store valid metadata needed per type
-	private let validImage = ["resolution": true, "runtime": false,"creator": true]
-	private let validDocument = ["resolution": false, "runtime": false,"creator": true]
-	private let validVideo = ["resolution": true, "runtime": true,"creator": true]
-	private let validAudio = ["resolution": false, "runtime": false,"creator": true]
+	private static let validImage = ["resolution": true, "runtime": false,"creator": true]
+	private static let validDocument = ["resolution": false, "runtime": false,"creator": true]
+	private static let validVideo = ["resolution": true, "runtime": true,"creator": true]
+	private static let validAudio = ["resolution": false, "runtime": false,"creator": true]
 	
 	private var errorMessages: [String] = []
 	
@@ -94,28 +94,28 @@ class FileValidator {
 		
 		switch(type) {
 		case "image" :
-			for (keyword, compulsory) in validImage {
+			for (keyword, compulsory) in FileValidator.validImage {
 				if compulsory == true && !keys.contains(keyword) {
 					typeValid = false
 				}
 			}
 			break
 		case "document":
-			for (keyword, compulsory) in validDocument {
+			for (keyword, compulsory) in FileValidator.validDocument {
 				if compulsory == true && !keys.contains(keyword) {
 					typeValid = false
 				}
 			}
 			break
 		case "video":
-			for (keyword, compulsory) in validVideo {
+			for (keyword, compulsory) in FileValidator.validVideo {
 				if compulsory == true && !keys.contains(keyword) {
 					typeValid = false
 				}
 			}
 			break
 		case "audio":
-			for (keyword, compulsory) in validAudio {
+			for (keyword, compulsory) in FileValidator.validAudio {
 				if compulsory == true && !keys.contains(keyword) {
 					typeValid = false
 				}
@@ -165,7 +165,7 @@ class FileValidator {
 	- parameter key: the key to check if allowed to delete
 	- returns: true if that key is not compulsory
 	*/
-	func safeToDelete(key: String, typeOfFile: String) throws -> Bool {
+	static func safeToDelete(key: String, typeOfFile: String) throws -> Bool {
 		var allowed: Bool = true
 		
 		switch(typeOfFile) {

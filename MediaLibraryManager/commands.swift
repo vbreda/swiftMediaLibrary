@@ -476,7 +476,7 @@ class DeleteCommand : MMCommand {
 		}
 		
         var param = data.count
-		let validator: FileValidator = FileValidator()
+		//let validator: FileValidator = FileValidator()
 		
         while param > 0 {
             
@@ -484,19 +484,17 @@ class DeleteCommand : MMCommand {
             let delFile : MMFile = lastsearch[index]
 			
 			// Check it is not a required key before removing
-			let allowed = try validator.safeToDelete(key: key, typeOfFile: delFile.type)
+			let allowed = try FileValidator.safeToDelete(key: key, typeOfFile: delFile.type)
+			
 			if allowed {
 				// Check that key can be deleted
 				if delFile.metadata.contains(where: {$0.keyword == key}) {
 					library.remove(key: key, file: delFile)
 					print("> \"\(key)\" deleted from \(delFile.filename)")
 				} else {
-					//print("'\(key)' not found.")
 					throw MMCliError.dataDoesntExist
 				}
 			}
-			
-
             param -= 1
         }
     }
