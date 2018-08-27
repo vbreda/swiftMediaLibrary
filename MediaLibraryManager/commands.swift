@@ -483,10 +483,10 @@ class DeleteCommand : MMCommand {
             let key: String = data.removeFirst()
             let delFile : MMFile = lastsearch[index]
 			
-			// Is this key allowed to be deleted?
-			//TODO fix type bug
-			let allowed = try validator.safeToDelete(key: key, typeOfFile: "image")
+			// Check it is not a required key before removing
+			let allowed = try validator.safeToDelete(key: key, typeOfFile: delFile.type)
 			if allowed {
+				// Check that key can be deleted
 				if delFile.metadata.contains(where: {$0.keyword == key}) {
 					library.remove(key: key, file: delFile)
 					print("> \"\(key)\" deleted from \(delFile.filename)")
