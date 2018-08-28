@@ -142,6 +142,13 @@ class Library : MMCollection {
         files[indexF!].metadata.remove(at: indexM!)
         //print("'\(valremoved)' removed from file \(file.filename)")
     }
+	
+	/**
+	Removes all files from this library. 
+	*/
+	func removeAllFiles() {
+		files.removeAll()
+	}
     
     /**
      Checks the current library for this exact file.

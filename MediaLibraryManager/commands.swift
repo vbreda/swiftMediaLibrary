@@ -566,6 +566,9 @@ class TestCommand : MMCommand {
 	
 	func execute() throws {
 		print("inside test")
+		let tester: MediaLibraryTests = MediaLibraryTests()
+		
+		tester.runAllTests()
 		
 	}
 }
