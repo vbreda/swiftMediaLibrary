@@ -557,17 +557,17 @@ class SaveCommand : MMCommand {
     }
 }
 
+/**
+Handles the testing framework.
+
+Instatiates the test class and calls the run all method.
+*/
 class TestCommand : MMCommand {
 	var results: MMResultSet? = nil
 	
-	init() {
-
-	}
-	
 	func execute() throws {
-		print("inside test")
+
 		let tester: MediaLibraryTests = MediaLibraryTests()
-		
 		tester.runAllTests()
 		
 	}
