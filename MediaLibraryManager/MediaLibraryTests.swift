@@ -102,6 +102,11 @@ class MediaLibraryTests {
 		tearDown()
 		
 		setUp()
+		testRemove()
+		print("\t✅ testRemove() passed")
+		tearDown()
+		
+		setUp()
 		testSearch()
 		print("\ttestSearch() failed")
 		tearDown()
@@ -237,7 +242,36 @@ class MediaLibraryTests {
 	}
 	
 	func testRemove() {
+		precondition(library.count == 0, "Library should be empty.")
+		precondition(f1.metadata.count == 2, "f1 Metadata 1 should have two kv pairs.")
+		precondition(m1.count == 2, "Metadata 1 should have two kv pairs.")
 		
+		let newKV: Metadata = Metadata(keyword: "test", value: "test1")
+		let dummyKV: Metadata = Metadata(keyword: "dummy", value: "dummy1")
+		
+		m1.append(newKV)
+		f1.metadata.append(newKV)
+		library.add(file: f1)
+		library.add(file: f2)
+		
+		assert(library.count == 2, "Library should contain two files.")
+		assert(f1.metadata.count == 3, "f1 Metadata 1 should have three kv pairs.")
+		assert(m1.count == 3, "Metadata 1 should have three kv pairs.")
+		
+		// remove not existing shouldn't crash
+		library.remove(key: dummyKV.keyword, file: f1)
+		assert(f1.metadata.count == 3, "f1 Metadata 1 should have three kv pairs still.")
+		
+		// remove a required should still be there
+		// - except this check is never done in Library, only in DeleteCommand.
+		//library.remove(key: kv11.keyword, file: f1)
+		//assert(f1.metadata.count == 3, "f1 Metadata 1 should have three kv pairs still.")
+		
+		// remove existing should work
+		library.remove(key: newKV.keyword, file: f1)
+		assert(library.count == 2, "Library should contain two files.")
+		assert(f1.metadata.count == 2, "f1 Metadata 1 should have two kv pairs after removing.")
+		assert(m1.count == 3, "Metadata 1 should have three kv pairs.")
 	}
 	
 	func testSearch() {

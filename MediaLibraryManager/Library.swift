@@ -74,9 +74,15 @@ class Library : MMCollection {
      - Returns: none.
      */
     func remove(metadata: MMMetadata)  {
-        for f in files {
-			remove(key: metadata.keyword, file: f)
-        }
+		
+		// Remove metadata term from all files not a functionality in our library
+		var i: Int = 0
+		for _ in files {
+			if let indexM = files[i].metadata.index(where: {$0.keyword == metadata.keyword && $0.value == metadata.value}) {
+				files[i].metadata.remove(at: indexM)
+			}
+			i += 1
+		}
     }
     
     /**
@@ -110,9 +116,7 @@ class Library : MMCollection {
      keyword, possibly an empty list.
      */
     func search(item: MMMetadata) -> [MMFile]  {
-        let res1 = search(term: item.keyword)
-        let res2 = search(term: item.value)
-        // See which are in both lists?
+		//Search unimplemented as our Library does not need this functionality
         return []
     }
     
@@ -134,11 +138,12 @@ class Library : MMCollection {
      - Parameters: file: file to remove metadata from.
      - Returns: none.
      */
-    func remove(key: String, file: MMFile)  {
-        
-        let indexF = files.index(where: {$0.filename == file.filename})
-        let indexM = files[indexF!].metadata.index(where: {$0.keyword == key})
-        files[indexF!].metadata.remove(at: indexM!)
+    func remove(key: String, file: MMFile) {
+		if let indexF = files.index(where: {$0.filename == file.filename}){
+			if let indexM = files[indexF].metadata.index(where: {$0.keyword == key}) {
+				files[indexF].metadata.remove(at: indexM)
+			}
+		}
     }
 	
 	/**
