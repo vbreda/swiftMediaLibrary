@@ -33,6 +33,17 @@ enum MMCliError: Error {
 	
 	// Thrown if user trys to delete a required metadata per that filetype
 	case removingRequiredKey
+	
+	// Thrown if there is something wrong with the type of media
+	case invalidType
+	
+	// Thrown if there is something wrong with metadata for a specific type
+	// e.g. image does not have resolution
+	case invalidMetadataForType
+	
+	// Thrown if there is something wrong with the json file
+	// e.g. file doesn't exist or conform. Or contents has a grammatical error.
+	case invalidJsonFile
 }
 
 /// This class represents a set of results. It could be extended to include

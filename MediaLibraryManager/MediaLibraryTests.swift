@@ -342,11 +342,11 @@ class MediaLibraryTests {
 			assert(results[1] as! File == f2, "results should be f2")
 			assert(results[2] as! File == f3, "results should be f3")
 			
+			results = []
 			results = try importer.read(filename: dummyFilename)
-			assert(results.count == 0, "No files should be returned")
 			
 		} catch {
-			assertionFailure()
+			assert(results.count == 0, "No files should be returned")
 		}
 	}
 	

@@ -82,7 +82,7 @@ class FileValidator {
 	Designed to validate Files depending upon their type.
 	
 	Performs type checking and required metadata checking.
-	Throws MMValidationErrors where media does not conform.
+	Throws MMCLiErrors where media does not conform.
 	
 	- parameter Media: the Media struct to validate as a File
 	- returns: MMFile? the validated File
@@ -154,7 +154,7 @@ class FileValidator {
 			validatedFile = Audio(metadata: mdata, filename: filename, path: path, creator: creator!, runtime: runtime!)
 			break
 		default:
-			throw MMValidationError.invalidType
+			throw MMCliError.invalidType
 		}
 		return validatedFile!
 	}

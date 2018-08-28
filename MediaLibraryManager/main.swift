@@ -94,5 +94,12 @@ while let line = prompt("> ") {
 		print("Index provided is out of bounds. Try again.")
 	} catch MMCliError.removingRequiredKey {
 		print("Cannot remove required metadata for File. Try again.")
+	} catch MMCliError.invalidType {
+		print("Invalid file type, expecting image document audio or video.")
+	} catch MMCliError.invalidMetadataForType {
+		print("Invalid metadata for provided media type.")
+	} catch MMCliError.invalidJsonFile {
+		print("Invalid JSON file...")
+		print("\tCheck your filename and/or contents and try again.")
 	}
 }
