@@ -9,44 +9,64 @@
 import Foundation
 
 extension MMMetadata {
-	
-	static func == (lhs: Self, rhs: MMMetadata) -> Bool {
-		return lhs.keyword == rhs.keyword && lhs.value == rhs.value
-	}
-	
-	static func != (lhs: Self, rhs: MMMetadata) -> Bool{
-		return !(lhs == rhs)
-	}
+    
+    static func == (lhs: Self, rhs: MMMetadata) -> Bool {
+        return lhs.keyword == rhs.keyword && lhs.value == rhs.value
+    }
+    
+    static func != (lhs: Self, rhs: MMMetadata) -> Bool{
+        return !(lhs == rhs)
+    }
 }
 
 /**
-Creates the metadata for a media file.
-
-*/
+ Creates the metadata for a media file.
+ 
+ */
 class Metadata: MMMetadata {
-	
-	var keyword: String    // metadata property
-	var value: String      // value of the metadata property
-	
-	/**
-	Designated initialiser
-	
-	Metadata property/value pair is passed in the arguments of the initialiser.
-	
-	- parameter keyword: Metadata's keyword
-	- parameter value: Metadata's value
-	*/
-	init(keyword: String, value: String) {
-		self.keyword = keyword
-		self.value = value
-	}
-	
-	/**
-	String representation of the metadata
-	
-	- returns: String String representation of the metadata.
-	*/
-	var description: String {
-		return "\(self.keyword): \(self.value)"
-	}
+   
+    //STORED PROPERTIES
+    private var _mdKeyword : String = ""
+    private var _mdValue : String = ""
+    
+    /**
+     Designated initialiser
+     
+     Metadata property/value pair is passed in the arguments of the initialiser.
+     
+     - parameter keyword: Metadata's keyword
+     - parameter value: Metadata's value
+     */
+    init(keyword: String, value: String) {
+        self._mdKeyword = keyword
+        self._mdValue = value
+    }
+    
+    //COMPUTED PROPERTIES
+    var keyword: String  {   // metadata property
+        get {
+            return self._mdKeyword
+        }
+        set (newKeyword) {
+            self._mdKeyword = newKeyword
+        }
+    }
+    
+    var value: String {  // value of the metadata property
+        get {
+            return self._mdValue
+        }
+        set (newValue) {
+            self._mdValue = newValue
+        }
+    }
+    
+    /**
+     String representation of the metadata
+     
+     - returns: String String representation of the metadata.
+     */
+    var description: String {
+        return "\(self.keyword): \(self.value)"
+    }
 }
