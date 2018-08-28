@@ -6,6 +6,14 @@
 //  Copyright © 2018 Paul Crane. All rights reserved.
 //
 
+/**
+JSON File for testing has these contents:
+
+[{"fullpath": "/346/to/image1","type": "image","metadata": {"creator": "cre1","resolution": "res1"}},{"fullpath": "/346/to/image2","type": "image","metadata": {"creator": "cre2","resolution": "res2"}},{"fullpath": "/346/to/video3","type": "video","metadata": {"creator": "cre3","resolution": "res3","runtime": "run3"}}]
+
+Located in the working directory and Home Directory of user in order to test.
+*/
+
 import Foundation
 
 class MediaLibraryTests {
@@ -15,41 +23,58 @@ class MediaLibraryTests {
 	var library: Library
 	var f1: MMFile
 	var f2: MMFile
-	var m1: [MMMetadata] = []
-	var m2: [MMMetadata] = []
+	var f3: MMFile
+	var m1: [MMMetadata]
+	var m2: [MMMetadata]
+	var m3: [MMMetadata]
 	
-	let kv11: Metadata = Metadata(keyword: "creator", value: "cre1")
-	let kv12: Metadata = Metadata(keyword: "resolution", value: "res1")
-	let kv21: Metadata = Metadata(keyword: "creator", value: "cre2")
-	let kv22: Metadata = Metadata(keyword: "resolution", value: "res2")
+	var kv11: Metadata
+	var kv12: Metadata
+	var kv21: Metadata
+	var kv22: Metadata
+	var kv31: Metadata
+	var kv32: Metadata
+	var kv33: Metadata
 	
 	init() {
 		library = Library()
-
-		m1.append(kv11)
-		m1.append(kv12)
+		kv11 = Metadata(keyword: "creator", value: "cre1")
+		kv12 = Metadata(keyword: "resolution", value: "res1")
+		kv21 = Metadata(keyword: "creator", value: "cre2")
+		kv22 = Metadata(keyword: "resolution", value: "res2")
+		kv31 = Metadata(keyword: "creator", value: "cre3")
+		kv32 = Metadata(keyword: "resolution", value: "res3")
+		kv33 = Metadata(keyword: "runtime", value: "run3")
+		m1 = [kv11, kv12]
+		m2 = [kv21, kv22]
+		m3 = [kv31, kv32, kv33]
 		f1 = Image(metadata: m1, filename: "image1", path: "/346/to/", creator: "cre1", resolution: "res1")
-
-		m2.append(kv21)
-		m2.append(kv22)
 		f2 = Image(metadata: m2, filename: "image2", path: "/346/to/", creator: "cre2", resolution: "res2")
+		f3 = Video(metadata: m3, filename: "video3", path: "/346/to/", creator: "cre3", resolution: "res3", runtime: "run3")
 	}
 	
 	func setUp() {
 		library = Library()
-		
-		m1 = []
-		m1.append(kv11)
-		m1.append(kv12)
+		kv11 = Metadata(keyword: "creator", value: "cre1")
+		kv12 = Metadata(keyword: "resolution", value: "res1")
+		kv21 = Metadata(keyword: "creator", value: "cre2")
+		kv22 = Metadata(keyword: "resolution", value: "res2")
+		kv31 = Metadata(keyword: "creator", value: "cre3")
+		kv32 = Metadata(keyword: "resolution", value: "res3")
+		kv33 = Metadata(keyword: "runtime", value: "run3")
+		m1 = [kv11, kv12]
+		m2 = [kv21,kv22]
+		m3 = [kv31, kv32, kv33]
 		f1 = Image(metadata: m1, filename: "image1", path: "/346/to/", creator: "cre1", resolution: "res1")
-		
-		m2 = []
-		m2.append(kv21)
-		m2.append(kv22)
 		f2 = Image(metadata: m2, filename: "image2", path: "/346/to/", creator: "cre2", resolution: "res2")
+		f3 = Video(metadata: m3, filename: "video3", path: "/346/to/", creator: "cre3", resolution: "res3", runtime: "run3")
 	}
 	
 	func tearDown() {
+		m1 = []
+		m2 = []
+		f1.metadata = m1
+		f2.metadata = m2
 		library.removeAllFiles()
 	}
 	
@@ -58,48 +83,94 @@ class MediaLibraryTests {
 		
 		setUp()
 		testMetadata()
-		print("\ttestMetadata() passed")
+		print("\t✅ testMetadata() passed")
 		tearDown()
 		
 		setUp()
 		testFile()
-		print("\ttestFile() passed")
+		print("\t✅ testFile() passed")
 		tearDown()
 
 		setUp()
-		testAdd()
-		print("\ttestAdd() passed")
+		testAddToLibrary()
+		print("\t✅ testAddToLibrary() passed")
 		tearDown()
 		
 		setUp()
 		testAddMetadataToFile()
-		print("\ttestAddMetadataToFile() passed")
+		print("\t✅ testAddMetadataToFile() passed")
 		tearDown()
 		
 		setUp()
-		
+		testSearch()
+		print("\ttestSearch() failed")
+		tearDown()
+
+		setUp()
+		testAll()
+		print("\ttestAll() failed")
 		tearDown()
 		
 		setUp()
-		
+		testFileValidator()
+		print("\ttestFileValidator() failed")
+		tearDown()
+
+		setUp()
+		testFileImporter()
+		print("\ttestFileImporter() failed")
 		tearDown()
 		
 		setUp()
+		testFileExporter()
+		print("\ttestFileExporter() failed")
+		tearDown()
 		
+		setUp()
+		testLoadCommand()
+		print("\ttestLoadCommand() failed")
+		tearDown()
+		
+		setUp()
+		testListCommand()
+		print("\ttestListCommand() failed")
+		tearDown()
+		
+		setUp()
+		testListAllCommand()
+		print("\ttestListAllCommand() failed")
+		tearDown()
+		
+		setUp()
+		testSetCommand()
+		print("\ttestSetCommand() failed")
+		tearDown()
+		
+		setUp()
+		testDeleteCommand()
+		print("\ttestDeleteCommand() failed")
+		tearDown()
+		
+		setUp()
+		testSaveSearchCommand()
+		print("\ttestSaveSearchCommand() failed")
+		tearDown()
+		
+		setUp()
+		testSaveCommand()
+		print("\ttestSaveCommand() failed")
 		tearDown()
 
 	}
 	
+	func testMetadata() {
+		let m3 = Metadata(keyword: "key3", value: "val3")
+		assert(m3.keyword == "key3", "Keyword should match")
+		assert(m3.value == "val3", "Value should match")
+	}
+	
 	func testFile() {
-		
-		let kv11: Metadata = Metadata(keyword: "creator", value: "cre1")
-		let kv12: Metadata = Metadata(keyword: "resolution", value: "res1")
-		
-		var m: [MMMetadata] = []
-		m.append(kv11)
-		m.append(kv12)
-		
-		let f = Image(metadata: m, filename: "f1", path: "p1", creator: "cre1", resolution: "res1")
+		let f = Image(metadata: m1, filename: "f1", path: "p1", creator: "cre1", resolution: "res1")
 		
 		assert(f.type == "image", "File should be of type image")
 		assert(f.path == "p1", "File should have correct path")
@@ -110,22 +181,18 @@ class MediaLibraryTests {
 		var kv = metadata[0]
 		var kv2 = metadata[1]
 		
-		assert(kv as! Metadata == kv11, "File metadata should be the same")
-		assert(kv.keyword == "creator", "File m3 Keyword should match")
-		assert(kv.value == "cre1", "File m3 Value should match")
-		assert(kv2 as! Metadata == kv12, "File metadata should be the same")
-		assert(kv2.keyword == "resolution", "File m3 Keyword should match")
-		assert(kv2.value == "res1", "File m3 Value should match")
+		assert(metadata.count == m1.count, "Metadata shold have the same size")
 		
+		assert(kv as! Metadata == kv11, "File metadata should be the same")
+		assert(kv.keyword == "creator", "File m1 kv Keyword should match")
+		assert(kv.value == "cre1", "File m1 kv Value should match")
+		
+		assert(kv2 as! Metadata == kv12, "File metadata should be the same")
+		assert(kv2.keyword == "resolution", "File m1 kv2 Keyword should match")
+		assert(kv2.value == "res1", "File m1 kv2 Value should match")
 	}
-	
-	func testMetadata() {
-		let m3 = Metadata(keyword: "key3", value: "val3")
-		assert(m3.keyword == "key3", "Keyword should match")
-		assert(m3.value == "val3", "Value should match")
-	}
-	
-	func testAdd() {
+
+	func testAddToLibrary() {
 		precondition(library.count == 0, "Library should be empty.")
 		
 		library.add(file: f1)
@@ -198,11 +265,10 @@ class MediaLibraryTests {
 	}
 	
 	func testListCommand() {
-		
 	}
 	
 	func testListAllCommand() {
-		
+
 	}
 	
 	func testSetCommand() {

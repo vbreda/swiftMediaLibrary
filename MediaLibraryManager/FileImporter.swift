@@ -60,7 +60,7 @@ class FileImporter : MMFileImport {
 			} else {
 				let working = fileManager.currentDirectoryPath
 				let workingDirectory = URL(fileURLWithPath: working)
-				
+				//print(workingDirectory)
 				filePath = workingDirectory.appendingPathComponent(filename)
 			}
 
