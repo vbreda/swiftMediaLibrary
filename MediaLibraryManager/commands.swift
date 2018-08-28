@@ -244,6 +244,7 @@ class LoadCommand: MMCommand {
             print ("> \(diff) files added to library")
         }
         
+        
         // Print out the names of the added files
         if newCount > oldCount {
             var allFiles = library.all()

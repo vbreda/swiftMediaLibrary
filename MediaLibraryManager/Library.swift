@@ -75,7 +75,7 @@ class Library : MMCollection {
      */
     func remove(metadata: MMMetadata)  {
         for f in files {
-			//remove(key: metadata.keyword, file: f)
+			remove(key: metadata.keyword, file: f)
         }
     }
     
@@ -138,9 +138,7 @@ class Library : MMCollection {
         
         let indexF = files.index(where: {$0.filename == file.filename})
         let indexM = files[indexF!].metadata.index(where: {$0.keyword == key})
-        //let valremoved = files[indexF!].metadata.remove(at: indexM!)
         files[indexF!].metadata.remove(at: indexM!)
-        //print("'\(valremoved)' removed from file \(file.filename)")
     }
 	
 	/**
@@ -176,9 +174,6 @@ class Library : MMCollection {
      - parameter file: the new file added to the library.
      */
     func loadDictionaries(file: MMFile) {
-        
-        //         var arrKeys = [MMFile]()
-        //         var arrValues = [MMFile]()
         
         var copy = [MMFile]()
         
