@@ -16,9 +16,11 @@ Located in the working directory and Home Directory of user in order to test.
 
 import Foundation
 
+/**
+Runs tests that ignore user prompt.
+Exhausts all action paths in MediaLibrary project.
+*/
 class MediaLibraryTests {
-	
-	let numberOfTests: Int = 17
 	
 	var library: Library
 	var f1: MMFile
@@ -36,6 +38,9 @@ class MediaLibraryTests {
 	var kv32: Metadata
 	var kv33: Metadata
 	
+	/**
+	Initialiser that sets all datafields to base form
+	*/
 	init() {
 		library = Library()
 		kv11 = Metadata(keyword: "creator", value: "cre1")
@@ -53,6 +58,10 @@ class MediaLibraryTests {
 		f3 = Video(metadata: m3, filename: "video3", path: "/346/to", creator: "cre3", resolution: "res3", runtime: "run3")
 	}
 	
+	/**
+	Set up called before each tests.
+	Ensures all data fields in their base form.
+	*/
 	func setUp() {
 		library = Library()
 		kv11 = Metadata(keyword: "creator", value: "cre1")
@@ -70,6 +79,10 @@ class MediaLibraryTests {
 		f3 = Video(metadata: m3, filename: "video3", path: "/346/to", creator: "cre3", resolution: "res3", runtime: "run3")
 	}
 	
+	/**
+	Tear down called after each test.
+	Ensure state is restored to base.
+	*/
 	func tearDown() {
 		m1 = []
 		m2 = []
@@ -168,12 +181,18 @@ class MediaLibraryTests {
 
 	}
 	
+	/**
+	Tests that creating a Metadata works as it should.
+	*/
 	func testMetadata() {
 		let m3 = Metadata(keyword: "key3", value: "val3")
 		assert(m3.keyword == "key3", "Keyword should match")
 		assert(m3.value == "val3", "Value should match")
 	}
 	
+	/**
+	Tests that creating a File works as it should.
+	*/
 	func testFile() {
 		let f = Image(metadata: m1, filename: "f1", path: "p1", creator: "cre1", resolution: "res1")
 		
@@ -197,6 +216,9 @@ class MediaLibraryTests {
 		assert(kv2.value == "res1", "File m1 kv2 Value should match")
 	}
 
+	/**
+	Tests that adding a file to the Library works as it should.
+	*/
 	func testAddToLibrary() {
 		precondition(library.count == 0, "Library should be empty.")
 		
@@ -211,6 +233,9 @@ class MediaLibraryTests {
 		assert(files[1] as! File == f2 as! File,"F2 should exist in library.")
 	}
 	
+	/**
+	Tests that adding metadata to a file works as it should.
+	*/
 	func testAddMetadataToFile() {
 		precondition(library.count == 0, "Library should be empty.")
 		
@@ -241,6 +266,9 @@ class MediaLibraryTests {
 		
 	}
 	
+	/**
+	Tests that removing a metadata from a file works as it should.
+	*/
 	func testRemove() {
 		precondition(library.count == 0, "Library should be empty.")
 		precondition(f1.metadata.count == 2, "f1 Metadata 1 should have two kv pairs.")
@@ -274,6 +302,9 @@ class MediaLibraryTests {
 		assert(m1.count == 3, "Metadata 1 should have three kv pairs.")
 	}
 	
+	/**
+	Tests that searching for terms in metadata works as it should.
+	*/
 	func testSearch() {
 		precondition(library.count == 0, "Library should be empty.")
 		library.add(file: f1)
@@ -296,6 +327,9 @@ class MediaLibraryTests {
 		assert(result.count == 0, "search should be 0 files")
 	}
 	
+	/**
+	Tests that the get all files in Library works as it should.
+	*/
 	func testAll() {
 		precondition(library.count == 0, "Library should be empty.")
 		library.add(file: f1)
@@ -315,10 +349,17 @@ class MediaLibraryTests {
 		assert(result[2] as! File == f3, "results should be f3")
 	}
 	
+	/**
+	Tests that the file validator works as it should.
+	e.g. does not validate invalid files
+	*/
 	func testFileValidator() {
 		
 	}
 	
+	/**
+	Tests that the file importer and read function works as it should.
+	*/
 	func testFileImporter() {
 		let testFilename = "test.json"
 		let testHomeFilename = "~/test.json"
@@ -350,33 +391,57 @@ class MediaLibraryTests {
 		}
 	}
 	
+	/**
+	Tests that file exporter works as it should.
+	*/
 	func testFileExporter() {
 		
 	}
 	
+	/**
+	Tests that the load command works as it should.
+	*/
 	func testLoadCommand() {
 		
 	}
 	
+	/**
+	Tests that the list command works as it should.
+	*/
 	func testListCommand() {
 	}
 	
+	/**
+	Tests that the list all command works as it should.
+	*/
 	func testListAllCommand() {
 
 	}
 	
+	/**
+	Tests that the set command works as it should.
+	*/
 	func testSetCommand() {
 		
 	}
 	
+	/**
+	Tests that the delete command works as it should.
+	*/
 	func testDeleteCommand() {
 		
 	}
 	
+	/**
+	Tests that the save search command works as it should.
+	*/
 	func testSaveSearchCommand() {
 		
 	}
 	
+	/**
+	Tests that the save command works as it should.
+	*/
 	func testSaveCommand() {
 		
 	}
