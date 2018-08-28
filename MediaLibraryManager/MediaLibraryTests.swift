@@ -48,9 +48,9 @@ class MediaLibraryTests {
 		m1 = [kv11, kv12]
 		m2 = [kv21, kv22]
 		m3 = [kv31, kv32, kv33]
-		f1 = Image(metadata: m1, filename: "image1", path: "/346/to/", creator: "cre1", resolution: "res1")
-		f2 = Image(metadata: m2, filename: "image2", path: "/346/to/", creator: "cre2", resolution: "res2")
-		f3 = Video(metadata: m3, filename: "video3", path: "/346/to/", creator: "cre3", resolution: "res3", runtime: "run3")
+		f1 = Image(metadata: m1, filename: "image1", path: "/346/to", creator: "cre1", resolution: "res1")
+		f2 = Image(metadata: m2, filename: "image2", path: "/346/to", creator: "cre2", resolution: "res2")
+		f3 = Video(metadata: m3, filename: "video3", path: "/346/to", creator: "cre3", resolution: "res3", runtime: "run3")
 	}
 	
 	func setUp() {
@@ -65,9 +65,9 @@ class MediaLibraryTests {
 		m1 = [kv11, kv12]
 		m2 = [kv21,kv22]
 		m3 = [kv31, kv32, kv33]
-		f1 = Image(metadata: m1, filename: "image1", path: "/346/to/", creator: "cre1", resolution: "res1")
-		f2 = Image(metadata: m2, filename: "image2", path: "/346/to/", creator: "cre2", resolution: "res2")
-		f3 = Video(metadata: m3, filename: "video3", path: "/346/to/", creator: "cre3", resolution: "res3", runtime: "run3")
+		f1 = Image(metadata: m1, filename: "image1", path: "/346/to", creator: "cre1", resolution: "res1")
+		f2 = Image(metadata: m2, filename: "image2", path: "/346/to", creator: "cre2", resolution: "res2")
+		f3 = Video(metadata: m3, filename: "video3", path: "/346/to", creator: "cre3", resolution: "res3", runtime: "run3")
 	}
 	
 	func tearDown() {
@@ -108,62 +108,62 @@ class MediaLibraryTests {
 		
 		setUp()
 		testSearch()
-		print("\ttestSearch() failed")
+		print("\t✅ testSearch() passed")
 		tearDown()
 
 		setUp()
 		testAll()
-		print("\ttestAll() failed")
+		print("\t✅ testAll() passed")
 		tearDown()
 		
 		setUp()
 		testFileValidator()
-		print("\ttestFileValidator() failed")
+		print("\t❌ testFileValidator() passed")
 		tearDown()
 
 		setUp()
 		testFileImporter()
-		print("\ttestFileImporter() failed")
+		print("\t✅ testFileImporter() passed")
 		tearDown()
 		
 		setUp()
 		testFileExporter()
-		print("\ttestFileExporter() failed")
+		print("\t❌ testFileExporter() passed")
 		tearDown()
 		
 		setUp()
 		testLoadCommand()
-		print("\ttestLoadCommand() failed")
+		print("\t❌ testLoadCommand() passed")
 		tearDown()
 		
 		setUp()
 		testListCommand()
-		print("\ttestListCommand() failed")
+		print("\t❌ testListCommand() passed")
 		tearDown()
 		
 		setUp()
 		testListAllCommand()
-		print("\ttestListAllCommand() failed")
+		print("\t❌ testListAllCommand() passed")
 		tearDown()
 		
 		setUp()
 		testSetCommand()
-		print("\ttestSetCommand() failed")
+		print("\t❌ testSetCommand() passed")
 		tearDown()
 		
 		setUp()
 		testDeleteCommand()
-		print("\ttestDeleteCommand() failed")
+		print("\t❌ testDeleteCommand() passed")
 		tearDown()
 		
 		setUp()
 		testSaveSearchCommand()
-		print("\ttestSaveSearchCommand() failed")
+		print("\t❌ testSaveSearchCommand() passed")
 		tearDown()
 		
 		setUp()
 		testSaveCommand()
-		print("\ttestSaveCommand() failed")
+		print("\t❌ testSaveCommand() passed")
 		tearDown()
 
 	}
@@ -275,11 +275,44 @@ class MediaLibraryTests {
 	}
 	
 	func testSearch() {
+		precondition(library.count == 0, "Library should be empty.")
+		library.add(file: f1)
+		library.add(file: f2)
+		assert(library.count == 2, "Library should contain two files.")
+
+		// search for value should return 1 file
+		var result: [MMFile] = library.search(term: "cre1")
+		assert(result.count == 1, "search for value cre1 should return 1 file")
+		assert(result[0] as! File == f1, "results should be f1")
 		
+		//search for requried mdata should return 2 files
+		result = library.search(term: "creator")
+		assert(result.count == 2, "search for key creator should return 2 files")
+		assert(result[0] as! File == f1, "results should be f1")
+		assert(result[1] as! File == f2, "results should be f2")
+		
+		// search for non existing should return nil
+		result = library.search(term: "test")
+		assert(result.count == 0, "search should be 0 files")
 	}
 	
 	func testAll() {
+		precondition(library.count == 0, "Library should be empty.")
+		library.add(file: f1)
+		library.add(file: f2)
+		assert(library.count == 2, "Library should contain two files.")
 		
+		var result = library.all()
+		assert(result.count == 2, "search for key creator should return 2 files")
+		assert(result[0] as! File == f1, "results should be f1")
+		assert(result[1] as! File == f2, "results should be f2")
+		
+		library.add(file: f3)
+		result = library.all()
+		assert(result.count == 3, "search for key creator should return 2 files")
+		assert(result[0] as! File == f1, "results should be f1")
+		assert(result[1] as! File == f2, "results should be f2")
+		assert(result[2] as! File == f3, "results should be f3")
 	}
 	
 	func testFileValidator() {
@@ -287,7 +320,34 @@ class MediaLibraryTests {
 	}
 	
 	func testFileImporter() {
+		let testFilename = "test.json"
+		let testHomeFilename = "~/test.json"
+		let dummyFilename = "doesntexist.json"
 		
+		let importer: FileImporter = FileImporter()
+		var results: [MMFile] = []
+		
+		precondition(results.count == 0, "results should be empty.")
+
+		do {
+			results = try importer.read(filename: testFilename)
+			assert(results.count == 3, "Results should have three files after read.")
+			assert(results[0] as! File == f1, "results should be f1")
+			assert(results[1] as! File == f2, "results should be f2")
+			assert(results[2] as! File == f3, "results should be f3")
+			
+			results = try importer.read(filename: testHomeFilename)
+			assert(results.count == 3, "Results should have three files after read.")
+			assert(results[0] as! File == f1, "results should be f1")
+			assert(results[1] as! File == f2, "results should be f2")
+			assert(results[2] as! File == f3, "results should be f3")
+			
+			results = try importer.read(filename: dummyFilename)
+			assert(results.count == 0, "No files should be returned")
+			
+		} catch {
+			assertionFailure()
+		}
 	}
 	
 	func testFileExporter() {
