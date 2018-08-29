@@ -209,6 +209,14 @@ class Library : MMCollection {
         }
     }
     
+    /**
+     Updates the dictionaries if either keywords or values are removed
+     from the collection.
+     
+     - parameter key: the keyword which will be updated.
+     - parameter rmv: value to be removed.
+     - parameter update: the file which will be updated.
+     */
     func rmvDictionaries(key: String, rmv: MMMetadata, file: MMFile) {
         
         var size = keysDictionary[key]?.count
@@ -234,35 +242,43 @@ class Library : MMCollection {
         }
     }
     
+    /**
+     Updates the dictionaries if either keywords or values are added
+     to the collection.
+     
+     - parameter metadata: the value which will be updated.
+     - parameter file: the file currently in dictionary.
+     - parameter update: the modified file which will be updated in the dictionaries.
+     */
     func updateDictionaries(metadata: MMMetadata, file: MMFile, update: MMFile?){
-        var size = keysDictionary[metadata.keyword]?.count
+        var size = keysDictionary[metadata.keyword.lowercased()]?.count
         
         if size == nil {
-            keysDictionary.updateValue([update!], forKey: metadata.keyword)
+            keysDictionary.updateValue([update!], forKey: metadata.keyword.lowercased())
         } else {
-            var values = keysDictionary[metadata.keyword]
+            var values = keysDictionary[metadata.keyword.lowercased()]
             let index = values?.index(where: {$0 as! File == file as! File})
             if index == nil {
                 values?.append(update!)
             } else {
                 values?[index!] = update!
             }
-            keysDictionary.updateValue(values!, forKey: metadata.keyword)
+            keysDictionary.updateValue(values!, forKey: metadata.keyword.lowercased())
         }
         
-        size = valuesDictionary[metadata.value]?.count
+        size = valuesDictionary[metadata.value.lowercased()]?.count
         
         if size == nil {
-            valuesDictionary.updateValue([update!], forKey: metadata.value)
+            valuesDictionary.updateValue([update!], forKey: metadata.value.lowercased())
         } else {
-            var values = valuesDictionary[metadata.value]
+            var values = valuesDictionary[metadata.value.lowercased()]
             let index = values?.index(where: {$0 as! File == file as! File})
             if index == nil {
                 values?.append(update!)
             } else{
                 values?[index!] = update!
             }
-            valuesDictionary.updateValue(values!, forKey: metadata.value)
+            valuesDictionary.updateValue(values!, forKey: metadata.value.lowercased())
         }
     }
 }
