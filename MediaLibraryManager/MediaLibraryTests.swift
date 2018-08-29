@@ -494,75 +494,86 @@ class MediaLibraryTests {
 		
 		var command: MMCommand
 		var results: [MMFile]
+		var rSet: MMResultSet
 		do {
 			// Test listing via key
 			command = ListCommand(keyword: ["creator"], library: library)
 			try command.execute()
-			if let rSet = command.results {
-				results = try rSet.getAll()
-				assert(results.count == 2, "results should be two files")
-			} else {
-				assertionFailure("Results set should exist")
-			}
+			rSet = command.results!
+			results = try rSet.getAll()
+			assert(results.count == 2, "results should be two files")
 			
 			// Test listing via value
 			command = ListCommand(keyword: ["cre1"], library: library)
 			try command.execute()
-			if let rSet = command.results {
-				results = try rSet.getAll()
-				assert(results.count == 1, "results should be 1 file")
-				assert(results[0] as! File == f1, "File found should be f1")
-			} else {
-				assertionFailure("Results set should exist")
-			}
+			rSet = command.results!
+			results = try rSet.getAll()
+			assert(results.count == 1, "results should be 1 file")
+			assert(results[0] as! File == f1, "File found should be f1")
 			
 			// Test listing results to two terms
 			command = ListCommand(keyword: ["cre1", "cre2"], library: library)
 			try command.execute()
-			if let rSet = command.results {
-				results = try rSet.getAll()
+			rSet = command.results!
+			results = try rSet.getAll()
 				//TODO
-//				assert(results.count == 2, "results should be two files")
-			} else {
-				assertionFailure("Results set should exist")
-			}
+//			assert(results.count == 2, "results should be two files")
 			
+
 			// Test listing results for terms that dont exist
 			command = ListCommand(keyword: ["none"], library: library)
-			try command.execute()
-			let rSet: MMResultSet? = command.results
-			assert(rSet == nil, "no result set should exist")
-
-			// Test listing results for one exist one not
-			command = ListCommand(keyword: ["cre1", "none"], library: library)
-			try command.execute()
-			if let rSet = command.results {
-				results = try rSet.getAll()
-				assert(results.count == 1, "results should be 1 file")
-			} else {
-				assertionFailure("Results set should exist")
+			var errorThrown: Bool = false
+			do {
+				try command.execute()
+			} catch {
+				errorThrown = true
+				if (command.results) != nil {
+					assertionFailure("No results should exist")
+				}
 			}
+			assert(errorThrown, "Data doesnt exist error should have been thrown")
 			
+			// TODO
+			// Test listing results for one exist one not
+//			errorThrown = false
+//			command = ListCommand(keyword: ["cre1", "none"], library: library)
+//			do {
+//				try command.execute()
+//			} catch {
+//				errorThrown = true
+//				rSet = command.results!
+//				results = try rSet.getAll()
+//				assert(results.count == 1, "results should be 1 file")
+//			}
+//			assert(errorThrown, "Error should have been thrown")
+			
+			// TODO
 			// Test listing for added metadata
-			let newKV: MMMetadata = Metadata(keyword: "newKey", value: "newVal")
-			library.add(metadata: newKV, file: f1)
-			command = ListCommand(keyword: ["cre1"], library: library)
-			try command.execute()
-			if let rSet = command.results {
-				results = try rSet.getAll()
-				assert(results.count == 1, "results should be 1 file")
-				assert(results[0] as! File == f1, "File found should be f1")
-			} else {
-				assertionFailure("Results set should exist")
-			}
+//			let newKV: MMMetadata = Metadata(keyword: "newKey", value: "newVal")
+//			library.add(metadata: newKV, file: f1)
+//			command = ListCommand(keyword: ["newKey"], library: library)
+//			do {
+//				try command.execute()
+//			} catch {
+//				assertionFailure()
+//			}
+//			rSet = command.results!
+//			results = try rSet.getAll()
+//			assert(results.count == 1, "results should be 1 file")
+//			assert(results[0] as! File == f1, "File found should be f1")
+//			print("inside")
+			
 			
 			// Test listing for removed metadata
+			errorThrown = false
 			library.remove(key: "newKey", file: f1)
 			command = ListCommand(keyword: ["newKey"], library: library)
-			try command.execute()
-			let rSet2: MMResultSet? = command.results
-			assert(rSet2 == nil, "no result set should exist")
-			
+			do {
+				try command.execute()
+			} catch {
+				errorThrown = true
+			}
+			assert(errorThrown, "Data doesnt exist error should have been thrown")
 		} catch { }
 		
 	}
