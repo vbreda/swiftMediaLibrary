@@ -7,9 +7,13 @@
 //
 
 /**
-JSON File for testing has these contents:
+tst.json contains:
 
 [{"fullpath": "/346/to/image1","type": "image","metadata": {"creator": "cre1","resolution": "res1"}},{"fullpath": "/346/to/image2","type": "image","metadata": {"creator": "cre2","resolution": "res2"}},{"fullpath": "/346/to/video3","type": "video","metadata": {"creator": "cre3","resolution": "res3","runtime": "run3"}}]
+
+test2.json contains:
+
+[{"fullpath": "/346/to/doc1","type": "document","metadata": {"creator": "cre1"}},{"fullpath": "/346/to/doc2","type": "document","metadata": {"creator": "cre2"}},{"fullpath": "/346/to/vid3","type": "video","metadata": {"creator": "cre3","resolution": "res3","runtime": "run3"}}]
 
 Located in the working directory and Home Directory of user in order to test.
 */
@@ -86,8 +90,10 @@ class MediaLibraryTests {
 	func tearDown() {
 		m1 = []
 		m2 = []
+		m3 = []
 		f1.metadata = m1
 		f2.metadata = m2
+		f3.metadata = m3
 		library.removeAllFiles()
 	}
 	
@@ -120,6 +126,11 @@ class MediaLibraryTests {
 		tearDown()
 		
 		setUp()
+		testRemoveAllFiles()
+		print("\t✅ testRemoveAllFiles() passed")
+		tearDown()
+		
+		setUp()
 		testSearch()
 		print("\t✅ testSearch() passed")
 		tearDown()
@@ -146,7 +157,7 @@ class MediaLibraryTests {
 		
 		setUp()
 		testLoadCommand()
-		print("\t❌ testLoadCommand() passed")
+		print("\t✅ testLoadCommand() passed")
 		tearDown()
 		
 		setUp()
@@ -303,6 +314,18 @@ class MediaLibraryTests {
 	}
 	
 	/**
+	Tests that remove all files in library is working
+	*/
+	func testRemoveAllFiles() {
+		precondition(library.count == 0, "Library should be empty.")
+		library.add(file: f1)
+		library.add(file: f2)
+		assert(library.count == 2, "Library should contain two files.")
+		library.removeAllFiles()
+		assert(library.count == 0, "Library should contain 0 files after removing.")
+	}
+	
+	/**
 	Tests that searching for terms in metadata works as it should.
 	*/
 	func testSearch() {
@@ -325,6 +348,24 @@ class MediaLibraryTests {
 		// search for non existing should return nil
 		result = library.search(term: "test")
 		assert(result.count == 0, "search should be 0 files")
+		
+		// search for added metadata should return f1
+//		let newKV: MMMetadata = Metadata(keyword: "newKey", value: "newVal")
+//		library.add(metadata: newKV, file: f1)
+//		assert(library.count == 2, "Library should contain two files.")
+//		result = library.search(term: "newVal")
+//		assert(result.count == 1, "search should be 1 file")
+//		assert(result[0] as! File == f1, "search should be 1 file")
+//		result = library.search(term: "newKey")
+//		assert(result.count == 1, "search should be 1 file")
+//		assert(result[0] as! File == f1, "search should be 1 file")
+//
+		// Search for removed metadata should return nil
+//		library.remove(key: "newKey", file: f1)
+//		result = library.search(term: "newVal")
+//		assert(result.count == 0, "search should be 0 files")
+//		result = library.search(term: "newKey")
+//		assert(result.count == 0, "search should be 0 files")
 	}
 	
 	/**
@@ -371,18 +412,23 @@ class MediaLibraryTests {
 		precondition(results.count == 0, "results should be empty.")
 
 		do {
+			// import from working directory should work
 			results = try importer.read(filename: testFilename)
 			assert(results.count == 3, "Results should have three files after read.")
 			assert(results[0] as! File == f1, "results should be f1")
 			assert(results[1] as! File == f2, "results should be f2")
 			assert(results[2] as! File == f3, "results should be f3")
 			
+			// import from home directory also should work
 			results = try importer.read(filename: testHomeFilename)
 			assert(results.count == 3, "Results should have three files after read.")
 			assert(results[0] as! File == f1, "results should be f1")
 			assert(results[1] as! File == f2, "results should be f2")
 			assert(results[2] as! File == f3, "results should be f3")
 			
+			// import from full path should work as well - but cannot test automatically
+			
+			// import from nonexist file should fail
 			results = []
 			results = try importer.read(filename: dummyFilename)
 			
@@ -402,48 +448,148 @@ class MediaLibraryTests {
 	Tests that the load command works as it should.
 	*/
 	func testLoadCommand() {
+		precondition(library.count == 0, "Library should be empty.")
+
+		let testFilename = "test.json"
+		let testHomeFilename = "test2.json"
+		let dummyFilename = "doesntexist.json"
 		
+		let oneFile: [String] = [testFilename]
+		let twoFiles: [String] = [testFilename, testHomeFilename]
+		let dummyFile: [String] = [dummyFilename]
+		
+		var command: MMCommand
+		
+		do {
+			// Test working directory file loads
+			command = LoadCommand(loadfiles: oneFile, library: library)
+			try command.execute()
+			assert(library.count == 3, "Library should be contain 3 files after loading.")
+			library.removeAllFiles()
+			assert(library.count == 0, "Library should be contain 0 files.")
+			
+			// Test home directory file loads
+			command = LoadCommand(loadfiles: twoFiles, library: library)
+			try command.execute()
+			assert(library.count == 6, "Library should be contain 6 files after loading.")
+			library.removeAllFiles()
+			assert(library.count == 0, "Library should be contain 0 files.")
+			
+			
+			// Test invalid file does not load
+			command = LoadCommand(loadfiles: dummyFile, library: library)
+			try command.execute()
+			assert(library.count == 0, "Library should be contain 0 files.")
+			
+		} catch { }
 	}
 	
 	/**
 	Tests that the list command works as it should.
 	*/
 	func testListCommand() {
+		precondition(library.count == 0, "Library should be empty.")
+		library.add(file: f1)
+		library.add(file: f2)
+		assert(library.count == 2, "Library should contain two files.")
+		
+		var command: MMCommand
+		do {
+			// Test listing via key
+			command = ListCommand(keyword: ["creator"], library: library)
+			try command.execute()
+			
+			// Test listing via value
+			
+			// Test listing results to two terms
+			
+			// Test listing results for terms that dont exist
+			
+			// Test listing results for one exist one not
+			
+		} catch { }
+		
 	}
 	
 	/**
 	Tests that the list all command works as it should.
 	*/
 	func testListAllCommand() {
-
+		precondition(library.count == 0, "Library should be empty.")
+		library.add(file: f1)
+		library.add(file: f2)
+		assert(library.count == 2, "Library should contain two files.")
+		
+		var command: MMCommand
+		do {
+//			command = ListCommand()
+//				try command.execute()
+		} catch { }
 	}
 	
 	/**
 	Tests that the set command works as it should.
 	*/
 	func testSetCommand() {
+		precondition(library.count == 0, "Library should be empty.")
+		library.add(file: f1)
+		library.add(file: f2)
+		assert(library.count == 2, "Library should contain two files.")
 		
+		var command: MMCommand
+		do {
+//			command =
+//				try command.execute()
+		} catch { }
 	}
 	
 	/**
 	Tests that the delete command works as it should.
 	*/
 	func testDeleteCommand() {
+		precondition(library.count == 0, "Library should be empty.")
+		library.add(file: f1)
+		library.add(file: f2)
+		assert(library.count == 2, "Library should contain two files.")
 		
+		var command: MMCommand
+		do {
+//			command =
+//				try command.execute()
+		} catch { }
 	}
 	
 	/**
 	Tests that the save search command works as it should.
 	*/
 	func testSaveSearchCommand() {
+		precondition(library.count == 0, "Library should be empty.")
+		library.add(file: f1)
+		library.add(file: f2)
+		assert(library.count == 2, "Library should contain two files.")
 		
+		var command: MMCommand
+		do {
+//			command =
+//				try command.execute()
+		} catch { }
 	}
 	
 	/**
 	Tests that the save command works as it should.
 	*/
 	func testSaveCommand() {
+		precondition(library.count == 0, "Library should be empty.")
+		library.add(file: f1)
+		library.add(file: f2)
+		assert(library.count == 2, "Library should contain two files.")
 		
+	
+		var command: MMCommand
+		do {
+//			command = SaveCommand(data: )
+//			try command.execute()
+		} catch { }
 	}
 	
 }
