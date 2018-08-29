@@ -348,24 +348,24 @@ class MediaLibraryTests {
 		result = library.search(term: "test")
 		assert(result.count == 0, "search should be 0 files")
 		
-		// TODO
+		
 		// search for added metadata should return f1
-//		let newKV: MMMetadata = Metadata(keyword: "newKey", value: "newVal")
-//		library.add(metadata: newKV, file: f1)
-//		assert(library.count == 2, "Library should contain two files.")
-//		result = library.search(term: "newVal")
-//		assert(result.count == 1, "search should be 1 file")
-//		assert(result[0] as! File == f1, "search should be 1 file")
-//		result = library.search(term: "newKey")
-//		assert(result.count == 1, "search should be 1 file")
-//		assert(result[0] as! File == f1, "search should be 1 file")
-//
+		let newKV: MMMetadata = Metadata(keyword: "newkey", value: "newval")
+		library.add(metadata: newKV, file: f1)
+		assert(library.count == 2, "Library should contain two files.")
+		result = library.search(term: "newkey")
+		assert(result.count == 1, "search should be 1 file")
+		assert(result[0] as! File == f1, "search should be 1 file")
+		result = library.search(term: "newKey")
+		assert(result.count == 1, "search should be 1 file")
+		assert(result[0] as! File == f1, "search should be 1 file")
+
 		// Search for removed metadata should return nil
-//		library.remove(key: "newKey", file: f1)
-//		result = library.search(term: "newVal")
-//		assert(result.count == 0, "search should be 0 files")
-//		result = library.search(term: "newKey")
-//		assert(result.count == 0, "search should be 0 files")
+		library.remove(key: "newkey", file: f1)
+		result = library.search(term: "newval")
+		assert(result.count == 0, "search should be 0 files")
+		result = library.search(term: "newKey")
+		assert(result.count == 0, "search should be 0 files")
 	}
 	
 	/**
@@ -522,6 +522,7 @@ class MediaLibraryTests {
 			rSet = command.results!
 			results = try rSet.getAll()
 				//TODO
+			print(results)
 //			assert(results.count == 2, "results should be two files")
 			
 
@@ -552,27 +553,25 @@ class MediaLibraryTests {
 //			}
 //			assert(errorThrown, "Error should have been thrown")
 			
-			// TODO
-			// Test listing for added metadata
-//			let newKV: MMMetadata = Metadata(keyword: "newKey", value: "newVal")
-//			library.add(metadata: newKV, file: f1)
-//			command = ListCommand(keyword: ["newKey"], library: library)
-//			do {
-//				try command.execute()
-//			} catch {
-//				assertionFailure()
-//			}
-//			rSet = command.results!
-//			results = try rSet.getAll()
-//			assert(results.count == 1, "results should be 1 file")
-//			assert(results[0] as! File == f1, "File found should be f1")
-//			print("inside")
 			
+			// Test listing for added metadata
+			let newKV: MMMetadata = Metadata(keyword: "newkey", value: "newval")
+			library.add(metadata: newKV, file: f1)
+			command = ListCommand(keyword: ["newkey"], library: library)
+			do {
+				try command.execute()
+			} catch {
+				assertionFailure()
+			}
+			rSet = command.results!
+			results = try rSet.getAll()
+			assert(results.count == 1, "results should be 1 file")
+			assert(results[0] as! File == f1, "File found should be f1")
 			
 			// Test listing for removed metadata
 			errorThrown = false
-			library.remove(key: "newKey", file: f1)
-			command = ListCommand(keyword: ["newKey"], library: library)
+			library.remove(key: "newkey", file: f1)
+			command = ListCommand(keyword: ["newkey"], library: library)
 			do {
 				try command.execute()
 			} catch {

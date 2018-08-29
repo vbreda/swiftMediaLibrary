@@ -64,11 +64,12 @@ class Library : MMCollection {
             if f as! File == file as! File {
                 files[i].metadata.append(metadata)
                 toUpdate = files[i]
+				updateDictionaries(metadata: metadata, file: file, update: toUpdate)
+				break
             }
             i += 1
         }
         
-        updateDictionaries(metadata: metadata, file: file, update: toUpdate)
     }
 	
     /**
@@ -80,7 +81,7 @@ class Library : MMCollection {
      keyword, possibly an empty list.
      */
     func search(term: String) -> [MMFile]  {
-        let searchterm : String = term.lowercased()
+        let searchterm: String = term.lowercased()
         
         // check if either return results and return the one that does? or combine
         var results: [MMFile] = []
