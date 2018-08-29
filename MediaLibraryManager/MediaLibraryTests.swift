@@ -477,10 +477,15 @@ class MediaLibraryTests {
 			
 			// Test invalid file does not load
 			command = LoadCommand(loadfiles: dummyFile, library: library)
-			try command.execute()
-			assert(library.count == 0, "Library should be contain 0 files.")
+			do {
+				try command.execute()
+			} catch {
+				assert(library.count == 0, "Library should be contain 0 files.")
+			}
 			
-		} catch { }
+		} catch {
+			assertionFailure()
+		}
 	}
 	
 	/**
@@ -574,7 +579,9 @@ class MediaLibraryTests {
 				errorThrown = true
 			}
 			assert(errorThrown, "Data doesnt exist error should have been thrown")
-		} catch { }
+		} catch {
+			assertionFailure()
+		}
 		
 	}
 	
@@ -588,10 +595,17 @@ class MediaLibraryTests {
 		assert(library.count == 2, "Library should contain two files.")
 		
 		var command: MMCommand
+		var results: [MMFile]
+		var rSet: MMResultSet
 		do {
-//			command = ListCommand()
-//				try command.execute()
-		} catch { }
+			command = ListCommand(keyword: [], library: library)
+			try command.execute()
+			rSet = command.results!
+			results = try rSet.getAll()
+			assert(results.count == 2, "Entire library should be returned")
+		} catch {
+			assertionFailure()
+		}
 	}
 	
 	/**
@@ -607,7 +621,9 @@ class MediaLibraryTests {
 		do {
 //			command =
 //				try command.execute()
-		} catch { }
+		} catch {
+			assertionFailure()
+		}
 	}
 	
 	/**
@@ -623,7 +639,9 @@ class MediaLibraryTests {
 		do {
 //			command =
 //				try command.execute()
-		} catch { }
+		} catch {
+			assertionFailure()
+		}
 	}
 	
 	/**
@@ -639,7 +657,9 @@ class MediaLibraryTests {
 		do {
 //			command =
 //				try command.execute()
-		} catch { }
+		} catch {
+			assertionFailure()
+		}
 	}
 	
 	/**
@@ -656,7 +676,9 @@ class MediaLibraryTests {
 		do {
 //			command = SaveCommand(data: )
 //			try command.execute()
-		} catch { }
+		} catch {
+			assertionFailure()
+		}
 	}
 	
 }
