@@ -70,19 +70,7 @@ class Library : MMCollection {
         
         updateDictionaries(metadata: metadata, file: file, update: toUpdate)
     }
-    
-    /**
-     Removes a specific instance of a metadata from the collection.
-     
-     - Parameters: metadata: The item to remove from the collection.
-     - Returns: none.
-     */
-    func remove(metadata: MMMetadata)  {
-        for f in files {
-            remove(key: metadata.keyword, file: f)
-        }
-    }
-    
+	
     /**
      Finds all the files associated with the keyword.
      
@@ -127,7 +115,24 @@ class Library : MMCollection {
     func all() -> [MMFile]  {
         return files
     }
-    
+	
+	/**
+	Removes a specific instance of a metadata from the collection.
+	
+	- Parameters: metadata: The item to remove from the collection.
+	- Returns: none.
+	*/
+	func remove(metadata: MMMetadata)  {
+		// Remove metadata term from all files not a functionality in our library
+		var i: Int = 0
+		for _ in files {
+			if let indexM = files[i].metadata.index(where: {$0.keyword == metadata.keyword && $0.value == metadata.value}) {
+				files[i].metadata.remove(at: indexM)
+			}
+			i += 1
+		}
+	}
+	
     /**
      Removes a specific instance of a metadata from a file in the collection.
      Note not in protocols.swift - added this method ourselves.
@@ -137,12 +142,12 @@ class Library : MMCollection {
      - Returns: none.
      */
     func remove(key: String, file: MMFile)  {
-        
-        let indexF = files.index(where: {$0.filename == file.filename})
-        let indexM = files[indexF!].metadata.index(where: {$0.keyword == key})
-        let rmv = files[indexF!].metadata.remove(at: indexM!)
-        
-        rmvDictionaries(key: key, rmv: rmv, file: file)
+		if let indexF = files.index(where: {$0.filename == file.filename}){
+			if let indexM = files[indexF].metadata.index(where: {$0.keyword == key}) {
+				let rmv = files[indexF].metadata.remove(at: indexM)
+				rmvDictionaries(key: key, rmv: rmv, file: file)
+			}
+		}
     }
     
     /**
