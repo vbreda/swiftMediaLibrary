@@ -144,7 +144,7 @@ class Library : MMCollection {
      */
     func remove(key: String, file: MMFile)  {
 		if let indexF = files.index(where: {$0.filename == file.filename}){
-			if let indexM = files[indexF].metadata.index(where: {$0.keyword == key}) {
+			if let indexM = files[indexF].metadata.index(where: {$0.keyword.lowercased() == key.lowercased()}) {
 				let rmv = files[indexF].metadata.remove(at: indexM)
 				rmvDictionaries(key: key, rmv: rmv, file: file)
 			}
@@ -222,12 +222,12 @@ class Library : MMCollection {
         var size = keysDictionary[key]?.count
         
         if size == 1 {
-            keysDictionary.removeValue(forKey: key)
+            keysDictionary.removeValue(forKey: key.lowercased())
         } else {
-            var values = keysDictionary[key]
+            var values = keysDictionary[key.lowercased()]
             let index = values?.index(where: {$0 as! File == file as! File})
             values?.remove(at: index!)
-            keysDictionary.updateValue(values!, forKey: key)
+            keysDictionary.updateValue(values!, forKey: key.lowercased())
         }
         
         size = valuesDictionary[rmv.value.lowercased()]?.count

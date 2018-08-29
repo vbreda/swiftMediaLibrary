@@ -555,9 +555,9 @@ class MediaLibraryTests {
 			
 			
 			// Test listing for added metadata
-			let newKV: MMMetadata = Metadata(keyword: "newkey", value: "newval")
+			let newKV: MMMetadata = Metadata(keyword: "newKey", value: "newVal")
 			library.add(metadata: newKV, file: f1)
-			command = ListCommand(keyword: ["newkey"], library: library)
+			command = ListCommand(keyword: ["newKey"], library: library)
 			do {
 				try command.execute()
 			} catch {
@@ -570,7 +570,7 @@ class MediaLibraryTests {
 			
 			// Test listing for removed metadata
 			errorThrown = false
-			library.remove(key: "newkey", file: f1)
+			library.remove(key: "newKey", file: f1)
 			command = ListCommand(keyword: ["newkey"], library: library)
 			do {
 				try command.execute()
