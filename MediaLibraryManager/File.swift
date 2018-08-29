@@ -111,6 +111,6 @@ class File: MMFile {
      - returns: String String representation of the File.
      */
     var description: String {
-        return "\(filename) \(metadata) \(path)"
+        return "\(filename) \(metadata)"
     }
 }

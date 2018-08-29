@@ -293,7 +293,6 @@ class ListCommand : MMCommand {
         
         // lists all the files in the library ("list")
         if (keywords.count == 0) {
-            print(library)
             let allFiles = library.all()
             self.results = MMResultSet(allFiles)
             
@@ -429,6 +428,7 @@ class SetCommand : MMCommand {
                 library.remove(key: key, file: fileToModify)
                 library.add(metadata: dataToAdd, file: fileToModify)
 				print("> \"\(dataToAdd)\" set in \(fileToModify.filename)")
+                
 
             } else {
                 //print("\(key) not found.")
@@ -491,6 +491,7 @@ class DeleteCommand : MMCommand {
 			if allowed {
 				// Check that key can be deleted
 				if delFile.metadata.contains(where: {$0.keyword == key}) {
+                    let metadata = delFile.metadata.first(where: {$0.keyword == key})
 					library.remove(key: key, file: delFile)
 					print("> \"\(key)\" deleted from \(delFile.filename)")
 				} else {

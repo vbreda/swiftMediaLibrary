@@ -59,12 +59,16 @@ class Library : MMCollection {
      */
     func add(metadata: MMMetadata, file: MMFile)  {
         var i: Int = 0
+        var toUpdate: MMFile?
         for f in files {
             if f as! File == file as! File {
                 files[i].metadata.append(metadata)
+                toUpdate = files[i]
             }
             i += 1
         }
+        
+        updateDictionaries(metadata: metadata, file: file, update: toUpdate)
     }
     
     /**
@@ -75,7 +79,7 @@ class Library : MMCollection {
      */
     func remove(metadata: MMMetadata)  {
         for f in files {
-			remove(key: metadata.keyword, file: f)
+            remove(key: metadata.keyword, file: f)
         }
     }
     
@@ -138,15 +142,17 @@ class Library : MMCollection {
         
         let indexF = files.index(where: {$0.filename == file.filename})
         let indexM = files[indexF!].metadata.index(where: {$0.keyword == key})
-        files[indexF!].metadata.remove(at: indexM!)
+        let rmv = files[indexF!].metadata.remove(at: indexM!)
+        
+        rmvDictionaries(key: key, rmv: rmv, file: file)
     }
-	
-	/**
-	Removes all files from this library. 
-	*/
-	func removeAllFiles() {
-		files.removeAll()
-	}
+    
+    /**
+     Removes all files from this library.
+     */
+    func removeAllFiles() {
+        files.removeAll()
+    }
     
     /**
      Checks the current library for this exact file.
@@ -196,6 +202,63 @@ class Library : MMCollection {
             } else {
                 valuesDictionary.updateValue([file], forKey: m.value.lowercased())
             }
+        }
+    }
+    
+    func rmvDictionaries(key: String, rmv: MMMetadata, file: MMFile) {
+        
+        var size = keysDictionary[key]?.count
+        
+        if size == 1 {
+            keysDictionary.removeValue(forKey: key)
+        } else {
+            var values = keysDictionary[key]
+            let index = values?.index(where: {$0 as! File == file as! File})
+            values?.remove(at: index!)
+            keysDictionary.updateValue(values!, forKey: key)
+        }
+        
+        size = valuesDictionary[rmv.value.lowercased()]?.count
+        
+        if size == 1 {
+            valuesDictionary.removeValue(forKey: rmv.value.lowercased())
+        } else {
+            var values = valuesDictionary[rmv.value.lowercased()]
+            let index = values?.index(where: {$0 as! File == file as! File})
+            values?.remove(at: index!)
+            valuesDictionary.updateValue(values!, forKey: rmv.value.lowercased())
+        }
+    }
+    
+    func updateDictionaries(metadata: MMMetadata, file: MMFile, update: MMFile?){
+        var size = keysDictionary[metadata.keyword]?.count
+        
+        if size == nil {
+            keysDictionary.updateValue([update!], forKey: metadata.keyword)
+        } else {
+            var values = keysDictionary[metadata.keyword]
+            let index = values?.index(where: {$0 as! File == file as! File})
+            if index == nil {
+                values?.append(update!)
+            } else {
+                values?[index!] = update!
+            }
+            keysDictionary.updateValue(values!, forKey: metadata.keyword)
+        }
+        
+        size = valuesDictionary[metadata.value]?.count
+        
+        if size == nil {
+            valuesDictionary.updateValue([update!], forKey: metadata.value)
+        } else {
+            var values = valuesDictionary[metadata.value]
+            let index = values?.index(where: {$0 as! File == file as! File})
+            if index == nil {
+                values?.append(update!)
+            } else{
+                values?[index!] = update!
+            }
+            valuesDictionary.updateValue(values!, forKey: metadata.value)
         }
     }
 }
