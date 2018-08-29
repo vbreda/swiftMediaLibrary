@@ -156,18 +156,13 @@ class MediaLibraryTests {
 		tearDown()
 		
 		setUp()
-		testLoadCommand()
-		print("\t✅ testLoadCommand() passed")
-		tearDown()
-		
-		setUp()
 		testListCommand()
-		print("\t❌ testListCommand() passed")
+		print("\t✅ testListCommand() passed")
 		tearDown()
 		
 		setUp()
 		testListAllCommand()
-		print("\t❌ testListAllCommand() passed")
+		print("\t✅ testListAllCommand() passed")
 		tearDown()
 		
 		setUp()
@@ -190,6 +185,10 @@ class MediaLibraryTests {
 		print("\t❌ testSaveCommand() passed")
 		tearDown()
 
+		setUp()
+		testLoadCommand()
+		print("\t✅ testLoadCommand() passed")
+		tearDown()
 	}
 	
 	/**
@@ -349,6 +348,7 @@ class MediaLibraryTests {
 		result = library.search(term: "test")
 		assert(result.count == 0, "search should be 0 files")
 		
+		// TODO
 		// search for added metadata should return f1
 //		let newKV: MMMetadata = Metadata(keyword: "newKey", value: "newVal")
 //		library.add(metadata: newKV, file: f1)
@@ -475,7 +475,6 @@ class MediaLibraryTests {
 			library.removeAllFiles()
 			assert(library.count == 0, "Library should be contain 0 files.")
 			
-			
 			// Test invalid file does not load
 			command = LoadCommand(loadfiles: dummyFile, library: library)
 			try command.execute()
@@ -494,18 +493,75 @@ class MediaLibraryTests {
 		assert(library.count == 2, "Library should contain two files.")
 		
 		var command: MMCommand
+		var results: [MMFile]
 		do {
 			// Test listing via key
 			command = ListCommand(keyword: ["creator"], library: library)
 			try command.execute()
+			if let rSet = command.results {
+				results = try rSet.getAll()
+				assert(results.count == 2, "results should be two files")
+			} else {
+				assertionFailure("Results set should exist")
+			}
 			
 			// Test listing via value
+			command = ListCommand(keyword: ["cre1"], library: library)
+			try command.execute()
+			if let rSet = command.results {
+				results = try rSet.getAll()
+				assert(results.count == 1, "results should be 1 file")
+				assert(results[0] as! File == f1, "File found should be f1")
+			} else {
+				assertionFailure("Results set should exist")
+			}
 			
 			// Test listing results to two terms
+			command = ListCommand(keyword: ["cre1", "cre2"], library: library)
+			try command.execute()
+			if let rSet = command.results {
+				results = try rSet.getAll()
+				//TODO
+//				assert(results.count == 2, "results should be two files")
+			} else {
+				assertionFailure("Results set should exist")
+			}
 			
 			// Test listing results for terms that dont exist
-			
+			command = ListCommand(keyword: ["none"], library: library)
+			try command.execute()
+			let rSet: MMResultSet? = command.results
+			assert(rSet == nil, "no result set should exist")
+
 			// Test listing results for one exist one not
+			command = ListCommand(keyword: ["cre1", "none"], library: library)
+			try command.execute()
+			if let rSet = command.results {
+				results = try rSet.getAll()
+				assert(results.count == 1, "results should be 1 file")
+			} else {
+				assertionFailure("Results set should exist")
+			}
+			
+			// Test listing for added metadata
+			let newKV: MMMetadata = Metadata(keyword: "newKey", value: "newVal")
+			library.add(metadata: newKV, file: f1)
+			command = ListCommand(keyword: ["cre1"], library: library)
+			try command.execute()
+			if let rSet = command.results {
+				results = try rSet.getAll()
+				assert(results.count == 1, "results should be 1 file")
+				assert(results[0] as! File == f1, "File found should be f1")
+			} else {
+				assertionFailure("Results set should exist")
+			}
+			
+			// Test listing for removed metadata
+			library.remove(key: "newKey", file: f1)
+			command = ListCommand(keyword: ["newKey"], library: library)
+			try command.execute()
+			let rSet2: MMResultSet? = command.results
+			assert(rSet2 == nil, "no result set should exist")
 			
 		} catch { }
 		
