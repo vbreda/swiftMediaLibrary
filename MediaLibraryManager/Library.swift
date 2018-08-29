@@ -114,9 +114,7 @@ class Library : MMCollection {
      keyword, possibly an empty list.
      */
     func search(item: MMMetadata) -> [MMFile]  {
-        let res1 = search(term: item.keyword)
-        let res2 = search(term: item.value)
-        // See which are in both lists?
+		//Search unimplemented as our Library does not need this functionality
         return []
     }
     
