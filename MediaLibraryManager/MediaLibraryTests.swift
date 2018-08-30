@@ -166,6 +166,11 @@ class MediaLibraryTests {
 		tearDown()
 		
 		setUp()
+		testListByType()
+		print("\t✅ testListByType() passed")
+		tearDown()
+		
+		setUp()
 		testAddCommand()
 		print("\t✅ testAddCommand() passed")
 		tearDown()
@@ -700,6 +705,65 @@ class MediaLibraryTests {
 		}
 	}
 	
+	/**
+	Tests that the list command works as it should for type attributes.
+	*/
+	func testListByType() {
+		let d = "document"
+		let i = "image"
+		let a = "audio"
+		let v = "video"
+		precondition(library.count == 0, "Library should be empty.")
+		library.add(file: f1)
+		library.add(file: f2)
+		library.add(file: f3)
+		assert(library.count == 3, "Library should contain three files.")
+		
+		var command: MMCommand
+		var results: [MMFile]
+		var rSet: MMResultSet
+		var errorThrown: Bool = false
+		do {
+			// Test list all image
+			command = ListCommand(keyword: [i], library: library)
+			try command.execute()
+			rSet = command.results!
+			results = try rSet.getAll()
+			assert(results.count == 2, "Two images should be returned")
+			assert(results[0].type == i, "Type should be image")
+			assert(results[1].type == i, "Type should be image")
+			
+			// Test list all document
+			command = ListCommand(keyword: [d], library: library)
+			do {
+				try command.execute()
+			} catch {
+				errorThrown = true
+			}
+			assert(errorThrown, "Data doesnt exist error should have been thrown")
+			
+			// Test list all video
+			command = ListCommand(keyword: [v], library: library)
+			try command.execute()
+			rSet = command.results!
+			results = try rSet.getAll()
+			assert(results.count == 1, "Two images should be returned")
+			assert(results[0].type == v, "Type should be video")
+
+			
+			// Test list all audio
+			command = ListCommand(keyword: [a], library: library)
+			do {
+				try command.execute()
+			} catch {
+				errorThrown = true
+			}
+			assert(errorThrown, "Data doesnt exist error should have been thrown")
+			
+		} catch {
+			assertionFailure()
+		}
+	}
 	
 	/**
 	Tests that the add command works as it should.
