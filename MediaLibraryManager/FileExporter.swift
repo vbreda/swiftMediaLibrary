@@ -50,9 +50,7 @@ class FileExporter: MMFileExport {
             let encodedData = try JSONEncoder().encode(expFiles)
             try encodedData.write(to: fileToWrite)
         } catch {
-            print("Unable to write", error)
-            print("> Unable to write JSON file...")
-            print("\tCheck your last search and try again.")
+			throw MMCliError.writeFailure
         }
     }
 }

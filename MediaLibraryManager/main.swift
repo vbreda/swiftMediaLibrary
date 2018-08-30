@@ -103,5 +103,8 @@ while let line = prompt("> ") {
 		print("\tCheck your filename and/or contents and try again.")
 	} catch MMCliError.libraryEmpty {
 		print("Library is empty. Load files and try again.")
+	} catch MMCliError.writeFailure {
+		print("> Unable to write JSON file...")
+		print("\tCheck your last search and try again.")
 	}
 }

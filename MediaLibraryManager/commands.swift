@@ -47,6 +47,9 @@ enum MMCliError: Error {
 	
 	// Thrown if the library is empty but user wants to use/save it
 	case libraryEmpty
+	
+	// Thrown if exporting encounters any error
+	case writeFailure
 }
 
 /// This class represents a set of results. It could be extended to include
