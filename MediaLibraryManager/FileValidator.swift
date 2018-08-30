@@ -19,7 +19,7 @@ class FileValidator {
 	private static let validImage = ["resolution": true, "runtime": false,"creator": true]
 	private static let validDocument = ["resolution": false, "runtime": false,"creator": true]
 	private static let validVideo = ["resolution": true, "runtime": true,"creator": true]
-	private static let validAudio = ["resolution": false, "runtime": false,"creator": true]
+	private static let validAudio = ["resolution": false, "runtime": true,"creator": true]
 	
 	private var errorMessages: [String] = []
 	

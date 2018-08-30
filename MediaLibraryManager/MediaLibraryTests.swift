@@ -142,7 +142,7 @@ class MediaLibraryTests {
 		
 		setUp()
 		testFileValidator()
-		print("\t❌ testFileValidator() passed")
+		print("\t✅ testFileValidator() passed")
 		tearDown()
 
 		setUp()
@@ -400,7 +400,74 @@ class MediaLibraryTests {
 	e.g. does not validate invalid files
 	*/
 	func testFileValidator() {
+		let vDoc: Media = Media(fullpath: "fake/path/to/doc1", type: "document", metadata: ["creator":"me"])
+		let vIm: Media = Media(fullpath: "fake/path/to/ima1", type: "image", metadata: ["creator":"me","resolution":"r1"])
+		let vVid: Media = Media(fullpath: "fake/path/to/vid1", type: "video", metadata: ["creator":"me","resolution":"r1","runtime":"r2"])
+		let vAud: Media = Media(fullpath: "fake/path/to/aud1", type: "audio", metadata: ["creator":"me","runtime":"r2"])
+
+		let invDoc: Media = Media(fullpath: "fake/path/to/invdoc1", type: "document", metadata: ["notcreator":"me"])
+		let invIm: Media = Media(fullpath: "fake/path/to/invima1", type: "image", metadata: ["creator":"me","notresolution":"r1"])
+		let invVid: Media = Media(fullpath: "fake/path/to/invvid1", type: "video", metadata: ["creator":"me","resolution":"r1","notruntime":"r2"])
+		let invAud: Media = Media(fullpath: "fake/path/to/invaud1", type: "audio", metadata: ["creator":"me","notruntime":"r2"])
 		
+		let invType: Media = Media(fullpath: "fake/path/to/notype", type: "none", metadata: ["creator":"me","resolution":"r1","runtime":"r2"])
+		let invMD: Media = Media(fullpath: "fake/path/to/noMDdoc", type: "document", metadata: [:])
+		
+		let validator: FileValidator = FileValidator()
+		var validatedFile: MMFile
+		
+		do {
+			// Test all four valid types can load
+			validatedFile = try validator.validate(media: vDoc)!
+			assert(validatedFile.type == "document", "should be of type ")
+			assert(validatedFile.filename == "doc1", "should have name ")
+			assert(validatedFile.path == "/fake/path/to", "should have path correct")
+			assert(validatedFile.metadata.count == 1,"should have 1 MD keypair")
+			
+			validatedFile = try validator.validate(media: vIm)!
+			assert(validatedFile.type == "image", "should be of type ")
+			assert(validatedFile.filename == "ima1", "should have name ")
+			assert(validatedFile.path == "/fake/path/to", "should have path correct")
+			assert(validatedFile.metadata.count == 2,"should have 1 MD keypair")
+			
+			validatedFile = try validator.validate(media: vVid)!
+			assert(validatedFile.type == "video", "should be of type ")
+			assert(validatedFile.filename == "vid1", "should have name ")
+			assert(validatedFile.path == "/fake/path/to", "should have path correct")
+			assert(validatedFile.metadata.count == 3,"should have 3 MD keypair")
+			
+			validatedFile = try validator.validate(media: vAud)!
+			assert(validatedFile.type == "audio", "should be of type ")
+			assert(validatedFile.filename == "aud1", "should have name ")
+			assert(validatedFile.path == "/fake/path/to", "should have path correct")
+			assert(validatedFile.metadata.count == 2,"should have 2 MD keypair")
+			
+			// test invaid metadata for all four types
+			if (try validator.validate(media: invDoc)) != nil {
+				assertionFailure("Invalid metadata shouldn't validate.")
+			}
+			if (try validator.validate(media: invIm)) != nil {
+				assertionFailure("Invalid metadata shouldn't validate.")
+			}
+			if (try validator.validate(media: invVid)) != nil {
+				assertionFailure("Invalid metadata shouldn't validate.")
+			}
+			if (try validator.validate(media: invAud)) != nil {
+				assertionFailure("Invalid metadata shouldn't validate.")
+			}
+			
+			// test wrong type won't load
+			if (try validator.validate(media: invType)) != nil {
+				assertionFailure("Invalid type of file shouldn't validate.")
+			}
+			
+			// test wrong MD won't load
+			if (try validator.validate(media: invMD)) != nil {
+				assertionFailure("Invalid or empty metadata shouldn't validate.")
+			}
+		} catch {
+			assertionFailure()
+		}
 	}
 	
 	/**

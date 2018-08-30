@@ -28,7 +28,7 @@ extension MMFile {
         } else if keys.contains("resolution") {
             return "image"
         } else if keys.contains("runtime") {
-            return "image"
+            return "audio"
         } else {
             return "document"
         }
