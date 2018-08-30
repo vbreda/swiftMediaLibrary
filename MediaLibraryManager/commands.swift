@@ -411,7 +411,7 @@ class AddCommand : MMCommand {
             let value = data.removeFirst()
             let newdata = Metadata(keyword: key, value: value)
             let fileToAddTo = lastsearch[index]
-			var check: Bool = isMetadataDuplicate(file: fileToAddTo, key: key)
+			let check: Bool = library.isMetadataDuplicate(file: fileToAddTo, key: key)
 			if check {
 				library.add(metadata: newdata, file: fileToAddTo)
 			} else {

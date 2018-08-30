@@ -7,7 +7,7 @@
 //
 
 /**
-tst.json contains:
+test.json contains:
 
 [{"fullpath": "/346/to/image1","type": "image","metadata": {"creator": "cre1","resolution": "res1"}},{"fullpath": "/346/to/image2","type": "image","metadata": {"creator": "cre2","resolution": "res2"}},{"fullpath": "/346/to/video3","type": "video","metadata": {"creator": "cre3","resolution": "res3","runtime": "run3"}}]
 
@@ -447,6 +447,17 @@ class MediaLibraryTests {
 	*/
 	func testFileExporter() {
 		
+		// Test home
+		
+		// Test workign
+		
+		// Test full
+		
+		// Test empty
+		
+		// Test no prev result set
+		
+		//
 	}
 	
 	/**
