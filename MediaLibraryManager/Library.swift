@@ -196,7 +196,24 @@ class Library : MMCollection {
 		
 		return found
 	}
-    
+	
+	/**
+	Finds all the files of a particular type
+	
+	- Parameters: type the file type to list
+	- Returns: [MMFile]: A list of all files of that type in the library.
+	*/
+	
+	func listByType(type: String) -> [MMFile] {
+		var results: [MMFile] = []
+		for f in files {
+			if f.type == type {
+				results.append(f)
+			}
+		}
+		return results
+	}
+	
     /**
      Loads the metadata dictionaries of the new file.
      Adds both keywords and values to the Library dictionaries.

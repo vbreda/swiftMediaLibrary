@@ -323,25 +323,31 @@ class ListCommand : MMCommand {
 			print(library.description)
 
             // lists all the files that have the given term ("list <term>")
-        } else {
+		} else {
 			
 			var param = keywords.count
+			let term = keywords[0].lowercased()
 			var listresults: [MMFile] = []
 			var filenamesFound: [String] = []
 			
-			// Continue adding while there are 2+ data items left
-			while param > 0 {
-				let word: String = keywords.removeFirst()
-				let res1 = library.search(term: word)
+			if param == 1 && (term == "image" || term == "video" || term == "document" || term == "audio") {
+				listresults = library.listByType(type: term)
+			} else {
 				
-				for f in res1 {
-					if !filenamesFound.contains(f.filename) {
-						listresults.append(f)
-						filenamesFound.append(f.filename)
+				// Continue adding while there are 2+ data items left
+				while param > 0 {
+					let word: String = keywords.removeFirst()
+					let res1 = library.search(term: word)
+					
+					for f in res1 {
+						if !filenamesFound.contains(f.filename) {
+							listresults.append(f)
+							filenamesFound.append(f.filename)
+						}
 					}
-				}
 
-				param -= 1
+					param -= 1
+				}
 			}
 			
 			// Check that results were found, else throw
