@@ -309,14 +309,32 @@ class ListCommand : MMCommand {
             
             // lists all the files that have the given term ("list <term>")
         } else {
-            let word: String = keywords.removeFirst()
-            let listresults = library.search(term: word)
-            
-            // Check that results were found, else throw
-            guard listresults.count > 0 else {
-                throw MMCliError.dataDoesntExist
-            }
-            self.results = MMResultSet(listresults)
+			
+			var param = keywords.count
+			var listresults: [MMFile] = []
+			var filenamesFound: [String] = []
+			
+			// Continue adding while there are 2+ data items left
+			while param > 0 {
+				let word: String = keywords.removeFirst()
+				let res1 = library.search(term: word)
+				
+				for f in res1 {
+					if !filenamesFound.contains(f.filename) {
+						listresults.append(f)
+						filenamesFound.append(f.filename)
+					}
+				}
+
+				param -= 1
+			}
+			
+			// Check that results were found, else throw
+			guard listresults.count > 0 else {
+				throw MMCliError.dataDoesntExist
+			}
+
+			self.results = MMResultSet(listresults)
         }
     }
 }
@@ -489,8 +507,6 @@ class DeleteCommand : MMCommand {
 		}
 		
         var param = data.count
-		//let validator: FileValidator = FileValidator()
-		
         while param > 0 {
             
             let key: String = data.removeFirst()
