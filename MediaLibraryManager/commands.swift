@@ -412,7 +412,7 @@ class AddCommand : MMCommand {
             let newdata = Metadata(keyword: key, value: value)
             let fileToAddTo = lastsearch[index]
 			let check: Bool = library.isMetadataDuplicate(file: fileToAddTo, key: key)
-			if check {
+			if !check {
 				library.add(metadata: newdata, file: fileToAddTo)
 			} else {
 				throw MMCliError.duplicateMetadataKey

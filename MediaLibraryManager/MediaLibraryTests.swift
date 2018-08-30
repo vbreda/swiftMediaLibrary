@@ -167,7 +167,7 @@ class MediaLibraryTests {
 		
 		setUp()
 		testAddCommand()
-		print("\t❌ testAddCommand() passed")
+		print("\t✅ testAddCommand() passed")
 		tearDown()
 		
 		setUp()
@@ -638,8 +638,83 @@ class MediaLibraryTests {
 	Tests that the add command works as it should.
 	*/
 	func testAddCommand() {
+		precondition(library.count == 0, "Library should be empty.")
 		
-		// Check adding duplicate metadata fails
+		var command: MMCommand
+		var errorThrown: Bool
+		var prevResults: [MMFile] = library.all()
+		
+		// Test adding to an empty library
+		command = AddCommand(data: ["0", "test1", "new"], library: library, lastsearch: prevResults)
+		errorThrown = false
+		do {
+			try command.execute()
+		} catch {
+			errorThrown = true
+		}
+		assert(errorThrown, "Library is empty error should have been thrown")
+		
+		library.add(file: f1)
+		library.add(file: f2)
+		assert(library.count == 2, "Library should contain two files.")
+		
+		do {
+			// Test setting to an empty result set
+			command = AddCommand(data: ["0", "test1", "new"], library: library, lastsearch: prevResults)
+			errorThrown = false
+			do {
+				try command.execute()
+			} catch {
+				errorThrown = true
+			}
+			assert(errorThrown, "Library is empty error should have been thrown")
+			
+			// Test adding one MD to a file
+			prevResults = library.all()
+			assert(prevResults[0] as! File == f1, "f1 should be at results 0 index.")
+			assert(prevResults[0].metadata.count == 2, "f1 should have 2 md key pairs only.")
+			command = AddCommand(data: ["0", "test1", "new"], library: library, lastsearch: prevResults)
+			try command.execute()
+			prevResults = library.all()
+			assert(prevResults[0] as! File == f1, "f1 should be at results 0 index still.")
+			var mArr = prevResults[0].metadata
+			var md = mArr[2]
+			assert(mArr.count == 3, "f1 should have 3 md key pairs now")
+			assert(md.keyword == "test1", "Keyword should be test1.")
+			assert(md.value == "new", "value should be new.")
+			
+			
+			// Test setting more than one works
+			prevResults = library.all()
+			assert(prevResults[1] as! File == f2, "f2 should be at results 1 index.")
+			assert(prevResults[1].metadata.count == 2, "f2 should have 2 md key pairs only.")
+			command = AddCommand(data: ["1", "test1", "new","test2","other"], library: library, lastsearch: prevResults)
+			try command.execute()
+			prevResults = library.all()
+			assert(prevResults[1] as! File == f2, "f2 should be at results 1 index still.")
+			mArr = prevResults[1].metadata
+			var md1 = mArr[2]
+			var md2 = mArr[3]
+			assert(mArr.count == 4, "f2 should have 4 md key pairs now")
+			assert(md1.keyword == "test1", "Keyword should be test1.")
+			assert(md1.value == "new", "value should be new.")
+			assert(md2.keyword == "test2", "Keyword should be test2.")
+			assert(md2.value == "other", "value should be other.")
+			
+			// Check adding duplicate metadata fails
+			command = AddCommand(data: ["0", "creator", "newCreator"], library: library, lastsearch: prevResults)
+			errorThrown = false
+			do {
+				try command.execute()
+			} catch {
+				errorThrown = true
+			}
+			assert(errorThrown, "Duplicate metadata error should have been thrown")
+			
+		} catch {
+			assertionFailure()
+		}
+		
 	}
 	
 	/**
@@ -724,7 +799,6 @@ class MediaLibraryTests {
 				errorThrown = true
 			}
 			assert(errorThrown, "Data doesn't exist error should have been thrown")
-			
 			
 		} catch {
 			assertionFailure()
