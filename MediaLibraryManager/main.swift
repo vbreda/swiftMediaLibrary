@@ -104,7 +104,9 @@ while let line = prompt("> ") {
 	} catch MMCliError.libraryEmpty {
 		print("Library is empty. Load files and try again.")
 	} catch MMCliError.writeFailure {
-		print("> Unable to write JSON file...")
+		print("Unable to write JSON file...")
 		print("\tCheck your last search and try again.")
+	} catch MMCliError.duplicateMetadataKey {
+		print("Attempting to add duplicate metadata. Try 'set' instead.")
 	}
 }

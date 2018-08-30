@@ -176,6 +176,26 @@ class Library : MMCollection {
         
         return found
     }
+	
+	/**
+	Checks the current file for this exact keyword
+	Note not in protocols.swift - added this method ourselves.
+	
+	- Parameters: file: file to look in
+	- Parameters: keyword: the key to check
+	- Returns: true if file already exists in the Library
+	*/
+	func isMetadataDuplicate(file: MMFile, key: String) -> Bool {
+		var found: Bool = false
+		
+		for m in file.metadata {
+			if m.keyword == key {
+				found = true
+			}
+		}
+		
+		return found
+	}
     
     /**
      Loads the metadata dictionaries of the new file.

@@ -50,6 +50,9 @@ enum MMCliError: Error {
 	
 	// Thrown if exporting encounters any error
 	case writeFailure
+	
+	// Thrown if the user tries to duplicate a metadata key
+	case duplicateMetadataKey
 }
 
 /// This class represents a set of results. It could be extended to include
@@ -408,8 +411,12 @@ class AddCommand : MMCommand {
             let value = data.removeFirst()
             let newdata = Metadata(keyword: key, value: value)
             let fileToAddTo = lastsearch[index]
-			
-            library.add(metadata: newdata, file: fileToAddTo)
+			var check: Bool = isMetadataDuplicate(file: fileToAddTo, key: key)
+			if check {
+				library.add(metadata: newdata, file: fileToAddTo)
+			} else {
+				throw MMCliError.duplicateMetadataKey
+			}
 			print("> \"\(newdata)\" added to \(fileToAddTo.filename)")
             param -= 2
         }

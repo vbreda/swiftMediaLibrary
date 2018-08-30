@@ -166,8 +166,13 @@ class MediaLibraryTests {
 		tearDown()
 		
 		setUp()
+		testAddCommand()
+		print("\t❌ testAddCommand() passed")
+		tearDown()
+		
+		setUp()
 		testSetCommand()
-		print("\t❌ testSetCommand() passed")
+		print("\t✅ testSetCommand() passed")
 		tearDown()
 		
 		setUp()
@@ -494,16 +499,28 @@ class MediaLibraryTests {
 	func testListCommand() {
 		precondition(library.count == 0, "Library should be empty.")
 		
-		// Test listing an empty library
+		var command: MMCommand
+		var results: [MMFile]
+		var rSet: MMResultSet
+		var errorThrown: Bool
 		
+		// Test listing an empty library
+		command = ListCommand(keyword: [""], library: library)
+		errorThrown = false
+		do {
+			try command.execute()
+		} catch {
+			errorThrown = true
+			if (command.results) != nil {
+				assertionFailure("No results should exist")
+			}
+		}
+		assert(errorThrown, "Library is empty error should have been thrown")
 		
 		library.add(file: f1)
 		library.add(file: f2)
 		assert(library.count == 2, "Library should contain two files.")
 		
-		var command: MMCommand
-		var results: [MMFile]
-		var rSet: MMResultSet
 		do {
 			// Test listing via key
 			command = ListCommand(keyword: ["creator"], library: library)
@@ -530,7 +547,7 @@ class MediaLibraryTests {
 
 			// Test listing results for terms that dont exist
 			command = ListCommand(keyword: ["none"], library: library)
-			var errorThrown: Bool = false
+			errorThrown = false
 			do {
 				try command.execute()
 			} catch {
@@ -605,19 +622,72 @@ class MediaLibraryTests {
 		}
 	}
 	
+	
+	/**
+	Tests that the add command works as it should.
+	*/
+	func testAddCommand() {
+		
+		// Check adding duplicate metadata fails
+	}
+	
 	/**
 	Tests that the set command works as it should.
 	*/
 	func testSetCommand() {
 		precondition(library.count == 0, "Library should be empty.")
+		
+		var command: MMCommand
+		var errorThrown: Bool
+		
+		var prevResults: [MMFile] = library.all()
+//		var prev: MMResultSet = MMResultSet(prevResults)
+		
+		// Test setting an empty library
+		command = SetCommand(data: ["0", "creator", "new"], library: library, lastsearch: prevResults)
+		errorThrown = false
+		do {
+			try command.execute()
+		} catch {
+			errorThrown = true
+			if (command.results) != nil {
+				assertionFailure("No results should exist")
+			}
+		}
+		assert(errorThrown, "Library is empty error should have been thrown")
+		
 		library.add(file: f1)
 		library.add(file: f2)
 		assert(library.count == 2, "Library should contain two files.")
 		
-		var command: MMCommand
 		do {
-//			command =
-//				try command.execute()
+			// Test setting an empty result set
+			command = SetCommand(data: ["0", "creator", "new"], library: library, lastsearch: prevResults)
+			errorThrown = false
+			do {
+				try command.execute()
+			} catch {
+				errorThrown = true
+				if (command.results) != nil {
+					assertionFailure("No results should exist")
+				}
+			}
+			assert(errorThrown, "Library is empty error should have been thrown")
+
+			prevResults = library.all()
+			
+			// Test setting one file works
+			try command.execute()
+			command = SetCommand(data: ["0", "creator", "new"], library: library, lastsearch: prevResults)
+			
+			
+			// Test setting more than one works
+			
+			
+			// Test setting non existent throws
+			
+			
+			
 		} catch {
 			assertionFailure()
 		}
