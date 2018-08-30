@@ -541,18 +541,15 @@ class MediaLibraryTests {
 			
 			// TODO
 			// Test listing results for one exist one not
-//			errorThrown = false
-//			command = ListCommand(keyword: ["cre1", "none"], library: library)
-//			do {
-//				try command.execute()
-//			} catch {
-//				errorThrown = true
-//				rSet = command.results!
-//				results = try rSet.getAll()
-//				assert(results.count == 1, "results should be 1 file")
-//			}
-//			assert(errorThrown, "Error should have been thrown")
-			
+			command = ListCommand(keyword: ["noeafd","cre1", "none"], library: library)
+			do {
+				try command.execute()
+			} catch {
+				assertionFailure("Error should not have been thrown as data exists!")
+			}
+			rSet = command.results!
+			results = try rSet.getAll()
+			assert(results.count == 1, "results should be 1 file")
 			
 			// Test listing for added metadata
 			let newKV: MMMetadata = Metadata(keyword: "newKey", value: "newVal")

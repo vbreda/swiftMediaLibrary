@@ -301,7 +301,9 @@ class ListCommand : MMCommand {
     }
     
     func execute() throws {
-        
+		
+		print(library.description)
+		
         // lists all the files in the library ("list")
         if (keywords.count == 0) {
             let allFiles = library.all()
