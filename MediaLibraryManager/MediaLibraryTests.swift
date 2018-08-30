@@ -650,9 +650,7 @@ class MediaLibraryTests {
 		
 		var command: MMCommand
 		var errorThrown: Bool
-		
 		var prevResults: [MMFile] = library.all()
-//		var prev: MMResultSet = MMResultSet(prevResults)
 		
 		// Test setting an empty library
 		command = SetCommand(data: ["0", "creator", "new"], library: library, lastsearch: prevResults)
@@ -661,9 +659,6 @@ class MediaLibraryTests {
 			try command.execute()
 		} catch {
 			errorThrown = true
-			if (command.results) != nil {
-				assertionFailure("No results should exist")
-			}
 		}
 		assert(errorThrown, "Library is empty error should have been thrown")
 		
@@ -679,24 +674,56 @@ class MediaLibraryTests {
 				try command.execute()
 			} catch {
 				errorThrown = true
-				if (command.results) != nil {
-					assertionFailure("No results should exist")
-				}
 			}
 			assert(errorThrown, "Library is empty error should have been thrown")
-
-			prevResults = library.all()
 			
 			// Test setting one file works
-			try command.execute()
+			prevResults = library.all()
+			assert(prevResults[0] as! File == f1, "f1 should be at results 0 index.")
+			var mArr = prevResults[0].metadata
+			var md = mArr[0]
+			assert(md.keyword == kv11.keyword, "Keyword should be creator.")
+			assert(md.value == kv11.value, "value should be cre1.")
+			assert(md.keyword == "creator", "Keyword should be creator.")
+			assert(md.value == "cre1", "value should be cre1.")
 			command = SetCommand(data: ["0", "creator", "new"], library: library, lastsearch: prevResults)
+			try command.execute()
+			prevResults = library.all()
+			assert(prevResults[0] as! File == f1, "f1 should be at results 0 index still.")
+			mArr = prevResults[0].metadata
+			md = mArr[1]
+			assert(md.keyword == kv11.keyword, "Keyword should be creator.")
+			assert(md.value != kv11.value, "value should not be cre1.")
+			assert(md.keyword == "creator", "Keyword should be creator.")
+			assert(md.value == "new", "value should be new.")
 			
 			
 			// Test setting more than one works
-			
+			prevResults = library.all()
+			assert(prevResults[1] as! File == f2, "f1 should be at results 0 index.")
+			command = SetCommand(data: ["1", "creator","new","resolution","420"], library: library, lastsearch: prevResults)
+			try command.execute()
+			mArr = prevResults[1].metadata
+			var md1 = mArr[0]
+			var md2 = mArr[1]
+			assert(md1.keyword == kv21.keyword, "Keyword should be creator.")
+			assert(md1.value != kv21.value, "value should not be cre2.")
+			assert(md1.keyword == "creator", "Keyword should be creator.")
+			assert(md1.value == "new", "value should be new.")
+			assert(md2.keyword == kv22.keyword, "Keyword should be resolution.")
+			assert(md2.value != kv22.value, "value should not be res2.")
+			assert(md2.keyword == "resolution", "Keyword should be resolution.")
+			assert(md2.value == "420", "value should be 420.")
 			
 			// Test setting non existent throws
-			
+			command = SetCommand(data: ["0", "notthere", "new"], library: library, lastsearch: prevResults)
+			errorThrown = false
+			do {
+				try command.execute()
+			} catch {
+				errorThrown = true
+			}
+			assert(errorThrown, "Data doesn't exist error should have been thrown")
 			
 			
 		} catch {
