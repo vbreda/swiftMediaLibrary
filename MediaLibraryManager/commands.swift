@@ -558,7 +558,7 @@ class DeleteCommand : MMCommand {
 			if allowed {
 				// Check that key can be deleted
 				if delFile.metadata.contains(where: {$0.keyword == key}) {
-                    let metadata = delFile.metadata.first(where: {$0.keyword == key})
+					_ = delFile.metadata.first(where: {$0.keyword == key})
 					library.remove(key: key, file: delFile)
 					print("> \"\(key)\" deleted from \(delFile.filename)")
 				} else {

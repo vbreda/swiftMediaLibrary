@@ -182,7 +182,7 @@ class MediaLibraryTests {
 		
 		setUp()
 		testDeleteCommand()
-		print("\t❌ testDeleteCommand() passed")
+		print("\t✅ testDeleteCommand() passed")
 		tearDown()
 		
 		setUp()
@@ -945,10 +945,49 @@ class MediaLibraryTests {
 		library.add(file: f2)
 		assert(library.count == 2, "Library should contain two files.")
 		
+		var prevResults = library.all()
+		assert(prevResults[0].metadata.count == 2, "file 1 should have 2 metadata")
+		assert(prevResults[1].metadata.count == 2, "file 2 should have 2 metadata")
+		
 		var command: MMCommand
+		var errorThrown: Bool = false
+		
 		do {
-//			command =
-//				try command.execute()
+			// Test delete required fails
+			command = DeleteCommand(data: ["0", "creator"], library: library, lastsearch: prevResults)
+			do {
+				try command.execute()
+			} catch {
+				errorThrown = true
+			}
+			assert(errorThrown, "Data doesnt exist error should have been thrown")
+			prevResults = library.all()
+			assert(prevResults[0].metadata.count == 2, "file 1 should have 2 metadata")
+			assert(prevResults[1].metadata.count == 2, "file 2 should have 2 metadata")
+			
+			// Test delete non exist throws
+			command = DeleteCommand(data: ["0","test"], library: library, lastsearch: prevResults)
+			errorThrown = false
+			do {
+				try command.execute()
+			} catch {
+				errorThrown = true
+			}
+			assert(errorThrown, "Data doesnt exist error should have been thrown")
+			prevResults = library.all()
+			assert(prevResults[0].metadata.count == 2, "file 1 should have 2 metadata")
+			assert(prevResults[1].metadata.count == 2, "file 2 should have 2 metadata")
+			
+			// Test delete existing works
+			library.add(metadata: Metadata(keyword: "test", value: "new"), file: f1)
+			prevResults = library.all()
+			assert(prevResults[0].metadata.count == 3, "file 1 should have 3 metadata")
+			assert(prevResults[1].metadata.count == 2, "file 2 should have 2 metadata")
+			command = DeleteCommand(data: ["0","test"], library: library, lastsearch: prevResults)
+			try command.execute()
+			assert(prevResults[0].metadata.count == 2, "file 1 should have 2 metadata")
+			assert(prevResults[1].metadata.count == 2, "file 2 should have 2 metadata")
+			
 		} catch {
 			assertionFailure()
 		}
