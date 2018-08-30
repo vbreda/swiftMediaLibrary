@@ -101,5 +101,7 @@ while let line = prompt("> ") {
 	} catch MMCliError.invalidJsonFile {
 		print("Invalid JSON file...")
 		print("\tCheck your filename and/or contents and try again.")
+	} catch MMCliError.libraryEmpty {
+		print("Library is empty. Load files and try again.")
 	}
 }

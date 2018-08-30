@@ -44,6 +44,9 @@ enum MMCliError: Error {
 	// Thrown if there is something wrong with the json file
 	// e.g. file doesn't exist or conform. Or contents has a grammatical error.
 	case invalidJsonFile
+	
+	// Thrown if the library is empty but user wants to use/save it
+	case libraryEmpty
 }
 
 /// This class represents a set of results. It could be extended to include
@@ -302,13 +305,17 @@ class ListCommand : MMCommand {
     
     func execute() throws {
 		
-		print(library.description)
+		// Ensure there is a file in the library to save
+		guard library.count > 0 else {
+			throw MMCliError.libraryEmpty
+		}
 		
         // lists all the files in the library ("list")
         if (keywords.count == 0) {
             let allFiles = library.all()
             self.results = MMResultSet(allFiles)
-            
+			print(library.description)
+
             // lists all the files that have the given term ("list <term>")
         } else {
 			
@@ -367,17 +374,22 @@ class AddCommand : MMCommand {
     }
     
     func execute() throws {
-        
+		
+		// Ensure there is a file in the library to save
+		guard library.count > 0 else {
+			throw MMCliError.libraryEmpty
+		}
+		
         // Ensure the user passed at least two parameters and the first is an Int.
         guard data.count > 2 && (Int(data[0]) != nil) else {
             throw MMCliError.invalidParameters
         }
-        
+		
         // Ensure there is a previous result set to use
         guard lastsearch.count > 0 else {
             throw MMCliError.missingResultSet
         }
-        
+		
         let index = Int(data.removeFirst())!
         
         // Check the index is within acceptable range
@@ -428,12 +440,17 @@ class SetCommand : MMCommand {
     }
     
     func execute() throws {
-        
+		
+		// Ensure there is a file in the library to save
+		guard library.count > 0 else {
+			throw MMCliError.libraryEmpty
+		}
+		
         // Ensure the user passed at least two parameters
         guard data.count > 2 && (Int(data[0]) != nil) else {
             throw MMCliError.invalidParameters
         }
-        
+		
         // Ensure there is a result set to use
         guard lastsearch.count > 0 else {
             throw MMCliError.missingResultSet
@@ -490,7 +507,12 @@ class DeleteCommand : MMCommand {
     }
     
     func execute() throws {
-        
+		
+		// Ensure there is a file in the library to save
+		guard library.count > 0 else {
+			throw MMCliError.libraryEmpty
+		}
+		
         // Ensure the user passed at least two parameters
         guard data.count > 1 && (Int(data[0]) != nil) else {
             throw MMCliError.invalidParameters
@@ -500,7 +522,7 @@ class DeleteCommand : MMCommand {
         guard lastsearch.count > 0 else {
             throw MMCliError.missingResultSet
         }
-        
+		
         let index = Int(data.removeFirst())!
 		
 		// Check the index is within acceptable range
@@ -543,12 +565,17 @@ class SaveSearchCommand : MMCommand {
     }
     
     func execute() throws {
-        
+		
+		// Ensure there is a file in the library to save
+		guard library.count > 0 else {
+			throw MMCliError.libraryEmpty
+		}
+		
         // Ensure the user passed at least one parameter
         guard data.count > 0 else {
             throw MMCliError.invalidParameters
         }
-        
+
         // Ensure there is a result set to use
         guard lastsearch.count > 0 else {
             throw MMCliError.missingResultSet
@@ -574,11 +601,17 @@ class SaveCommand : MMCommand {
     }
     
     func execute() throws {
+		
+		// Ensure there is a file in the library to save
+		guard library.count > 0 else {
+			throw MMCliError.libraryEmpty
+		}
+		
         // Ensure the user passed at least one parameter
         guard data.count > 0 else {
             throw MMCliError.invalidParameters
         }
-        
+		
         let fileName: String = data.removeFirst()
         let exporter : FileExporter = FileExporter()
         

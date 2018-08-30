@@ -493,6 +493,10 @@ class MediaLibraryTests {
 	*/
 	func testListCommand() {
 		precondition(library.count == 0, "Library should be empty.")
+		
+		// Test listing an empty library
+		
+		
 		library.add(file: f1)
 		library.add(file: f2)
 		assert(library.count == 2, "Library should contain two files.")
@@ -521,9 +525,7 @@ class MediaLibraryTests {
 			try command.execute()
 			rSet = command.results!
 			results = try rSet.getAll()
-				//TODO
-			print(results)
-//			assert(results.count == 2, "results should be two files")
+			assert(results.count == 2, "results should be two files")
 			
 
 			// Test listing results for terms that dont exist
@@ -539,7 +541,6 @@ class MediaLibraryTests {
 			}
 			assert(errorThrown, "Data doesnt exist error should have been thrown")
 			
-			// TODO
 			// Test listing results for one exist one not
 			command = ListCommand(keyword: ["noeafd","cre1", "none"], library: library)
 			do {
