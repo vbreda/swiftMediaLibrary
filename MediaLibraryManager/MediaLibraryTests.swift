@@ -156,6 +156,11 @@ class MediaLibraryTests {
 		tearDown()
 		
 		setUp()
+		testLoadCommand()
+		print("\t✅ testLoadCommand() passed")
+		tearDown()
+		
+		setUp()
 		testListCommand()
 		print("\t✅ testListCommand() passed")
 		tearDown()
@@ -193,11 +198,6 @@ class MediaLibraryTests {
 		setUp()
 		testSaveCommand()
 		print("\t✅ testSaveCommand() passed")
-		tearDown()
-
-		setUp()
-		testLoadCommand()
-		print("\t✅ testLoadCommand() passed")
 		tearDown()
 	}
 	
@@ -507,10 +507,14 @@ class MediaLibraryTests {
 			
 			// import from nonexist file should fail
 			results = []
-			results = try importer.read(filename: dummyFilename)
+			do {
+				results = try importer.read(filename: dummyFilename)
+			} catch {
+				assert(results.count == 0, "No files should be returned")
+			}
 			
 		} catch {
-			assert(results.count == 0, "No files should be returned")
+			assertionFailure()
 		}
 	}
 	
@@ -518,13 +522,12 @@ class MediaLibraryTests {
 	  Tests that file exporter works as it should.
 	*/
 	func testFileExporter() {
-		
 		precondition(library.count == 0, "Library should be empty.")
 		
-		var errorThrown: Bool = false
 		let filename: String = "exporterOutput"
 		let filename2: String = "~/exporterOutput"
 		let exporter = FileExporter()
+		
 		do {
 			// Test empty
 			try exporter.write(filename: filename, items: [])
@@ -534,13 +537,8 @@ class MediaLibraryTests {
 			assert(library.count == 2, "Library should contain two files.")
 			
 			// Test no file name
-			do {
-				try exporter.write(filename: "", items: library.all())
-			} catch {
-				errorThrown = true
-			}
-			assert(errorThrown, "No filename should not get written!")
-			
+			try exporter.write(filename: "", items: library.all())
+
 			// Test exports to working directory
 			try exporter.write(filename: filename, items: library.all())
 			
@@ -707,6 +705,7 @@ class MediaLibraryTests {
 				errorThrown = true
 			}
 			assert(errorThrown, "Data doesnt exist error should have been thrown")
+			
 		} catch {
 			assertionFailure()
 		}
@@ -1027,6 +1026,7 @@ class MediaLibraryTests {
 		library.add(file: f1)
 		library.add(file: f2)
 		assert(library.count == 2, "Library should contain two files.")
+		
 		var prevResults = library.search(term: "cre1")
 		assert(prevResults[0] as! File == f1, "file 1 should have been found")
 		assert(prevResults.count == 1, "only one file should be found")
@@ -1063,6 +1063,7 @@ class MediaLibraryTests {
 			try command.execute()
 			
 			// Would test that save search writes to fullpath but can only do this manually.
+			
 		} catch {
 			assertionFailure()
 		}
