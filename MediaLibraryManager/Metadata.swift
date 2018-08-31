@@ -20,8 +20,7 @@ extension MMMetadata {
 }
 
 /**
- Creates the metadata for a media file.
- 
+  Creates the metadata for a media file.
  */
 class Metadata: MMMetadata {
    
@@ -30,12 +29,12 @@ class Metadata: MMMetadata {
     private var _mdValue : String = ""
     
     /**
-     Designated initialiser
+      Designated initialiser
      
-     Metadata property/value pair is passed in the arguments of the initialiser.
+      Metadata property/value pair is passed in the arguments of the initialiser.
      
-     - parameter keyword: Metadata's keyword
-     - parameter value: Metadata's value
+      - parameter keyword: Metadata's keyword
+      - parameter value: Metadata's value
      */
     init(keyword: String, value: String) {
         self._mdKeyword = keyword
@@ -43,7 +42,9 @@ class Metadata: MMMetadata {
     }
     
     //COMPUTED PROPERTIES
-    var keyword: String  {   // metadata property
+    
+    //The metadata property.
+    var keyword: String  {
         get {
             return self._mdKeyword
         }
@@ -52,7 +53,8 @@ class Metadata: MMMetadata {
         }
     }
     
-    var value: String {  // value of the metadata property
+    //The value of the metadata property.
+    var value: String {
         get {
             return self._mdValue
         }
@@ -62,9 +64,9 @@ class Metadata: MMMetadata {
     }
     
     /**
-     String representation of the metadata
+      String representation of the metadata
      
-     - returns: String String representation of the metadata.
+      - returns: String: String representation of the metadata.
      */
     var description: String {
         return "\(self.keyword): \(self.value)"

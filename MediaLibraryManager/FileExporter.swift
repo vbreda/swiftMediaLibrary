@@ -11,17 +11,17 @@ import Foundation
 class FileExporter: MMFileExport {
     
     /**
-     Support exporting the media collection to a file (by name).
+      Support exporting the media collection to a file (by name).
      
-     - parameter filename: somthin.
-     - parameter items:
+      - parameter filename: The name of the file to be created.
+      - parameter items: What to export into the file.
      */
     func write(filename: String, items: [MMFile]) throws {
         
         var expFiles = [Media]()
         var mdata = [String:String]()
         
-        // Fill up the Media struct with the files and metadata to save
+        // Fills up the Media struct with the files and metadata to save.
         for f in items {
             mdata = [:]
             for m in f.metadata {
@@ -31,7 +31,7 @@ class FileExporter: MMFileExport {
             expFiles.append(filetoAdd)
         }
         
-        // Determine the directory of the users
+        // Determines the directory of the users.
         let fileManager = FileManager.default
         var fileToWrite: URL
         
@@ -45,7 +45,7 @@ class FileExporter: MMFileExport {
             fileToWrite = workingDirectory.appendingPathComponent(filename)
         }
         
-        // Serialise the data out to file
+        // Serialises the data out to file.
         do {
             let encodedData = try JSONEncoder().encode(expFiles)
             try encodedData.write(to: fileToWrite)

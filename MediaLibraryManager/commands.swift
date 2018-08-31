@@ -3,12 +3,15 @@
 //  MediaLibraryManager
 //
 //  Created by Paul Crane on 15/08/18.
+//  Modified by Nikolah Pearce and Vivian Breda.
 //  Copyright © 2018 Paul Crane. All rights reserved.
 //
 
 import Foundation
 
-/// The list of exceptions that can be thrown by the CLI command handlers
+/**
+  The list of exceptions that can be thrown by the CLI command handlers
+*/
 enum MMCliError: Error {
     
     /// Thrown if there is something wrong with the input parameters for the command
@@ -22,7 +25,6 @@ enum MMCliError: Error {
     case unknownCommand
     
     /// Thrown if the command has yet to be implemented
-    /// - Note: You'll need to implement these to get the CLI working properly
     case unimplementedCommand
     
     // Thrown if the user trys to remove/search for something that does not exist
@@ -55,9 +57,10 @@ enum MMCliError: Error {
 	case duplicateMetadataKey
 }
 
-/// This class represents a set of results. It could be extended to include
-/// the command and a history of commands and the results.
-
+/**
+  This class represents a set of results. It could be extended to include
+  the command and a history of commands and the results.
+*/
 class MMResultSet {
     
     /// The list of files produced by the command
@@ -96,8 +99,10 @@ class MMResultSet {
 }
 
 
-/// This protocol specifies the new 'Command' pattern, and is more
-/// Object Oriented.
+/**
+  This protocol specifies the new 'Command' pattern, and is more
+  Object Oriented.
+*/
 protocol MMCommand {
     var results: MMResultSet? {get}
     func execute() throws
@@ -123,8 +128,10 @@ protocol MMCommand {
 // command needed to have previous result sets, then they *all* needed to know
 // about it.
 
-/// Handle unimplemented commands by throwing an exception when trying to
-/// execute this command.
+/**
+  Handle unimplemented commands by throwing an exception when trying to
+  execute this command.
+*/
 class UnimplementedCommand: MMCommand {
     var results: MMResultSet? = nil
     func execute() throws {
@@ -132,7 +139,9 @@ class UnimplementedCommand: MMCommand {
     }
 }
 
-/// Handle the help command.
+/**
+  Handle the help command.
+*/
 class HelpCommand: MMCommand {
     var results: MMResultSet? = nil
     func execute() throws{
@@ -187,10 +196,10 @@ class HelpCommand: MMCommand {
 }
 
 /**
- Handle the quit command.
+  Handle the quit command.
  
- Exits the program (with exit code 0) without
- checking if there is anything to save.
+  Exits the program (with exit code 0) without
+  checking if there is anything to save.
  */
 class QuitCommand : MMCommand {
     var results: MMResultSet? = nil
@@ -288,10 +297,10 @@ class LoadCommand: MMCommand {
 }
 
 /**
- Handle the list command.
+  Handle the list command.
  
- It lists the files contained in the collection.
- Either listing by a keyword (aka searching) or listing all files.
+  It lists the files contained in the collection.
+  Either listing by a keyword (aka searching) or listing all files.
  */
 class ListCommand : MMCommand {
     var results: MMResultSet? = nil
@@ -299,10 +308,10 @@ class ListCommand : MMCommand {
     var keywords: [String]
     
     /**
-     Constructs a new list handler.
+      Constructs a new list handler.
      
-     - parameter keyword: filter the files according to the given keyword.
-     - parameter library: the collection from which the files will be listed.
+      - parameter keyword: filter the files according to the given keyword.
+      - parameter library: the collection from which the files will be listed.
      */
     init(keyword: [String], library: Library) {
         self.keywords = keyword;
@@ -316,20 +325,20 @@ class ListCommand : MMCommand {
 			throw MMCliError.libraryEmpty
 		}
 		
-        // lists all the files in the library ("list")
+        // Lists all the files in the library ("list")
         if (keywords.count == 0) {
             let allFiles = library.all()
             self.results = MMResultSet(allFiles)
 			print(library.description)
 
-            // lists all the files that have the given term ("list <term>")
+        // Lists all the files that have the given term ("list <term>")
         } else {
 			
 			var param = keywords.count
 			var listresults: [MMFile] = []
 			var filenamesFound: [String] = []
 			
-			// Continue adding while there are 2+ data items left
+			// Continues adding while there are 1+ data items left
 			while param > 0 {
 				let word: String = keywords.removeFirst()
 				let res1 = library.search(term: word)
@@ -344,7 +353,7 @@ class ListCommand : MMCommand {
 				param -= 1
 			}
 			
-			// Check that results were found, else throw
+			// Checks that results were found, else throw
 			guard listresults.count > 0 else {
 				throw MMCliError.dataDoesntExist
 			}
@@ -355,10 +364,10 @@ class ListCommand : MMCommand {
 }
 
 /**
- Handle the add command.
+  Handle the add command.
  
- It adds the given metadata keypair to the file at given position.
- Position specified depends on the previous results set of the last command.
+  It adds the given metadata keypair to the file at given position.
+  Position specified depends on the previous results set of the last command.
  */
 class AddCommand : MMCommand {
     var results: MMResultSet? = nil
@@ -367,11 +376,11 @@ class AddCommand : MMCommand {
     var lastsearch: [MMFile]
     
     /**
-     Constructs a new add handler.
+      Constructs a new add handler.
      
-     - parameter data: the position of file and metadata to be added.
-     - parameter library: the collection from which the files will be listed.
-     - parameter lastsearch: the array of Files of the last result set.
+      - parameter data: the position of file and metadata to be added.
+      - parameter library: the collection where the files will be added.
+      - parameter lastsearch: the array of Files of the last result set.
      */
     init(data: [String], library: Library, lastsearch: [MMFile]) {
         self.data = data
@@ -381,31 +390,31 @@ class AddCommand : MMCommand {
     
     func execute() throws {
 		
-		// Ensure there is a file in the library to save
+		// Ensures there is a file in the library to save
 		guard library.count > 0 else {
 			throw MMCliError.libraryEmpty
 		}
 		
-        // Ensure the user passed at least two parameters and the first is an Int.
+        // Ensures the user passed at least two parameters and the first is an Int.
         guard data.count > 2 && (Int(data[0]) != nil) else {
             throw MMCliError.invalidParameters
         }
 		
-        // Ensure there is a previous result set to use
+        // Ensures there is a previous result set to use
         guard lastsearch.count > 0 else {
             throw MMCliError.missingResultSet
         }
 		
         let index = Int(data.removeFirst())!
         
-        // Check the index is within acceptable range
+        // Checks the index is within acceptable range
         guard index < lastsearch.count else {
             throw MMCliError.indexOutOfRange
         }
     
         var param = data.count
 		
-		// Continue adding while there are 2+ data items left
+		// Continues adding while there are 2+ data items left
         while param > 1 {
             let key = data.removeFirst()
             let value = data.removeFirst()
@@ -424,11 +433,11 @@ class AddCommand : MMCommand {
 }
 
 /**
- Handles the set command.
+  Handles the set command.
  
- It adds the given metadata keypair to the file at given position,
- first removing the original metadata.
- A set is a delete followed by an add.
+  It adds the given metadata keypair to the file at given position,
+  first removing the original metadata.
+  A set is a delete followed by an add.
  */
 class SetCommand : MMCommand {
     var results: MMResultSet? = nil
@@ -437,11 +446,11 @@ class SetCommand : MMCommand {
     var lastsearch: [MMFile]
     
     /**
-     Constructs a new set handler.
+      Constructs a new set handler.
      
-     - parameter data: the position of file and metadata to be added.
-     - parameter library: the collection from which the files will be listed.
-     - parameter lastsearch: the array of Files of the last result set.
+      - parameter data: the position of file and metadata to be added.
+      - parameter library: the collection that contains the file which will be modified.
+      - parameter lastsearch: the array of Files of the last result set.
      */
     init(data: [String], library: Library, lastsearch: [MMFile]) {
         self.data = data
@@ -451,31 +460,31 @@ class SetCommand : MMCommand {
     
     func execute() throws {
 		
-		// Ensure there is a file in the library to save
+		// Ensures there is a file in the library to save
 		guard library.count > 0 else {
 			throw MMCliError.libraryEmpty
 		}
 		
-        // Ensure the user passed at least two parameters
+        // Ensures the user passed at least two parameters
         guard data.count > 2 && (Int(data[0]) != nil) else {
             throw MMCliError.invalidParameters
         }
 		
-        // Ensure there is a result set to use
+        // Ensures there is a result set to use
         guard lastsearch.count > 0 else {
             throw MMCliError.missingResultSet
         }
 
         let index = Int(data.removeFirst())!
 		
-		// Check the index is within acceptable range
+		// Checks the index is within acceptable range
 		guard index < lastsearch.count else {
 			throw MMCliError.indexOutOfRange
 		}
 		
         var param = data.count
 		
-		// Continue setting while there are 2+ data items remaining
+		// Continues setting while there are 2+ data items remaining
         while param > 1 {
             let key : String = data.removeFirst()
             let valueToModify : String = data.removeFirst()
@@ -489,7 +498,6 @@ class SetCommand : MMCommand {
                 
 
             } else {
-                //print("\(key) not found.")
 				throw MMCliError.dataDoesntExist
             }
             param -= 2
@@ -498,11 +506,11 @@ class SetCommand : MMCommand {
 }
 
 /**
- Handles the delete command.
+  Handles the delete command.
  
- It deletes the given metadata keypair from the file at given position,
- if and only if that metadata is an optional keypair.
- Does not delete required metadata.
+  It deletes the given metadata keypair from the file at given position,
+  if and only if that metadata is an optional keypair.
+  Does not delete required metadata.
  */
 class DeleteCommand : MMCommand {
     var results: MMResultSet? = nil
@@ -510,6 +518,13 @@ class DeleteCommand : MMCommand {
     var data: [String]
     var lastsearch: [MMFile]
     
+    /**
+     Constructs a new delete handler.
+     
+     - parameter data: the position of file and the metadata to be deleted.
+     - parameter library: the collection that contains the file from which the metadata will be deleted.
+     - parameter lastsearch: the array of Files of the last result set.
+     */
     init(data: [String], library: Library, lastsearch: [MMFile]) {
         self.data = data
         self.library = library
@@ -518,24 +533,24 @@ class DeleteCommand : MMCommand {
     
     func execute() throws {
 		
-		// Ensure there is a file in the library to save
+		// Ensures there is a file in the library to save
 		guard library.count > 0 else {
 			throw MMCliError.libraryEmpty
 		}
 		
-        // Ensure the user passed at least two parameters
+        // Ensures the user passed at least two parameters
         guard data.count > 1 && (Int(data[0]) != nil) else {
             throw MMCliError.invalidParameters
         }
         
-        // Ensure there is a result set to use
+        // Ensures there is a result set to use
         guard lastsearch.count > 0 else {
             throw MMCliError.missingResultSet
         }
 		
         let index = Int(data.removeFirst())!
 		
-		// Check the index is within acceptable range
+		// Checks the index is within acceptable range
 		guard index < lastsearch.count else {
 			throw MMCliError.indexOutOfRange
 		}
@@ -546,13 +561,13 @@ class DeleteCommand : MMCommand {
             let key: String = data.removeFirst()
             let delFile : MMFile = lastsearch[index]
 			
-			// Check it is not a required key before removing
+			// Checks it is not a required key before removing
 			let allowed = try FileValidator.safeToDelete(key: key, typeOfFile: delFile.type)
 			
 			if allowed {
-				// Check that key can be deleted
+				// Checks that key can be deleted
 				if delFile.metadata.contains(where: {$0.keyword == key}) {
-                    let metadata = delFile.metadata.first(where: {$0.keyword == key})
+                    //********let metadata = delFile.metadata.first(where: {$0.keyword == key})
 					library.remove(key: key, file: delFile)
 					print("> \"\(key)\" deleted from \(delFile.filename)")
 				} else {
@@ -564,11 +579,23 @@ class DeleteCommand : MMCommand {
     }
 }
 
+/**
+  Handles the save-search command.
+ 
+  It exports the last searched list into a file.
+  Filename and path given by the user as an input.
+ */
 class SaveSearchCommand : MMCommand {
     var results: MMResultSet? = nil
     var data: [String]
     var lastsearch: [MMFile]
     
+    /**
+     Constructs a new save-search handler.
+     
+     - parameter data: the path to the file or the filename to save the search.
+     - parameter lastsearch: the array of Files of the last result set.
+     */
     init(data: [String], lastsearch: [MMFile]) {
         self.data = data
         self.lastsearch = lastsearch
@@ -576,17 +603,17 @@ class SaveSearchCommand : MMCommand {
     
     func execute() throws {
 		
-		// Ensure there is a file in the library to save
+		// Ensures there is a file in the library to save
 		guard library.count > 0 else {
 			throw MMCliError.libraryEmpty
 		}
 		
-        // Ensure the user passed at least one parameter
+        // Ensures the user passed at least one parameter
         guard data.count > 0 else {
             throw MMCliError.invalidParameters
         }
 
-        // Ensure there is a result set to use
+        // Ensures there is a result set to use
         guard lastsearch.count > 0 else {
             throw MMCliError.missingResultSet
         }
@@ -600,11 +627,23 @@ class SaveSearchCommand : MMCommand {
     }
 }
 
+/**
+  Handles the save command.
+ 
+  It exports the library into a file.
+  Filename and path given by the user as an input.
+ */
 class SaveCommand : MMCommand {
     var results: MMResultSet? = nil
     var data: [String]
     var library: Library
     
+    /**
+     Constructs a new save handler.
+     
+     - parameter data: the path to the file or the filename to save the search to.
+     - parameter lastsearch: the collection of Files.
+     */
     init(data: [String], library: Library) {
         self.data = data
         self.library = library
@@ -612,12 +651,12 @@ class SaveCommand : MMCommand {
     
     func execute() throws {
 		
-		// Ensure there is a file in the library to save
+		// Ensures there is a file in the library to save
 		guard library.count > 0 else {
 			throw MMCliError.libraryEmpty
 		}
 		
-        // Ensure the user passed at least one parameter
+        // Ensures the user passed at least one parameter
         guard data.count > 0 else {
             throw MMCliError.invalidParameters
         }

@@ -3,6 +3,7 @@
 //  MediaLibraryManager
 //
 //  Created by Paul Crane on 18/06/18.
+//  Modified by Nikolah Pearce and Vivian Breda.
 //  Copyright © 2018 Paul Crane. All rights reserved.
 //
 
@@ -19,7 +20,7 @@ func prompt(_ prompt: String, strippingNewline: Bool = true) -> String? {
     return readLine(strippingNewline: strippingNewline)
 }
 
-// Needs to be MMCollection?????
+// TODO Needs to be MMCollection?????
 //var library : MMCollection = Library()
 var library : Library = Library()
 
@@ -37,6 +38,7 @@ while let line = prompt("> ") {
         
         commandString = parts.removeFirst();
         
+        //handles the commands passed by the user
         switch(commandString) {
         case "load" :
             command = LoadCommand(loadfiles: parts, library: library)

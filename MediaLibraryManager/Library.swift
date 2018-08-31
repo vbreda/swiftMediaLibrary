@@ -2,37 +2,39 @@
 //  MediaLibrary.swift
 //  MediaLibraryManager
 //
-//  Created by Vivian Breda and Nikolah Pearce on 13/08/18.
+//  Created by Nikolah Pearce and Vivian Breda on 13/08/18.
 //  Copyright © 2018 Paul Crane. All rights reserved.
 //
 
 import Foundation
 
+/**
+  Contains the main functions needed to modify the media metadata collection.
+*/
 class Library : MMCollection {
     
-    private var files: [MMFile] = []
-    private var keysDictionary: [String:[MMFile]] = [:]
-    private var valuesDictionary: [String:[MMFile]] = [:]
+    private var files: [MMFile] = []                        //the files in the collection.
+    private var keysDictionary: [String:[MMFile]] = [:]     //indexed dictionary of all the metadata in the collection.
+    private var valuesDictionary: [String:[MMFile]] = [:]   //inverted indexed dictionary of all the metadata in the collection.
     
     /**
-     String representation of the Media Library collection
-     - Returns: String: String representation of the library.
+      String representation of the Media Library collection
+      - returns: String: String representation of the library.
      */
     var description: String {
         return "> Media library contains \(count) files."
     }
     
     /**
-     The size of the library.
-     - Returns: Count: number of files in the library.
+      The size of the library.
+      - returns: Int: number of files in the library.
      */
     var count: Int {
         return files.count
     }
     
     /**
-     Default initialiser
-     
+      Default initialiser
      */
     init() {
         
@@ -40,10 +42,9 @@ class Library : MMCollection {
     
     
     /**
-     Adds a file's metadata to the media metadata collection.
+      Adds a file's metadata to the media metadata collection.
      
-     - Parameters: file: The file and associated metadata to add to the collection.
-     - Returns: none.
+      - parameter file: The file and associated metadata to add to the collection.
      */
     func add(file: MMFile) {
         
@@ -52,10 +53,9 @@ class Library : MMCollection {
     }
     
     /**
-     Adds a specific instance of a metadata to the collection.
-     
-     - Parameters: metadata: The item to add to the collection.
-     - Returns: none.
+      Adds a specific instance of a metadata to the collection.
+      - parameter metadata: The metadata to add to the given file.
+      - parameter file: The file where the metadata will be added to.
      */
     func add(metadata: MMMetadata, file: MMFile)  {
         var i: Int = 0
@@ -73,17 +73,16 @@ class Library : MMCollection {
     }
 	
     /**
-     Finds all the files associated with the keyword.
+      Finds all the files associated with the keyword.
      
-     - Parameters:
-     - keyword: The keyword to search for.
-     - Returns: [MMFile]: A list of all the metadata associated with the
-     keyword, possibly an empty list.
+      - parameter keyword: The keyword to search for.
+      - returns: [MMFile]: A list of all the metadata associated with the
+                           keyword, possibly an empty list.
      */
     func search(term: String) -> [MMFile]  {
         let searchterm: String = term.lowercased()
         
-        // check if either return results and return the one that does? or combine
+        // Checks if either return results and return the one that does? or combine
         var results: [MMFile] = []
         if let keyResults = keysDictionary[searchterm] {
             results.append(contentsOf: keyResults)
@@ -96,35 +95,33 @@ class Library : MMCollection {
     }
     
     /**
-     / Finds all the metadata associated with the keyword of the item
-     /
-     - Parameters: item: The item's metadata keypair to search for.
-     - Returns: [MMFiles]: A list of all the metadata associated with the item's
-     keyword, possibly an empty list.
+      Finds all the metadata associated with the keyword of the item.
+     
+      - parameter item: The item's metadata keypair to search for.
+      - returns: [MMFiles]: A list of all the metadata associated with the item's
+                            keyword, possibly an empty list.
      */
     func search(item: MMMetadata) -> [MMFile]  {
-		//Search unimplemented as our Library does not need this functionality
+		//Unimplemented as our Library does not need this functionality
         return []
     }
     
     /**
-     Returns a list of all the files in the index
+      Returns a list of all the files in the index
      
-     - Parameters: none
-     - Returns: [MMFile]: A list of all the files in the index, possibly an empty list.
+      - returns: [MMFile]: A list of all the files in the index, possibly an empty list.
      */
     func all() -> [MMFile]  {
         return files
     }
 	
 	/**
-	Removes a specific instance of a metadata from the collection.
+	  Removes a specific instance of a metadata from the collection.
 	
-	- Parameters: metadata: The item to remove from the collection.
-	- Returns: none.
+	  - parameter metadata: The item to remove from the collection.
 	*/
 	func remove(metadata: MMMetadata)  {
-		// Remove metadata term from all files not a functionality in our library
+		// Removes metadata term from all files. *NOT* a functionality in our library.
 		var i: Int = 0
 		for _ in files {
 			if let indexM = files[i].metadata.index(where: {$0.keyword == metadata.keyword && $0.value == metadata.value}) {
@@ -135,12 +132,11 @@ class Library : MMCollection {
 	}
 	
     /**
-     Removes a specific instance of a metadata from a file in the collection.
-     Note not in protocols.swift - added this method ourselves.
+      Removes a specific instance of a metadata from a file in the collection.
+      - Note: not in protocols.swift - added this method ourselves.
      
-     - Parameters: metadata: The item to remove from the file.
-     - Parameters: file: file to remove metadata from.
-     - Returns: none.
+      - parameter metadata: The item to remove from the file.
+      - parameter file: file to remove metadata from.
      */
     func remove(key: String, file: MMFile)  {
 		if let indexF = files.index(where: {$0.filename == file.filename}){
@@ -152,18 +148,18 @@ class Library : MMCollection {
     }
     
     /**
-     Removes all files from this library.
+      Removes all files from this library.
      */
     func removeAllFiles() {
         files.removeAll()
     }
     
     /**
-     Checks the current library for this exact file.
-     Note not in protocols.swift - added this method ourselves.
+      Checks the current library for this exact file.
+      - Note: not in protocols.swift - added this method ourselves.
      
-     - Parameters: file: file to look for in the Library
-     - Returns: true if file already exists in the Library
+      - parameter file: file to look for in the Library.
+      - returns: Bool: true if file already exists in the Library.
      */
     func isDuplicate(file: MMFile) -> Bool {
         var found: Bool = false
@@ -178,12 +174,12 @@ class Library : MMCollection {
     }
 	
 	/**
-	Checks the current file for this exact keyword
-	Note not in protocols.swift - added this method ourselves.
+	  Checks the current file for this exact keyword
+      - Note: not in protocols.swift - added this method ourselves.
 	
-	- Parameters: file: file to look in
-	- Parameters: keyword: the key to check
-	- Returns: true if file already exists in the Library
+	  - parameter file: file to look into.
+	  - parameter keyword: the key to check.
+      - returns: Bool: true if file already exists in the library.
 	*/
 	func isMetadataDuplicate(file: MMFile, key: String) -> Bool {
 		var found: Bool = false
@@ -198,10 +194,11 @@ class Library : MMCollection {
 	}
     
     /**
-     Loads the metadata dictionaries of the new file.
-     Adds both keywords and values to the Library dictionaries.
+      Loads the metadata dictionaries of the new file.
+      Adds both keywords and values to the Library dictionaries.
+      - Note: not in protocols.swift - added this method ourselves.
      
-     - parameter file: the new file added to the library.
+      - parameter file: the new file added to the library.
      */
     func loadDictionaries(file: MMFile) {
         
@@ -209,96 +206,111 @@ class Library : MMCollection {
         
         for m in file.metadata {
             
-            // Add to the keys Dictionary
-            if keysDictionary.keys.contains(m.keyword.lowercased()) {
-                copy = keysDictionary[m.keyword.lowercased()]!
+            var toLowerCase = m.keyword.lowercased()
+            
+            // Adds to the keys Dictionary
+            if keysDictionary.keys.contains(toLowerCase) {
+                copy = keysDictionary[toLowerCase]!
                 copy.append(file)
-                keysDictionary.updateValue(copy, forKey: m.keyword.lowercased())
+                keysDictionary.updateValue(copy, forKey: toLowerCase)
             } else {
-                keysDictionary.updateValue([file], forKey: m.keyword.lowercased())
+                keysDictionary.updateValue([file], forKey: toLowerCase)
             }
             
-            // Add to the values Dictionary
-            if valuesDictionary.keys.contains(m.value.lowercased()) {
-                copy = valuesDictionary[m.value.lowercased()]!
+            toLowerCase = m.value.lowercased()
+            
+            // Adds to the values Dictionary
+            if valuesDictionary.keys.contains(toLowerCase) {
+                copy = valuesDictionary[toLowerCase]!
                 copy.append(file)
-                valuesDictionary.updateValue(copy, forKey: m.value.lowercased())
+                valuesDictionary.updateValue(copy, forKey: toLowerCase)
             } else {
-                valuesDictionary.updateValue([file], forKey: m.value.lowercased())
+                valuesDictionary.updateValue([file], forKey: toLowerCase)
             }
         }
     }
     
     /**
-     Updates the dictionaries if either keywords or values are removed
-     from the collection.
+      Updates the dictionaries if either keywords or values are removed
+      from the collection.
+      - Note: not in protocols.swift - added this method ourselves.
      
-     - parameter key: the keyword which will be updated.
-     - parameter rmv: value to be removed.
-     - parameter update: the file which will be updated.
+      - parameter key: the keyword which will be updated.
+      - parameter rmv: value to be removed.
+      - parameter update: the file which will be updated.
      */
     func rmvDictionaries(key: String, rmv: MMMetadata, file: MMFile) {
         
-        var size = keysDictionary[key]?.count
+        var toLowerCase = key.lowercased()
+        
+        // How many items are currently in the dictionary.
+        var size = keysDictionary[toLowerCase]?.count
         
         if size == 1 {
-            keysDictionary.removeValue(forKey: key.lowercased())
+            keysDictionary.removeValue(forKey: toLowerCase)
         } else {
-            var values = keysDictionary[key.lowercased()]
+            var values = keysDictionary[toLowerCase]
             let index = values?.index(where: {$0 as! File == file as! File})
             values?.remove(at: index!)
-            keysDictionary.updateValue(values!, forKey: key.lowercased())
+            keysDictionary.updateValue(values!, forKey: toLowerCase)
         }
         
-        size = valuesDictionary[rmv.value.lowercased()]?.count
+        toLowerCase = rmv.value.lowercased()
+        size = valuesDictionary[toLowerCase]?.count
         
         if size == 1 {
-            valuesDictionary.removeValue(forKey: rmv.value.lowercased())
+            valuesDictionary.removeValue(forKey: toLowerCase)
         } else {
-            var values = valuesDictionary[rmv.value.lowercased()]
+            var values = valuesDictionary[toLowerCase]
             let index = values?.index(where: {$0 as! File == file as! File})
             values?.remove(at: index!)
-            valuesDictionary.updateValue(values!, forKey: rmv.value.lowercased())
+            valuesDictionary.updateValue(values!, forKey: toLowerCase)
         }
     }
     
     /**
-     Updates the dictionaries if either keywords or values are added
-     to the collection.
+       Updates the dictionaries if either keywords or values are added
+      to the collection.
+      - Note: not in protocols.swift - added this method ourselves.
      
-     - parameter metadata: the value which will be updated.
-     - parameter file: the file currently in dictionary.
-     - parameter update: the modified file which will be updated in the dictionaries.
+      - parameter metadata: the value which will be updated.
+      - parameter file: the file currently in dictionary.
+      - parameter update: the modified file which will be updated in the dictionaries.
      */
     func updateDictionaries(metadata: MMMetadata, file: MMFile, update: MMFile?){
-        var size = keysDictionary[metadata.keyword.lowercased()]?.count
+        
+        var toLowerCase = metadata.keyword.lowercased()
+        
+        // How many items are currently in the dictionary.
+        var size = keysDictionary[toLowerCase]?.count
         
         if size == nil {
-            keysDictionary.updateValue([update!], forKey: metadata.keyword.lowercased())
+            keysDictionary.updateValue([update!], forKey: toLowerCase)
         } else {
-            var values = keysDictionary[metadata.keyword.lowercased()]
+            var values = keysDictionary[toLowerCase]
             let index = values?.index(where: {$0 as! File == file as! File})
             if index == nil {
                 values?.append(update!)
             } else {
                 values?[index!] = update!
             }
-            keysDictionary.updateValue(values!, forKey: metadata.keyword.lowercased())
+            keysDictionary.updateValue(values!, forKey: toLowerCase)
         }
         
-        size = valuesDictionary[metadata.value.lowercased()]?.count
+        toLowerCase = metadata.value.lowercased()
+        size = valuesDictionary[toLowerCase]?.count
         
         if size == nil {
-            valuesDictionary.updateValue([update!], forKey: metadata.value.lowercased())
+            valuesDictionary.updateValue([update!], forKey: toLowerCase)
         } else {
-            var values = valuesDictionary[metadata.value.lowercased()]
+            var values = valuesDictionary[toLowerCase]
             let index = values?.index(where: {$0 as! File == file as! File})
             if index == nil {
                 values?.append(update!)
             } else{
                 values?[index!] = update!
             }
-            valuesDictionary.updateValue(values!, forKey: metadata.value.lowercased())
+            valuesDictionary.updateValue(values!, forKey: toLowerCase)
         }
     }
 }
