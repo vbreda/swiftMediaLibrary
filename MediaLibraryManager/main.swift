@@ -38,7 +38,7 @@ while let line = prompt("> ") {
         
         commandString = parts.removeFirst();
         
-        //handles the commands passed by the user
+        // Handles the commands passed by the user.
         switch(commandString) {
         case "load" :
             command = LoadCommand(loadfiles: parts, library: library)
@@ -73,10 +73,10 @@ while let line = prompt("> ") {
             throw MMCliError.unknownCommand
         }
         
-        // try execute the command and catch any thrown errors below
+        // try execute the command and catch any thrown errors below.
         try command.execute()
 		
-        // if there are any results from the command, print them out here
+        // if there are any results from the command, print them out here.
         if let results = command.results {
             results.show()
             last = results
