@@ -1002,10 +1002,37 @@ class MediaLibraryTests {
 		library.add(file: f2)
 		assert(library.count == 2, "Library should contain two files.")
 		
+		var prevResults = library.search(term: "cre1")
+		assert(prevResults[0] as! File == f1, "file 1 should have been found")
+		assert(prevResults.count == 1, "only one file should be found")
+		
+		var errorThrown: Bool = false
+		let filename: String = "saveSearchOutput"
+		
 		var command: MMCommand
 		do {
-//			command =
-//				try command.execute()
+			
+			// Search for one key and save this
+			command = SaveSearchCommand(data: [filename+"1"], lastsearch: prevResults)
+			try command.execute()
+
+			
+			// Search for non exist and save should throw
+			prevResults = library.search(term: "none")
+			command = SaveSearchCommand(data: [filename+"2"], lastsearch: prevResults)
+			do {
+				try command.execute()
+			} catch {
+				errorThrown = true
+			}
+			assert(errorThrown, "No result set error should have been thrown")
+			
+			// Search for more than one key and save this
+			prevResults = library.search(term: "creator")
+			assert(prevResults.count == 2, "two files should exist")
+			command = SaveSearchCommand(data: [filename+"3"], lastsearch: prevResults)
+			try command.execute()
+			
 		} catch {
 			assertionFailure()
 		}
@@ -1016,15 +1043,32 @@ class MediaLibraryTests {
 	*/
 	func testSaveCommand() {
 		precondition(library.count == 0, "Library should be empty.")
+		var errorThrown: Bool = false
+		let filename: String = "wholeLibraryOutput"
+		var command: MMCommand
+		
+		command = SaveCommand(data: [filename+"1"], library: library)
+		do {
+			try command.execute()
+		} catch {
+			errorThrown = true
+		}
+		assert(errorThrown, "Library empty error should have been thrown")
+		
 		library.add(file: f1)
 		library.add(file: f2)
 		assert(library.count == 2, "Library should contain two files.")
 		
-	
-		var command: MMCommand
 		do {
-//			command = SaveCommand(data: )
-//			try command.execute()
+			// Test whole library saves
+			command = SaveCommand(data: [filename+"2"], library: library)
+			try command.execute()
+			
+			// Test whole library +1 saves
+			library.add(file: f3)
+			command = SaveCommand(data: [filename+"3"], library: library)
+			try command.execute()
+			
 		} catch {
 			assertionFailure()
 		}
