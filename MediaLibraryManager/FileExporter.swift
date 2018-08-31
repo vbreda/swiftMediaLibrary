@@ -36,13 +36,14 @@ class FileExporter: MMFileExport {
         var fileToWrite: URL
         
         if filename.hasPrefix("/") || filename.hasPrefix("~") {
-            let directory = NSString(string: filename).expandingTildeInPath
+            let fname = ("\(filename).json")
+            let directory = NSString(string: fname).expandingTildeInPath
             fileToWrite = URL(fileURLWithPath: directory)
         } else {
             let working = fileManager.currentDirectoryPath
             let workingDirectory = URL(fileURLWithPath: working)
             
-            fileToWrite = workingDirectory.appendingPathComponent(filename)
+            fileToWrite = workingDirectory.appendingPathComponent("\(filename).json")
         }
         
         // Serialises the data out to file.
