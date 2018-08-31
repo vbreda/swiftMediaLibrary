@@ -9,15 +9,16 @@
 import Foundation
 
 /**
-Image class extends file.
-Required metadata fields: creator and resolution
+ Image class extends file.
+ Required metadata fields: creator and resolution
 */
 class Image : File {
 	
-	// the resolution of the image, as specified at load time
+	// The resolution of the image, as specified at load time.
+    //********** can we make this a stored variable?
     var originalResolution : String
 	
-	// the image's current resolution
+	//The image's current resolution.
 	var resolution : String {
 		var res: String = ""
 		for m in metadata {
@@ -28,29 +29,38 @@ class Image : File {
 		return res
 	}
     
+    /**
+     Designated initialiser
+     
+     - parameter metadata: All the metadata associated with the Image file.
+     - parameter filename: The name of the Image file.
+     - parameter path: The path to the Image file.
+     - parameter creator: The creator of the Image file.
+     - parameter resolution: The resolution of the Image file.
+     */
     init(metadata: [MMMetadata], filename: String, path: String, creator: String, resolution: String) {
         self.originalResolution = resolution
         super.init(metadata: metadata, filename: filename, path: path, creator: creator)
     }
 	
-//    override var description: String {
+//***********    override var description: String {
 //		return super.description + ", resolution: \(resolution)"
 //    }
 }
 
 /**
-Video class extends file.
-Required metadata fields: creator, resolution and runtime.
+  Video class extends file.
+  Required metadata fields: creator, resolution and runtime.
 */
 class Video : File {
 	
-	// the resolution of the video, as specified at load time
+	// The resolution of the video, as specified at load time.
     var originalResolution : String
 	
-	// the runtime of the video, as specified at load time
+	// The runtime of the video, as specified at load time.
     var originalRuntime: String
 	
-	// the video's current resolution
+	// The video's current resolution.
 	var resolution : String {
 		var res: String = ""
 		for m in metadata {
@@ -61,7 +71,7 @@ class Video : File {
 		return res
 	}
 	
-	// the video's current runtime
+	// The video's current runtime.
 	var runtime : String {
 		var run: String = ""
 		for m in metadata {
@@ -72,27 +82,37 @@ class Video : File {
 		return run
 	}
 	
+    /**
+     Designated initialiser
+     
+     - parameter metadata: All the metadata associated with the Video file.
+     - parameter filename: The name of the Video file.
+     - parameter path: The path to the Video file.
+     - parameter creator: The creator of the Video file.
+     - parameter resolution: The resolution of the Video file.
+     - parameter runtime: The runtime of the Video file.
+     */
     init(metadata: [MMMetadata], filename: String, path: String, creator: String, resolution: String, runtime: String) {
         self.originalResolution = resolution
         self.originalRuntime = runtime
         super.init(metadata: metadata, filename: filename, path: path, creator: creator)
     }
 	
-//    override var description: String {
+// **********   override var description: String {
 //        return super.description + ", resolution: \(resolution), runtime: \(runtime)"
 //    }
 }
 
 /**
-Audio class extends file.
-Required metadata fields: creator and runtime
+  Audio class extends file.
+  Required metadata fields: creator and runtime
 */
 class Audio : File {
 	
-	// the runtime of the audio, as specified at load time
+	// The runtime of the audio, as specified at load time.
     var originalRuntime: String
 	
-	// the audio's current runtime
+	// The audio's current runtime.
 	var runtime : String {
 		var run: String = ""
 		for m in metadata {
@@ -103,6 +123,15 @@ class Audio : File {
 		return run
 	}
 	
+    /**
+     Designated initialiser
+     
+     - parameter metadata: All the metadata associated with the Audio file.
+     - parameter filename: The name of the Audio file.
+     - parameter path: The path to the Audio file.
+     - parameter creator: The creator of the Audio file.
+     - parameter runtime: The runtime of the Audio file.
+     */
     init(metadata: [MMMetadata], filename: String, path: String, creator: String, runtime: String) {
         self.originalRuntime = runtime
         super.init(metadata: metadata, filename: filename, path: path, creator: creator)

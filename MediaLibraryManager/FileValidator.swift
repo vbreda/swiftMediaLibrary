@@ -2,20 +2,20 @@
 //  FileValidator.swift
 //  MediaLibraryManager
 //
-//  Created by Nikolah Pearce on 25/08/18.
+//  Created by Nikolah Pearce and Vivian Breda on 25/08/18.
 //  Copyright © 2018 Paul Crane. All rights reserved.
 //
 
 import Foundation
 
 /**
-Validator for checking Files.
+  Validator for checking Files.
 
-Converts Media struct to File and performs all validation.
+  Converts Media struct to File and performs all validation.
 */
 class FileValidator {
 	
-	// Dictionaries that store valid metadata needed per type
+	// Dictionaries that store valid metadata needed per type.
 	private static let validImage = ["resolution": true, "runtime": false,"creator": true]
 	private static let validDocument = ["resolution": false, "runtime": false,"creator": true]
 	private static let validVideo = ["resolution": true, "runtime": true,"creator": true]
@@ -35,9 +35,9 @@ class FileValidator {
 	private var validatedFile: MMFile? = nil
 	
 	/**
-	Sets up the Validator for the new File
+	  Sets up the Validator for the new File
 	
-	- parameter Media: the Media struct to validate as a File
+	  - parameter Media: the Media struct to validate as a File
 	*/
 	init() {
 		clearFields()
@@ -52,7 +52,7 @@ class FileValidator {
 		path = getPath(fullpath: media.fullpath)
 		
 		
-		// Loop through to fill the required values
+		// Loop through to fill the required values.
 		for (key, value) in media.metadata {
 			if key.lowercased()=="creator" {
 				creator = value.lowercased()
@@ -79,13 +79,13 @@ class FileValidator {
 	}
 	
 	/**
-	Designed to validate Files depending upon their type.
+	  Designed to validate Files depending upon their type.
 	
-	Performs type checking and required metadata checking.
-	Throws MMCLiErrors where media does not conform.
+	  Performs type checking and required metadata checking.
+	  Throws MMCLiErrors where media does not conform.
 	
-	- parameter Media: the Media struct to validate as a File
-	- returns: MMFile? the validated File
+	  - parameter Media: the Media struct to validate as a File.
+	  - returns: MMFile? the validated File.
 	*/
 	func validateType() throws -> Bool {
 		
@@ -127,7 +127,7 @@ class FileValidator {
 			errorAppendedAlready = true
 		}
 		
-		// Ammend any messages why invalid
+		// Ammends any messages why invalid.
 		if !typeValid && !errorAppendedAlready {
 			errorMessages.append("\(filename) missing required metadata.")
 		}
@@ -135,9 +135,9 @@ class FileValidator {
 	}
 	
 	/**
-	Creates the MMFile if type is valid.
+	  Creates the MMFile if type is valid.
 	
-	- returns: MMFile? the file created.
+      - returns: MMFile?: The file created.
 	*/
 	func createFile() throws -> MMFile? {
 		switch(type) {
@@ -160,10 +160,10 @@ class FileValidator {
 	}
 	
 	/**
-	Checks whether a metadata key is OK to delete from a file.
+      Checks whether a metadata key is OK to delete from a file.
 	
-	- parameter key: the key to check if allowed to delete
-	- returns: true if that key is not compulsory
+      - parameter key: The key to check if allowed to delete.
+     - returns: Bool: true if that key is not compulsory.
 	*/
 	static func safeToDelete(key: String, typeOfFile: String) throws -> Bool {
 		var allowed: Bool = true
@@ -210,7 +210,7 @@ class FileValidator {
 	}
 	
 	/**
-	Clears and resets all data fields.
+	  Clears and resets all data fields.
 	*/
 	func clearFields() {
 		type = ""
@@ -225,18 +225,18 @@ class FileValidator {
 	}
 	
 	/**
-	Returns any error message created.
-	- returns: String the error message created
+	  Returns any error message created.
+      - returns: String: the error message created.
 	*/
 	func getErrorMessages() -> [String] {
 		return errorMessages
 	}
 	
 	/**
-	Calculates a filename of a file from the fullpath string.
+	  Calculates a filename of a file from the fullpath string.
 	
-	- parameters: fullpath: the full path to the file including file name.
-	- returns: String: the name of the file.
+	  - parameter fullpath: The full path to the file including file name.
+	  - returns: String: The name of the file.
 	*/
 	func getFilename(fullpath: String) -> String {
 		
@@ -246,10 +246,10 @@ class FileValidator {
 	}
 	
 	/**
-	Calculates a path to a file from the fullpath string.
+	  Calculates a path to a file from the fullpath string.
 	
-	- parameters: fullpath: the full path to the file including file name.
-	- returns: String: the path to the file.
+	  - parameter fullpath: The full path to the file including file name.
+	  - returns: String: The path to the file.
 	*/
 	func getPath(fullpath: String) -> String {
 		

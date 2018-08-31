@@ -2,7 +2,7 @@
 //  MediaLibraryTests.swift
 //  MediaLibraryManager
 //
-//  Created by Nikolah Pearce on 28/08/18.
+//  Created by Nikolah Pearce and Vivian Breda on 28/08/18.
 //  Copyright © 2018 Paul Crane. All rights reserved.
 //
 
@@ -21,8 +21,8 @@ Located in the working directory and Home Directory of user in order to test.
 import Foundation
 
 /**
-Runs tests that ignore user prompt.
-Exhausts all action paths in MediaLibrary project.
+  Runs tests that ignore user prompt.
+  Exhausts all action paths in MediaLibrary project.
 */
 class MediaLibraryTests {
 	
@@ -43,7 +43,7 @@ class MediaLibraryTests {
 	var kv33: Metadata
 	
 	/**
-	Initialiser that sets all datafields to base form
+	  Initialiser that sets all datafields to base form
 	*/
 	init() {
 		library = Library()
@@ -63,8 +63,8 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Set up called before each tests.
-	Ensures all data fields in their base form.
+	  Set up called before each tests.
+	  Ensures all data fields in their base form.
 	*/
 	func setUp() {
 		library = Library()
@@ -84,8 +84,8 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Tear down called after each test.
-	Ensure state is restored to base.
+	  Tear down called after each test.
+	  Ensures state is restored to base.
 	*/
 	func tearDown() {
 		m1 = []
@@ -237,7 +237,7 @@ class MediaLibraryTests {
 	}
 
 	/**
-	Tests that adding a file to the Library works as it should.
+	  Tests that adding a file to the Library works as it should.
 	*/
 	func testAddToLibrary() {
 		precondition(library.count == 0, "Library should be empty.")
@@ -254,7 +254,7 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Tests that adding metadata to a file works as it should.
+	  Tests that adding metadata to a file works as it should.
 	*/
 	func testAddMetadataToFile() {
 		precondition(library.count == 0, "Library should be empty.")
@@ -287,7 +287,7 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Tests that removing a metadata from a file works as it should.
+	  Tests that removing a metadata from a file works as it should.
 	*/
 	func testRemove() {
 		precondition(library.count == 0, "Library should be empty.")
@@ -323,7 +323,7 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Tests that remove all files in library is working
+	  Tests that remove all files in library is working.
 	*/
 	func testRemoveAllFiles() {
 		precondition(library.count == 0, "Library should be empty.")
@@ -335,7 +335,7 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Tests that searching for terms in metadata works as it should.
+	  Tests that searching for terms in metadata works as it should.
 	*/
 	func testSearch() {
 		precondition(library.count == 0, "Library should be empty.")
@@ -379,7 +379,7 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Tests that the get all files in Library works as it should.
+	  Tests that the get all files in Library works as it should.
 	*/
 	func testAll() {
 		precondition(library.count == 0, "Library should be empty.")
@@ -401,8 +401,8 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Tests that the file validator works as it should.
-	e.g. does not validate invalid files
+	  Tests that the file validator works as it should.
+	  e.g. does not validate invalid files
 	*/
 	func testFileValidator() {
 		let vDoc: Media = Media(fullpath: "fake/path/to/doc1", type: "document", metadata: ["creator":"me"])
@@ -476,7 +476,7 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Tests that the file importer and read function works as it should.
+	  Tests that the file importer and read function works as it should.
 	*/
 	func testFileImporter() {
 		let testFilename = "test.json"
@@ -515,7 +515,7 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Tests that file exporter works as it should.
+	  Tests that file exporter works as it should.
 	*/
 	func testFileExporter() {
 		
@@ -533,7 +533,7 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Tests that the load command works as it should.
+	  Tests that the load command works as it should.
 	*/
 	func testLoadCommand() {
 		precondition(library.count == 0, "Library should be empty.")
@@ -577,7 +577,7 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Tests that the list command works as it should.
+	  Tests that the list command works as it should.
 	*/
 	func testListCommand() {
 		precondition(library.count == 0, "Library should be empty.")
@@ -766,7 +766,7 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Tests that the add command works as it should.
+	  Tests that the add command works as it should.
 	*/
 	func testAddCommand() {
 		precondition(library.count == 0, "Library should be empty.")
@@ -849,7 +849,7 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Tests that the set command works as it should.
+	  Tests that the set command works as it should.
 	*/
 	func testSetCommand() {
 		precondition(library.count == 0, "Library should be empty.")
@@ -937,7 +937,7 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Tests that the delete command works as it should.
+	  Tests that the delete command works as it should.
 	*/
 	func testDeleteCommand() {
 		precondition(library.count == 0, "Library should be empty.")
@@ -994,7 +994,7 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Tests that the save search command works as it should.
+	  Tests that the save search command works as it should.
 	*/
 	func testSaveSearchCommand() {
 		precondition(library.count == 0, "Library should be empty.")
@@ -1012,7 +1012,7 @@ class MediaLibraryTests {
 	}
 	
 	/**
-	Tests that the save command works as it should.
+	  Tests that the save command works as it should.
 	*/
 	func testSaveCommand() {
 		precondition(library.count == 0, "Library should be empty.")

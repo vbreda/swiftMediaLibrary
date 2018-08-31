@@ -2,7 +2,7 @@
 //  Media.swift
 //  MediaLibraryManager
 //
-//  Created by Vivian Breda and Nikolah Pearce on 13/08/18.
+//  Created by Nikolah Pearce and Vivian Breda on 13/08/18.
 //  Copyright © 2018 Paul Crane. All rights reserved.
 //
 
@@ -37,8 +37,7 @@ extension MMFile {
 }
 
 /**
- Creates a media file with metadata.
- 
+  Creates a media file with metadata.
  */
 class File: MMFile {
     
@@ -49,14 +48,14 @@ class File: MMFile {
     private var _fCreator = String()
     
     /**
-     Designated initialiser
+      Designated initialiser
      
-     The properties of the file.
+      The properties of the file.
      
-     - parameter metadata: all the metadata of a file.
-     - parameter filename: the name of the file.
-     - parameter path: the File's path.
-     - parameter creator: the File's creator.
+      - parameter metadata: all the metadata of a file.
+      - parameter filename: the name of the file.
+      - parameter path: the File's path.
+      - parameter creator: the File's creator.
      */
     init(metadata: [MMMetadata], filename: String, path: String, creator: String) {
         self._fMetadata = metadata
@@ -65,7 +64,8 @@ class File: MMFile {
         self._fCreator = creator
     }
     
-    var metadata: [MMMetadata] {  // the collection of the file's metadata
+    // The collection of the file's metadata.
+    var metadata: [MMMetadata] {
         get {
             return self._fMetadata
         }
@@ -74,7 +74,8 @@ class File: MMFile {
         }
     }
     
-    var filename: String {          // the name of the file
+     // The name of the file.
+    var filename: String {
         get {
             return self._fFilename
         }
@@ -83,7 +84,8 @@ class File: MMFile {
         }
     }
     
-    var path: String {              // the path to the file
+    // The path to the file.
+    var path: String {
         get {
             return self._fPath
         }
@@ -92,7 +94,8 @@ class File: MMFile {
         }
     }
     
-    var creator: String {           // the creator of the file
+    // The creator of the file.
+    var creator: String {
         get {
             return self._fCreator
         }
@@ -106,9 +109,9 @@ class File: MMFile {
     }
     
     /**
-     String representation of the file
+      String representation of the file
      
-     - returns: String String representation of the File.
+      - returns: String: String representation of the File.
      */
     var description: String {
         return "\(filename) \(metadata)"
