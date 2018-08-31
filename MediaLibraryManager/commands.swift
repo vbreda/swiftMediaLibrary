@@ -330,35 +330,41 @@ class ListCommand : MMCommand {
             print(library.description)
             
             // Lists all the files that have the given term ("list <term>")
-        } else {
-            
-            var param = keywords.count
-            var listresults: [MMFile] = []
-            var filenamesFound: [String] = []
-            
-            // Continues adding while there are 1+ data items left
-            while param > 0 {
-                let word: String = keywords.removeFirst()
-                let res1 = library.search(term: word)
-                
-                for f in res1 {
-                    if !filenamesFound.contains(f.filename) {
-                        listresults.append(f)
-                        filenamesFound.append(f.filename)
-                    }
-                }
-                
-                param -= 1
-            }
-            
-            // Checks that results were found, else throw
-            guard listresults.count > 0 else {
-                throw MMCliError.dataDoesntExist
-            }
-            
-            self.results = MMResultSet(listresults)
-        }
-    }
+		} else {
+			
+			var param = keywords.count
+			let term = keywords[0].lowercased()
+			var listresults: [MMFile] = []
+			var filenamesFound: [String] = []
+			
+			if param == 1 && (term == "image" || term == "video" || term == "document" || term == "audio") {
+				listresults = library.listByType(type: term)
+			} else {
+				
+				// Continue adding while there are 2+ data items left
+				while param > 0 {
+					let word: String = keywords.removeFirst()
+					let res1 = library.search(term: word)
+					
+					for f in res1 {
+						if !filenamesFound.contains(f.filename) {
+							listresults.append(f)
+							filenamesFound.append(f.filename)
+						}
+					}
+					
+					param -= 1
+				}
+			}
+			
+			// Check that results were found, else throw
+			guard listresults.count > 0 else {
+				throw MMCliError.dataDoesntExist
+			}
+			
+			self.results = MMResultSet(listresults)
+		}
+	}
 }
 
 /**
@@ -565,7 +571,6 @@ class DeleteCommand : MMCommand {
             if allowed {
                 // Checks that key can be deleted
                 if delFile.metadata.contains(where: {$0.keyword == key}) {
-                    //delFile.metadata.first(where: {$0.keyword == key})
                     library.remove(key: key, file: delFile)
                     print("> \"\(key)\" deleted from \(delFile.filename)")
                 } else {
