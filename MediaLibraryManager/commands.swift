@@ -205,6 +205,7 @@ class QuitCommand : MMCommand {
         exit(0)
     }
 }
+
 /**
  Handle the load command.
  
@@ -233,19 +234,19 @@ class LoadCommand: MMCommand {
         var newFiles : [MMFile] = []
         var duplicatedNotAdded: [MMFile] = []
         
-        // Ensure the user passed at least one parameter
+        // Ensure the user passed at least one parameter.
         guard jsonFilesToLoad.count > 0 else {
             throw MMCliError.invalidParameters
         }
         
-        // While there are filenames to read from
+        // While there are filenames to read from.
         var i = jsonFilesToLoad.count
         while i > 0 {
             
-            // Get the filename from the parameters
+            // Get the filename from the parameters.
             let fileName: String = jsonFilesToLoad.removeFirst()
             
-            // Pass the file to the importer
+            // Pass the file to the importer.
             newFiles = try importer.read(filename: fileName)
             // Add the files to the library
             for f in newFiles {
@@ -261,7 +262,7 @@ class LoadCommand: MMCommand {
             i = i-1
         }
         
-        // Confirm to the user that the Library grew in size
+        // Confirm to the user that the Library grew in size.
         let newCount = library.count
         let diff = newCount-oldCount
         
@@ -272,7 +273,7 @@ class LoadCommand: MMCommand {
         }
         
         
-        // Print out the names of the added files
+        // Print out the names of the added files.
         if newCount > oldCount {
             var allFiles = library.all()
             var index: Int = 1
@@ -318,18 +319,18 @@ class ListCommand : MMCommand {
     
     func execute() throws {
         
-        // Ensure there is a file in the library to save
+        // Ensures there is a file in the library to save.
         guard library.count > 0 else {
             throw MMCliError.libraryEmpty
         }
         
-        // Lists all the files in the library ("list")
+        // Lists all the files in the library ("list").
         if (keywords.count == 0) {
             let allFiles = library.all()
             self.results = MMResultSet(allFiles)
             print(library.description)
             
-            // Lists all the files that have the given term ("list <term>")
+        // Lists all the files that have the given term ("list <term>").
 		} else {
 			
 			var param = keywords.count
@@ -341,7 +342,7 @@ class ListCommand : MMCommand {
 				listresults = library.listByType(type: term)
 			} else {
 				
-				// Continue adding while there are 2+ data items left
+				// Continue adding while there are 1+ data items left.
 				while param > 0 {
 					let word: String = keywords.removeFirst()
 					let res1 = library.search(term: word)
@@ -357,7 +358,7 @@ class ListCommand : MMCommand {
 				}
 			}
 			
-			// Check that results were found, else throw
+			// Check that results were found, else throw.
 			guard listresults.count > 0 else {
 				throw MMCliError.dataDoesntExist
 			}
@@ -394,7 +395,7 @@ class AddCommand : MMCommand {
     
     func execute() throws {
         
-        // Ensures there is a file in the library to save
+        // Ensures there is a file in the library to save.
         guard library.count > 0 else {
             throw MMCliError.libraryEmpty
         }
@@ -404,21 +405,21 @@ class AddCommand : MMCommand {
             throw MMCliError.invalidParameters
         }
         
-        // Ensures there is a previous result set to use
+        // Ensures there is a previous result set to use.
         guard lastsearch.count > 0 else {
             throw MMCliError.missingResultSet
         }
         
         let index = Int(data.removeFirst())!
         
-        // Checks the index is within acceptable range
+        // Checks the index is within acceptable range.
         guard index < lastsearch.count else {
             throw MMCliError.indexOutOfRange
         }
         
         var param = data.count
         
-        // Continues adding while there are 2+ data items left
+        // Continues adding while there are 2+ data items left.
         while param > 1 {
             let key = data.removeFirst()
             let value = data.removeFirst()
@@ -464,31 +465,31 @@ class SetCommand : MMCommand {
     
     func execute() throws {
         
-        // Ensures there is a file in the library to save
+        // Ensures there is a file in the library to save.
         guard library.count > 0 else {
             throw MMCliError.libraryEmpty
         }
         
-        // Ensures the user passed at least two parameters
+        // Ensures the user passed at least two parameters.
         guard data.count > 2 && (Int(data[0]) != nil) else {
             throw MMCliError.invalidParameters
         }
         
-        // Ensures there is a result set to use
+        // Ensures there is a result set to use.
         guard lastsearch.count > 0 else {
             throw MMCliError.missingResultSet
         }
         
         let index = Int(data.removeFirst())!
         
-        // Checks the index is within acceptable range
+        // Checks the index is within acceptable range.
         guard index < lastsearch.count else {
             throw MMCliError.indexOutOfRange
         }
         
         var param = data.count
         
-        // Continues setting while there are 2+ data items remaining
+        // Continues setting while there are 2+ data items remaining.
         while param > 1 {
             let key : String = data.removeFirst()
             let valueToModify : String = data.removeFirst()
@@ -537,29 +538,31 @@ class DeleteCommand : MMCommand {
     
     func execute() throws {
         
-        // Ensures there is a file in the library to save
+        // Ensures there is a file in the library to save.
         guard library.count > 0 else {
             throw MMCliError.libraryEmpty
         }
         
-        // Ensures the user passed at least two parameters
+        // Ensures the user passed at least two parameters.
         guard data.count > 1 && (Int(data[0]) != nil) else {
             throw MMCliError.invalidParameters
         }
         
-        // Ensures there is a result set to use
+        // Ensures there is a result set to use.
         guard lastsearch.count > 0 else {
             throw MMCliError.missingResultSet
         }
         
         let index = Int(data.removeFirst())!
         
-        // Checks the index is within acceptable range
+        // Checks the index is within acceptable range.
         guard index < lastsearch.count else {
             throw MMCliError.indexOutOfRange
         }
         
         var param = data.count
+        
+        // Continues deleting while there is 1+ data items remaining.
         while param > 0 {
             
             let key: String = data.removeFirst()
@@ -569,7 +572,7 @@ class DeleteCommand : MMCommand {
             let allowed = try FileValidator.safeToDelete(key: key, typeOfFile: delFile.type)
             
             if allowed {
-                // Checks that key can be deleted
+                // Checks that key can be deleted.
                 if delFile.metadata.contains(where: {$0.keyword == key}) {
                     library.remove(key: key, file: delFile)
                     print("> \"\(key)\" deleted from \(delFile.filename)")
@@ -606,13 +609,8 @@ class SaveSearchCommand : MMCommand {
     
     func execute() throws {
         
-        // Ensures there is a file in the library to save.
-        guard library.count > 0 else {
-            throw MMCliError.libraryEmpty
-        }
-        
-        // Ensures the user passed at least one parameter.
-        guard data.count > 0 else {
+        // Ensures the user passed one parameter.
+        guard data.count == 1 else {
             throw MMCliError.invalidParameters
         }
         
@@ -654,13 +652,13 @@ class SaveCommand : MMCommand {
     
     func execute() throws {
         
-        // Ensures there is a file in the library to save
+        // Ensures there is a file in the library to save.
         guard library.count > 0 else {
             throw MMCliError.libraryEmpty
         }
         
-        // Ensures the user passed at least one parameter
-        guard data.count > 0 else {
+        // Ensures the user passed one parameter.
+        guard data.count == 1 else {
             throw MMCliError.invalidParameters
         }
         
