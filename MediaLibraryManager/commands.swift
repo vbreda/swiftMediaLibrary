@@ -107,25 +107,6 @@ protocol MMCommand {
     func execute() throws
 }
 
-// The main difference between this and the previous style is that to use this
-// style you first create an instance of the command:
-//
-//      var command = ListCommand(library, terms)
-//
-// then you call execute on that instance:
-//
-//      command.execute()
-//
-// and finally, the results are stored within the command object:
-//
-//      command.results?
-//
-//
-// This means that the execute function doesn't need to know about all the
-// possible combinations of parameters, libraries, previous result sets. This
-// is the problem with the previous implementation. Previously, if *any*
-// command needed to have previous result sets, then they *all* needed to know
-// about it.
 /**
  Handle unimplemented commands by throwing an exception when trying to
  execute this command.
@@ -156,40 +137,6 @@ class HelpCommand: MMCommand {
 \tquit                              - exit the program (without prompts)
 \ttest                              - runs the test framework created by Vivian and Nikolah
 """)
-        // for example:
-        
-        // load foo.json bar.json
-        //      from the current directory load both foo.json and bar.json and
-        //      merge the results
-        
-        //        > list
-        //        0: Paul
-        //        1: Hamza
-        //        > add 0 likes coffee
-        //        > search coffee
-        //        0: Paul
-        
-        // list foo bar baz
-        //      results in a set of files with metadata containing foo OR bar OR baz
-        
-        //        > list python
-        //        0: Paul
-        //        > list swift
-        //        0: Paul
-        //        1: Hamza
-        
-        // add 3 foo bar
-        //      using the results of the previous list, add foo=bar to the file
-        //      at index 3 in the list
-        
-        // add 3 foo bar baz qux
-        //      using the results of the previous list, add foo=bar and baz=qux
-        //      to the file at index 3 in the list
-        
-        // set 0 keyword newValue differentKeyword anotherNewValu
-        
-        // list val1 key1 val2
-        // show any file/metadata with KEYWORD or VALUE val1/key1/val2.
     }
 }
 

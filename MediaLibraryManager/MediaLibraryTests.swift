@@ -199,6 +199,8 @@ class MediaLibraryTests {
 		testSaveCommand()
 		print("\t✅ testSaveCommand() passed")
 		tearDown()
+        
+        print("\t✅ Nikolah and Vivian passed assgn1 - woohoo!")
 	}
 	
 	/**

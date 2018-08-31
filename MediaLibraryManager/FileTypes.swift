@@ -11,23 +11,22 @@ import Foundation
 /**
  Image class extends file.
  Required metadata fields: creator and resolution
-*/
+ */
 class Image : File {
-	
-	// The resolution of the image, as specified at load time.
-    //********** can we make this a stored variable?
+    
+    // The resolution of the image, as specified at load time.
     var originalResolution : String
-	
-	//The image's current resolution.
-	var resolution : String {
-		var res: String = ""
-		for m in metadata {
-			if m.keyword.lowercased() == "resolution" {
-				res = m.value
-			}
-		}
-		return res
-	}
+    
+    //The image's current resolution.
+    var resolution : String {
+        var res: String = ""
+        for m in metadata {
+            if m.keyword.lowercased() == "resolution" {
+                res = m.value
+            }
+        }
+        return res
+    }
     
     /**
      Designated initialiser
@@ -42,46 +41,43 @@ class Image : File {
         self.originalResolution = resolution
         super.init(metadata: metadata, filename: filename, path: path, creator: creator)
     }
-	
-//***********    override var description: String {
-//		return super.description + ", resolution: \(resolution)"
-//    }
+    
 }
 
 /**
-  Video class extends file.
-  Required metadata fields: creator, resolution and runtime.
-*/
+ Video class extends file.
+ Required metadata fields: creator, resolution and runtime.
+ */
 class Video : File {
-	
-	// The resolution of the video, as specified at load time.
+    
+    // The resolution of the video, as specified at load time.
     var originalResolution : String
-	
-	// The runtime of the video, as specified at load time.
+    
+    // The runtime of the video, as specified at load time.
     var originalRuntime: String
-	
-	// The video's current resolution.
-	var resolution : String {
-		var res: String = ""
-		for m in metadata {
-			if m.keyword.lowercased() == "resolution" {
-				res = m.value
-			}
-		}
-		return res
-	}
-	
-	// The video's current runtime.
-	var runtime : String {
-		var run: String = ""
-		for m in metadata {
-			if m.keyword.lowercased() == "runtime" {
-				run = m.value
-			}
-		}
-		return run
-	}
-	
+    
+    // The video's current resolution.
+    var resolution : String {
+        var res: String = ""
+        for m in metadata {
+            if m.keyword.lowercased() == "resolution" {
+                res = m.value
+            }
+        }
+        return res
+    }
+    
+    // The video's current runtime.
+    var runtime : String {
+        var run: String = ""
+        for m in metadata {
+            if m.keyword.lowercased() == "runtime" {
+                run = m.value
+            }
+        }
+        return run
+    }
+    
     /**
      Designated initialiser
      
@@ -97,32 +93,28 @@ class Video : File {
         self.originalRuntime = runtime
         super.init(metadata: metadata, filename: filename, path: path, creator: creator)
     }
-	
-// **********   override var description: String {
-//        return super.description + ", resolution: \(resolution), runtime: \(runtime)"
-//    }
 }
 
 /**
-  Audio class extends file.
-  Required metadata fields: creator and runtime
-*/
+ Audio class extends file.
+ Required metadata fields: creator and runtime
+ */
 class Audio : File {
-	
-	// The runtime of the audio, as specified at load time.
+    
+    // The runtime of the audio, as specified at load time.
     var originalRuntime: String
-	
-	// The audio's current runtime.
-	var runtime : String {
-		var run: String = ""
-		for m in metadata {
-			if m.keyword.lowercased() == "runtime" {
-				run = m.value
-			}
-		}
-		return run
-	}
-	
+    
+    // The audio's current runtime.
+    var runtime : String {
+        var run: String = ""
+        for m in metadata {
+            if m.keyword.lowercased() == "runtime" {
+                run = m.value
+            }
+        }
+        return run
+    }
+    
     /**
      Designated initialiser
      
@@ -136,13 +128,13 @@ class Audio : File {
         self.originalRuntime = runtime
         super.init(metadata: metadata, filename: filename, path: path, creator: creator)
     }
-	
+    
 }
 
 /**
-Audio class extends file.
-Required metadata fields: creator
-*/
+ Audio class extends file.
+ Required metadata fields: creator
+ */
 class Document : File {
-	    
+    
 }

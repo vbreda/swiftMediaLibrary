@@ -1,1 +1,0 @@
-[{"fullpath": "/path/to/ValidImage1.png","type": "image","metadata": {"creator": "Nikolah Pearce","resolution": "1920x1080"}},{"fullpath": "/path/to/InvalidImageNoResolution.jpg","type": "image","metadata": {"creator": "Vivian LotsOfLastnames"}},{"fullpath": "/path/to/Valid2In1.png","type": "image","metadata": {"creator": "valid","resolution": "1920x1080"}}]
