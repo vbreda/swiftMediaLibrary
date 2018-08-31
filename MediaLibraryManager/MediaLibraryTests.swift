@@ -152,7 +152,7 @@ class MediaLibraryTests {
 		
 		setUp()
 		testFileExporter()
-		print("\t❌ testFileExporter() passed")
+		print("\t✅ testFileExporter() passed")
 		tearDown()
 		
 		setUp()
@@ -187,12 +187,12 @@ class MediaLibraryTests {
 		
 		setUp()
 		testSaveSearchCommand()
-		print("\t❌ testSaveSearchCommand() passed")
+		print("\t✅ testSaveSearchCommand() passed")
 		tearDown()
 		
 		setUp()
 		testSaveCommand()
-		print("\t❌ testSaveCommand() passed")
+		print("\t✅ testSaveCommand() passed")
 		tearDown()
 
 		setUp()
@@ -519,17 +519,45 @@ class MediaLibraryTests {
 	*/
 	func testFileExporter() {
 		
-		// Test home
+		precondition(library.count == 0, "Library should be empty.")
 		
-		// Test workign
-		
-		// Test full
-		
-		// Test empty
-		
-		// Test no prev result set
-		
-		//
+		var errorThrown: Bool = false
+		let filename: String = "exporterOutput"
+		let filename2: String = "~/exporterOutput"
+		let exporter = FileExporter()
+		do {
+			// Test empty
+			try exporter.write(filename: filename, items: [])
+			
+			library.add(file: f1)
+			library.add(file: f2)
+			assert(library.count == 2, "Library should contain two files.")
+			
+			// Test no file name
+			do {
+				try exporter.write(filename: "", items: library.all())
+			} catch {
+				errorThrown = true
+			}
+			assert(errorThrown, "No filename should not get written!")
+			
+			// Test exports to working directory
+			try exporter.write(filename: filename, items: library.all())
+			
+			// Test exports to home directory
+			try exporter.write(filename: filename2, items: library.all())
+
+			// test exporting random extension stays as json working
+			try exporter.write(filename: "notJson.mp3", items: library.all())
+			
+			// test exporting random extension stays as json home
+			try exporter.write(filename: "~/notJson.mp3", items: library.all())
+			
+			// Would test that exporter writes to fullpath but can only do this manually.
+
+		} catch {
+			assertionFailure()
+		}
 	}
 	
 	/**
@@ -570,6 +598,9 @@ class MediaLibraryTests {
 			} catch {
 				assert(library.count == 0, "Library should be contain 0 files.")
 			}
+			
+			// Test loading in an output file
+			
 			
 		} catch {
 			assertionFailure()
@@ -749,7 +780,6 @@ class MediaLibraryTests {
 			results = try rSet.getAll()
 			assert(results.count == 1, "Two images should be returned")
 			assert(results[0].type == v, "Type should be video")
-
 			
 			// Test list all audio
 			command = ListCommand(keyword: [a], library: library)
@@ -814,7 +844,6 @@ class MediaLibraryTests {
 			assert(md.keyword == "test1", "Keyword should be test1.")
 			assert(md.value == "new", "value should be new.")
 			
-			
 			// Test setting more than one works
 			prevResults = library.all()
 			assert(prevResults[1] as! File == f2, "f2 should be at results 1 index.")
@@ -845,7 +874,6 @@ class MediaLibraryTests {
 		} catch {
 			assertionFailure()
 		}
-		
 	}
 	
 	/**
@@ -903,7 +931,6 @@ class MediaLibraryTests {
 			assert(md.keyword == "creator", "Keyword should be creator.")
 			assert(md.value == "new", "value should be new.")
 			
-			
 			// Test setting more than one works
 			prevResults = library.all()
 			assert(prevResults[1] as! File == f2, "f1 should be at results 0 index.")
@@ -930,7 +957,7 @@ class MediaLibraryTests {
 				errorThrown = true
 			}
 			assert(errorThrown, "Data doesn't exist error should have been thrown")
-			
+
 		} catch {
 			assertionFailure()
 		}
@@ -987,7 +1014,6 @@ class MediaLibraryTests {
 			try command.execute()
 			assert(prevResults[0].metadata.count == 2, "file 1 should have 2 metadata")
 			assert(prevResults[1].metadata.count == 2, "file 2 should have 2 metadata")
-			
 		} catch {
 			assertionFailure()
 		}
@@ -1001,21 +1027,24 @@ class MediaLibraryTests {
 		library.add(file: f1)
 		library.add(file: f2)
 		assert(library.count == 2, "Library should contain two files.")
-		
 		var prevResults = library.search(term: "cre1")
 		assert(prevResults[0] as! File == f1, "file 1 should have been found")
 		assert(prevResults.count == 1, "only one file should be found")
-		
+	
 		var errorThrown: Bool = false
 		let filename: String = "saveSearchOutput"
-		
+		let filename2: String = "~/saveSearchOutput"
+
 		var command: MMCommand
 		do {
 			
-			// Search for one key and save this
+			// Search for one key and save this to working directory
 			command = SaveSearchCommand(data: [filename+"1"], lastsearch: prevResults)
 			try command.execute()
 
+			// Search for one key and save this to home
+			command = SaveSearchCommand(data: [filename2+"1"], lastsearch: prevResults)
+			try command.execute()
 			
 			// Search for non exist and save should throw
 			prevResults = library.search(term: "none")
@@ -1033,6 +1062,7 @@ class MediaLibraryTests {
 			command = SaveSearchCommand(data: [filename+"3"], lastsearch: prevResults)
 			try command.execute()
 			
+			// Would test that save search writes to fullpath but can only do this manually.
 		} catch {
 			assertionFailure()
 		}
@@ -1045,8 +1075,10 @@ class MediaLibraryTests {
 		precondition(library.count == 0, "Library should be empty.")
 		var errorThrown: Bool = false
 		let filename: String = "wholeLibraryOutput"
+		let filename2: String = "~/wholeLibraryOutput"
 		var command: MMCommand
 		
+		// Test no library throws an error
 		command = SaveCommand(data: [filename+"1"], library: library)
 		do {
 			try command.execute()
@@ -1060,18 +1092,19 @@ class MediaLibraryTests {
 		assert(library.count == 2, "Library should contain two files.")
 		
 		do {
-			// Test whole library saves
+			// Test whole library saves to working
 			command = SaveCommand(data: [filename+"2"], library: library)
 			try command.execute()
 			
-			// Test whole library +1 saves
+			// Test whole library +1 saves to home
 			library.add(file: f3)
-			command = SaveCommand(data: [filename+"3"], library: library)
+			command = SaveCommand(data: [filename2+"3"], library: library)
 			try command.execute()
+			
+			// Would test that save command writes to fullpath but can only do this manually.
 			
 		} catch {
 			assertionFailure()
 		}
 	}
-	
 }
