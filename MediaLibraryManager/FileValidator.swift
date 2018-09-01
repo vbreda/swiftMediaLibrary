@@ -20,6 +20,7 @@ class FileValidator {
 	private static let validDocument = ["resolution": false, "runtime": false,"creator": true]
 	private static let validVideo = ["resolution": true, "runtime": true,"creator": true]
 	private static let validAudio = ["resolution": false, "runtime": true,"creator": true]
+	private static let types = ["image","document","video","audio"]
 	
 	private var errorMessages: [String] = []
 	
@@ -93,28 +94,28 @@ class FileValidator {
 		var errorAppendedAlready: Bool = false
 		
 		switch(type) {
-		case "image" :
+		case FileValidator.types[0] :
 			for (keyword, compulsory) in FileValidator.validImage {
 				if compulsory == true && !keys.contains(keyword) {
 					typeValid = false
 				}
 			}
 			break
-		case "document":
+		case FileValidator.types[1]:
 			for (keyword, compulsory) in FileValidator.validDocument {
 				if compulsory == true && !keys.contains(keyword) {
 					typeValid = false
 				}
 			}
 			break
-		case "video":
+		case FileValidator.types[2]:
 			for (keyword, compulsory) in FileValidator.validVideo {
 				if compulsory == true && !keys.contains(keyword) {
 					typeValid = false
 				}
 			}
 			break
-		case "audio":
+		case FileValidator.types[3]:
 			for (keyword, compulsory) in FileValidator.validAudio {
 				if compulsory == true && !keys.contains(keyword) {
 					typeValid = false
@@ -141,16 +142,16 @@ class FileValidator {
 	*/
 	func createFile() throws -> MMFile? {
 		switch(type) {
-		case "image" :
+		case FileValidator.types[0] :
 			validatedFile = Image(metadata: mdata, filename: filename, path: path, creator: creator!, resolution: res!)
 			break
-		case "document":
+		case FileValidator.types[1]:
 			validatedFile = Document(metadata: mdata, filename: filename, path: path, creator: creator!)
 			break
-		case "video":
+		case FileValidator.types[2]:
 			validatedFile = Video(metadata: mdata, filename: filename, path: path, creator: creator!, resolution: res!, runtime: runtime!)
 			break
-		case "audio":
+		case FileValidator.types[3]:
 			validatedFile = Audio(metadata: mdata, filename: filename, path: path, creator: creator!, runtime: runtime!)
 			break
 		default:
@@ -163,34 +164,34 @@ class FileValidator {
       Checks whether a metadata key is OK to delete from a file.
 	
       - parameter key: The key to check if allowed to delete.
-     - returns: Bool: true if that key is not compulsory.
+      - returns: Bool: true if that key is not compulsory.
 	*/
 	static func safeToDelete(key: String, typeOfFile: String) throws -> Bool {
 		var allowed: Bool = true
 		
 		switch(typeOfFile) {
-		case "image" :
+		case FileValidator.types[0] :
 			for (keyword, compulsory) in validImage {
 				if keyword == key && compulsory == true {
 					allowed = false
 				}
 			}
 			break
-		case "document":
+		case FileValidator.types[1] :
 			for (keyword, compulsory) in validDocument {
 				if keyword == key && compulsory == true {
 					allowed = false
 				}
 			}
 			break
-		case "video":
+		case FileValidator.types[2] :
 			for (keyword, compulsory) in validVideo {
 				if keyword == key && compulsory == true {
 					allowed = false
 				}
 			}
 			break
-		case "audio":
+		case FileValidator.types[3] :
 			for (keyword, compulsory) in validAudio {
 				if keyword == key && compulsory == true {
 					allowed = false
