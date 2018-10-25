@@ -5,7 +5,7 @@
 The aims of the assignment include the following learning objectives:
 * To demonstrate programming skills using the Swift (version 4) programming language, and some of the Foundation classes.
 * To employ in practice fundamental concepts in object-oriented programming such as polymorphism, inheritance, design patterns, coupling and cohesion.
-* To reflect on the strengths and weaknesses of Swift and object-oriented programming techniques
+* To reflect on the strengths and weaknesses of Swift and object-oriented programming techniques.
 * To deliver software that is well tested and documented.
 
 ## Problem Description
