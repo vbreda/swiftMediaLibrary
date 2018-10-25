@@ -19,7 +19,7 @@ have some metadata describing where the photo was taken; music files may have an
 be produced by a studio, and so on.
 
 The library should have the following features:
-* import/export data from files (see: [File Import/Export](#file-importexport), [File Format](#file-format), and [Export Search Results to a File](#export-search-results-to-a-file))
-* search metadata for keywords (see: [Searching](#searching))
-* add/change/remove metadata keywords or values ([Changing Keyword/Values](#changing-keywordvalues))
-* display a list of the files returned by the search (see: [Searching](#searching))
+* import/export data from files
+* search metadata for keywords
+* add/change/remove metadata keywords or values
+* display a list of the files returned by the search
